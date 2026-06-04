@@ -1,0 +1,9 @@
+[submodule "NepBill/Libs/ImGui"]
+	path = NepBill/Libs/ImGui
+	url = https://github.com/ocornut/imgui.git
+[submodule "NepBill/Libs/Sqlite"]
+	path = NepBill/Libs/Sqlite
+	url = https://github.com/SRombauts/SQLiteCpp.git
+[submodule "NepBill/Libs/Glfw"]
+	path = NepBill/Libs/Glfw
+	url = https://github.com/glfw/glfw.git

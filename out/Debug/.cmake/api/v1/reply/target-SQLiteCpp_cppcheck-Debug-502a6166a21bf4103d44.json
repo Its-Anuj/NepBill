@@ -1,0 +1,66 @@
+{
+	"backtrace" : 1,
+	"backtraceGraph" : 
+	{
+		"commands" : 
+		[
+			"add_custom_target"
+		],
+		"files" : 
+		[
+			"NepBill/Libs/Sqlite/CMakeLists.txt"
+		],
+		"nodes" : 
+		[
+			{
+				"file" : 0
+			},
+			{
+				"command" : 0,
+				"file" : 0,
+				"line" : 439,
+				"parent" : 0
+			}
+		]
+	},
+	"id" : "SQLiteCpp_cppcheck::@0b32f22c5f61dd74a6c9",
+	"name" : "SQLiteCpp_cppcheck",
+	"paths" : 
+	{
+		"build" : "NepBill/Libs/Sqlite",
+		"source" : "NepBill/Libs/Sqlite"
+	},
+	"sourceGroups" : 
+	[
+		{
+			"name" : "",
+			"sourceIndexes" : 
+			[
+				0
+			]
+		},
+		{
+			"name" : "CMake Rules",
+			"sourceIndexes" : 
+			[
+				1
+			]
+		}
+	],
+	"sources" : 
+	[
+		{
+			"backtrace" : 1,
+			"isGenerated" : true,
+			"path" : "out/Debug/NepBill/Libs/Sqlite/CMakeFiles/SQLiteCpp_cppcheck",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 0,
+			"isGenerated" : true,
+			"path" : "out/Debug/NepBill/Libs/Sqlite/CMakeFiles/SQLiteCpp_cppcheck.rule",
+			"sourceGroupIndex" : 1
+		}
+	],
+	"type" : "UTILITY"
+}
