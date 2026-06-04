@@ -75,6 +75,8 @@ namespace NepBill
         static const char *GetName();
     };
 
+    // ---- Payment Related ----
+    
     enum InvoiceStates : uint32_t
     {
         Paying,
@@ -121,8 +123,6 @@ namespace NepBill
         static const char *GetByIdQuery();
         static const char *GetName();
     };
-
-    // ---- Payment Related ----
 
     // One invoie can be related to multiple item purchases
     struct InvoiceLine
