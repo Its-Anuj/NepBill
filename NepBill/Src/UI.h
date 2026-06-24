@@ -160,6 +160,7 @@ namespace NepBill
         {
             struct ItemMember
             {
+                uint32_t CurrentStock = 0;
                 Item Item;
                 ItemCategory Category;
             };
@@ -172,6 +173,23 @@ namespace NepBill
             ItemSections LastSection = ItemSections::None;
         };
 
+        enum class SupplierSections
+        {
+            None,
+            RegisterSupplier,
+            EditSupplier
+        };
+        
+        struct UISupplier
+        {
+            Suppliers New, Edit;
+            std::vector<Suppliers>show;
+            bool UpdateList = true;
+            SupplierSections Section = SupplierSections::None;
+            SupplierSections LastSection = SupplierSections::None;
+            bool ShowWindow = true;
+        };
+
         struct UIApp
         {
             DashboardSection Section = DashboardSection::Dashboard;
@@ -182,6 +200,7 @@ namespace NepBill
             UItem Item;
             std::string ErrorMessage;
             UInvoiceInfo Invoice;
+            UISupplier Supplier;
         };
 
         void UIDashboard(UIApp &UI, App &App);
@@ -192,6 +211,7 @@ namespace NepBill
         void UInvoiceection(UIApp &UI, App &App);
         void UItemSection(UIApp &UI, App &App);
         bool UItemCategorySection(UIApp &UI, App &App);
+        void UISuppliersSection(UIApp &UI, App &App);
     } // namespace ClientCpp
 } // namespace NepBill
 

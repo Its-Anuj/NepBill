@@ -95,6 +95,7 @@ namespace NepBill
                 /* code */
                 break;
             case DashboardSection::Suppliers:
+                UISuppliersSection(UI, App);
                 /* code */
                 break;
             case DashboardSection::Items:
@@ -1116,14 +1117,11 @@ namespace NepBill
         {
             ImGui::SeparatorText("Items");
 
-            if (UI.Item.UpdateList == true)
-            {
-            }
-
             if (UI.LastSection != DashboardSection::Items)
             {
                 UI.Item.Section = ItemSections::None;
                 UI.Item.LastSection = ItemSections::None;
+                UI.Item.UpdateList = true;
             }
 
             if (UI.Item.Section != UI.Item.LastSection)
@@ -1133,6 +1131,34 @@ namespace NepBill
                     GetItemCategories(App, CategoryQuery);
 
                 UI.Item.LastSection = UI.Item.Section;
+            }
+
+            if (UI.Item.UpdateList == true)
+            {
+                ItemQuery Query;
+                auto Items = GetItems(App, Query);
+
+                UI.Item.Show.clear();
+                for (auto &Item : Items)
+                {
+                    ItemCategoryQuery CategoryQuery;
+                    CategoryQuery.UniqueID = Item.CategoryId;
+
+                    UItem::ItemMember Member;
+                    Member.Item = Item;
+                    Member.Category = GetItemCategories(App, CategoryQuery)[0];
+
+                    ItemStockLedgerQuery StockLedgerQuery;
+                    StockLedgerQuery.ItemID = Item.UniqueID;
+                    auto StockLedger = GetItemStockLedgers(App, StockLedgerQuery);
+
+                    for (auto &Ledger : StockLedger)
+                        Member.CurrentStock += Ledger.StockDelta;
+
+                    UI.Item.Show.push_back(Member);
+                }
+
+                UI.Item.UpdateList = false;
             }
 
             if (ImGui::Button("Add New Item"))
@@ -1157,11 +1183,12 @@ namespace NepBill
                 ImGuiTableFlags_SizingStretchProp |
                 ImGuiTableFlags_ScrollY;
 
-            if (ImGui::BeginTable("ItemsTable", 8, Flags, ImVec2(0.0f, 450.0f)))
+            if (ImGui::BeginTable("ItemsTable", 9, Flags, ImVec2(0.0f, 450.0f)))
             {
                 ImGui::TableSetupColumn("Category");
                 ImGui::TableSetupColumn("Name");
                 ImGui::TableSetupColumn("LowStockThresold");
+                ImGui::TableSetupColumn("CurrentStock");
                 ImGui::TableSetupColumn("CostPrice");
                 ImGui::TableSetupColumn("DiscountPercent");
                 ImGui::TableSetupColumn("SalesPrice");
@@ -1180,7 +1207,41 @@ namespace NepBill
                     ImGui::TextUnformatted(Category.Name.data());
 
                     ImGui::TableSetColumnIndex(1);
-                    ImGui::Text("%.2f", Item.Item.Name.data());
+                    ImGui::TextUnformatted(Item.Item.Name.data());
+
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::Text("%i", Item.Item.LowStockThresold);
+
+                    ImGui::TableSetColumnIndex(3);
+                    ImGui::Text("%i", Item.CurrentStock);
+
+                    ImGui::TableSetColumnIndex(4);
+                    ImGui::Text("%.2f", Item.Item.CostPrice);
+
+                    ImGui::TableSetColumnIndex(5);
+                    ImGui::Text("%.2f", Item.Item.DiscountPercent);
+
+                    ImGui::TableSetColumnIndex(6);
+                    ImGui::Text("%.2f", Item.Item.SalesPrice);
+
+                    ImGui::TableSetColumnIndex(7);
+                    ImGui::TextUnformatted(Item.Item.Description.data());
+
+                    ImGui::TableSetColumnIndex(8);
+
+                    if (ImGui::Button("Edit"))
+                    {
+                        UI.Item.Edit = Item.Item;
+                        UI.Item.Section = ItemSections::EditItem;
+                    }
+
+                    ImGui::SameLine();
+
+                    if (ImGui::Button("View Stock"))
+                    {
+                        UI.Item.Edit = Item.Item;
+                        UI.Item.Section = ItemSections::ViewStock;
+                    }
 
                     Idx++;
                 }
@@ -1204,37 +1265,34 @@ namespace NepBill
 
                 // ---- Name ----
                 ImGui::Text("Name");
-                ImGui::NextColumn();
+                ImGui::SameLine(150);
                 ImGui::InputText("##Name", UI.Item.New.Name.data(), UI.Item.New.Name.size());
-                ImGui::NextColumn();
 
                 // ---- Phone ----
                 ImGui::Text("LowStockThresold");
-                ImGui::NextColumn();
+                ImGui::SameLine(150);
                 ImGui::InputInt("##LowStockThresold", (int *)&UI.Item.New.LowStockThresold);
-                ImGui::NextColumn();
 
                 // ---- Phone ----
                 ImGui::Text("CostPrice");
-                ImGui::NextColumn();
+                ImGui::SameLine(150);
                 ImGui::InputDouble("##CostPrice", (double *)&UI.Item.New.CostPrice);
-                ImGui::NextColumn();
                 // ---- Phone ----
-                ImGui::Text("SalesPrice");
-                ImGui::NextColumn();
-                ImGui::InputDouble("##SalesPrice", (double *)&UI.Item.New.SalesPrice);
-                ImGui::NextColumn();
 
                 ImGui::Text("DiscountPercent");
-                ImGui::NextColumn();
+                ImGui::SameLine(150);
                 ImGui::InputDouble("##DiscountPercent", (double *)&UI.Item.New.DiscountPercent);
-                ImGui::NextColumn();
+
+                UI.Item.New.SalesPrice = UI.Item.New.CostPrice * (100 - UI.Item.New.DiscountPercent) / 100;
+                std::string SalesPriceStr = std::to_string(UI.Item.New.SalesPrice) + "  ";
+                ImGui::Text("SalesPrice");
+                ImGui::SameLine(150);
+                ImGui::InputText("##SalesPrice", (char *)SalesPriceStr.data(), SalesPriceStr.size());
 
                 // ---- Name ----
                 ImGui::Text("Description");
-                ImGui::NextColumn();
+                ImGui::SameLine(150);
                 ImGui::InputText("##Description", UI.Item.New.Description.data(), UI.Item.New.Description.size());
-                ImGui::NextColumn();
 
                 static int selectedCountry = 0;
 
@@ -1265,11 +1323,109 @@ namespace NepBill
                         if (isSelected)
                             ImGui::SetItemDefaultFocus();
                     }
+
+                    // Add Searcher able
+
                     ImGui::EndCombo();
+                }
+
+                if (ImGui::Button("Register"))
+                {
+                    Insert(App, UI.Item.New);
+
+                    UI.Item.Section = ItemSections::None;
+                    UI.Item.UpdateList = true;
+                    UI.Item.New = Item();
                 }
 
                 ImGui::End();
 
+                break;
+            }
+            case ItemSections::EditItem:
+            {
+                ImGui::Begin("Edit Item");
+
+                ImGui::Text("Name");
+                ImGui::SameLine(150);
+                ImGui::InputText(
+                    "##Name",
+                    UI.Item.Edit.Name.data(),
+                    UI.Item.Edit.Name.size());
+
+                ImGui::Text("LowStockThreshold");
+                ImGui::SameLine(150);
+                ImGui::InputInt(
+                    "##LowStockThreshold",
+                    (int *)&UI.Item.Edit.LowStockThresold);
+
+                ImGui::Text("CostPrice");
+                ImGui::SameLine(150);
+                ImGui::InputDouble(
+                    "##CostPrice",
+                    &UI.Item.Edit.CostPrice);
+
+                ImGui::Text("DiscountPercent");
+                ImGui::SameLine(150);
+                ImGui::InputDouble(
+                    "##DiscountPercent",
+                    &UI.Item.Edit.DiscountPercent);
+
+                UI.Item.Edit.SalesPrice =
+                    UI.Item.Edit.CostPrice *
+                    (100.0 - UI.Item.Edit.DiscountPercent) /
+                    100.0;
+
+                ImGui::Text("SalesPrice");
+                ImGui::SameLine(150);
+
+                char SalesPriceBuffer[64];
+                snprintf(
+                    SalesPriceBuffer,
+                    sizeof(SalesPriceBuffer),
+                    "%.2f",
+                    UI.Item.Edit.SalesPrice);
+
+                ImGui::InputText(
+                    "##SalesPrice",
+                    SalesPriceBuffer,
+                    sizeof(SalesPriceBuffer),
+                    ImGuiInputTextFlags_ReadOnly);
+
+                ImGui::Text("Description");
+                ImGui::SameLine(150);
+                ImGui::InputText(
+                    "##Description",
+                    UI.Item.Edit.Description.data(),
+                    UI.Item.Edit.Description.size());
+
+                ItemCategoryQuery CategoryQuery;
+                CategoryQuery.UniqueID = UI.Item.Edit.CategoryId;
+                auto Category = GetItemCategories(App, CategoryQuery)[0];
+                std::string CategoryStr = Category.Name.data();
+
+                ImGui::Text("Category");
+                ImGui::SameLine(150);
+                ImGui::InputText(
+                    "##Category",
+                    Category.Name.data(),
+                    Category.Name.size(),
+                    ImGuiInputTextFlags_ReadOnly);
+
+                if (ImGui::Button("Edit"))
+                {
+                    UpdateItem(App, UI.Item.Edit.Id, UI.Item.Edit);
+
+                    UI.Item.Edit = Item();
+                    UI.Item.UpdateList = true;
+                    UI.Item.Section = ItemSections::None;
+                }
+
+                ImGui::End();
+                break;
+            }
+            case ItemSections::ViewStock:
+            {
                 break;
             }
             default:
@@ -1339,9 +1495,8 @@ namespace NepBill
 
                 // ---- Name ----
                 ImGui::Text("Name");
-                ImGui::NextColumn();
+                ImGui::SameLine(150);
                 ImGui::InputText("##Name", UI.Item.Category.New.Name.data(), UI.Item.Category.New.Name.size());
-                ImGui::NextColumn();
 
                 if (ImGui::Button("Register"))
                 {
@@ -1364,6 +1519,141 @@ namespace NepBill
             ImGui::End();
 
             return true;
+        }
+
+        void UISuppliersSection(UIApp &UI, App &App)
+        {
+            ImGui::SeparatorText("Suppliers");
+
+            if (UI.Supplier.UpdateList)
+            {
+                SupplierQuery Query;
+
+                UI.Supplier.show = GetSuppliers(App, Query);
+
+                UI.Supplier.UpdateList = false;
+            }
+
+            if (UI.LastSection != DashboardSection::Suppliers)
+            {
+                UI.Supplier.Section = SupplierSections::None;
+            }
+
+            if(UI.Supplier.Section != UI.Supplier.LastSection)
+            {
+                UI.Supplier.ShowWindow = true;
+                UI.Supplier.LastSection = UI.Supplier.Section;
+            }
+
+            if (ImGui::Button("Register Supplier"))
+            {
+                UI.Supplier.Section = SupplierSections::RegisterSupplier;
+            }
+
+            ImGui::Spacing();
+
+            constexpr ImGuiTableFlags Flags =
+                ImGuiTableFlags_Borders |
+                ImGuiTableFlags_RowBg |
+                ImGuiTableFlags_Resizable |
+                ImGuiTableFlags_SizingStretchProp |
+                ImGuiTableFlags_ScrollY;
+
+            if (ImGui::BeginTable("SuppliersTable", 5, Flags, ImVec2(0.0f, 450.0f)))
+            {
+                ImGui::TableSetupColumn("Name");
+                ImGui::TableSetupColumn("Phone");
+                ImGui::TableSetupColumn("PAN");
+                ImGui::TableSetupColumn("Opening Balance");
+                ImGui::TableSetupColumn("Actions");
+
+                ImGui::TableHeadersRow();
+
+                for (const auto &Supplier : UI.Supplier.show)
+                {
+                    ImGui::TableNextRow();
+
+                    ImGui::TableSetColumnIndex(0);
+                    ImGui::TextUnformatted(
+                        Supplier.Name.data());
+
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::TextUnformatted(
+                        Supplier.PhoneNumber.data());
+
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::TextUnformatted(
+                        Supplier.PanNumber.data());
+
+                    ImGui::TableSetColumnIndex(3);
+                    ImGui::Text(
+                        "%.2f",
+                        Supplier.OpeningBalance);
+
+                    ImGui::TableSetColumnIndex(4);
+
+                    ImGui::PushID(Supplier.Id);
+
+                    if (ImGui::Button("Edit"))
+                    {
+                        UI.Supplier.Section =
+                            SupplierSections::EditSupplier;
+
+                        UI.Supplier.Edit =
+                            Supplier;
+                    }
+
+                    ImGui::PopID();
+                }
+
+                ImGui::EndTable();
+            }
+
+            switch (UI.Supplier.Section)
+            {
+            case SupplierSections::RegisterSupplier:
+            {
+                if (UI.Supplier.ShowWindow == false)
+                    break;
+
+                ImGui::Begin("Register Supplier", &UI.Supplier.ShowWindow);
+
+                // ---- Name ----
+                ImGui::Text("Name");
+                ImGui::SameLine(150);
+                ImGui::InputText("##Name", UI.Supplier.New.Name.data(), UI.Supplier.New.Name.size());
+
+                ImGui::Text("PhoneNumber");
+                ImGui::SameLine(150);
+                ImGui::InputText("##PhoneNumber", UI.Supplier.New.PhoneNumber.data(), UI.Supplier.New.PhoneNumber.size());
+
+                ImGui::Text("PanNumber");
+                ImGui::SameLine(150);
+                ImGui::InputText("##PanNumber", UI.Supplier.New.PanNumber.data(), UI.Supplier.New.PanNumber.size());
+
+                if(UI.Supplier.ShowWindow == false)
+                {
+                    UI.Supplier.New = Suppliers();
+                    UI.Supplier.Section = SupplierSections::None;
+                    UI.Supplier.UpdateList = true;
+                }
+
+                if (ImGui::Button("Register"))
+                {
+                    Insert(App, UI.Supplier.New);
+
+                    UI.Supplier.New = Suppliers();
+                    UI.Supplier.Section = SupplierSections::None;
+                    UI.Supplier.UpdateList = true;
+                }
+
+                ImGui::End();
+
+                break;
+            }
+            default:
+                break;
+            }
         }
 
     } // namespace ClientCpp

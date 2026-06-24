@@ -204,6 +204,20 @@ namespace NepBill
             Query.bind(Index++, Object.Country.data());
         }
 
+        inline void Bind(SQLite::Statement &Query,
+                         const SuppliersItemTable &Object)
+        {
+            BindField(
+                Query,
+                1,
+                Object.SupplierID);
+
+            BindField(
+                Query,
+                2,
+                Object.ItemID);
+        }
+
         inline void Bind(SQLite::Statement &Query, const Item &Object)
         {
             int idx = 1;
@@ -365,6 +379,31 @@ namespace NepBill
                 Object.LineTotal);
         }
 
+        inline void Bind(SQLite::Statement &Query,
+                         Suppliers &Supplier)
+        {
+            BindField(
+                Query,
+                1,
+                Supplier.UnqiueId);
+
+            Query.bind(
+                2,
+                Supplier.Name.data());
+
+            Query.bind(
+                3,
+                Supplier.PhoneNumber.data());
+
+            Query.bind(
+                4,
+                Supplier.PanNumber.data());
+
+            Query.bind(
+                5,
+                Supplier.OpeningBalance);
+        }
+
         template <typename T>
         void Insert(App &App, const T &Object)
         {
@@ -391,7 +430,13 @@ namespace NepBill
         std::vector<ItemCategory> GetItemCategories(App &App, const ItemCategoryQuery &QueryInfo);
         std::vector<Item> GetItems(App &App, const ItemQuery &QueryInfo);
         std::vector<RoomInfo> GetRooms(App &App, const RoomQuery &QueryInfo);
+        std::vector<ItemStockLedger> GetItemStockLedgers(App &App, const ItemStockLedgerQuery &QueryInfo);
+        std::vector<SuppliersItemTable> GetSuppliersItems(App &App, const SuppliersItemQuery &QueryInfo);
+        std::vector<Suppliers> GetSuppliers(App &App, const SupplierQuery &QueryInfo);
 
+        void UpdateSupplier(App &App,
+                            uint32_t SupplierId,
+                            const Suppliers &UpdateInfo);
         void UpdateRoomInfo(App &App,
                             uint32_t ChangeRoomID,
                             const RoomInfo &UpdateInfo);
@@ -401,6 +446,10 @@ namespace NepBill
         void UpdateRoomFacilityInfo(App &App,
                                     uint32_t ChangeFacilityID,
                                     const RoomFacilityInfo &UpdateInfo);
+        void UpdateItem(
+            App &App,
+            uint32_t ChangeItemID,
+            const Item &UpdateInfo);
     } // namespace Client
 } // namespace NepBill
 

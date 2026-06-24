@@ -368,6 +368,48 @@ namespace NepBill
             Query.exec();
         }
 
+        void UpdateSupplier(App &App,
+                            uint32_t SupplierId,
+                            const Suppliers &UpdateInfo)
+        {
+            SQLite::Statement Query(
+                *App.Database,
+                "UPDATE Suppliers SET "
+                "UnqiueId = ?, "
+                "Name = ?, "
+                "PhoneNumber = ?, "
+                "PanNumber = ?, "
+                "OpeningBalance = ? "
+                "WHERE Id = ?");
+
+            BindField(
+                Query,
+                1,
+                UpdateInfo.UnqiueId);
+
+            Query.bind(
+                2,
+                UpdateInfo.Name.data());
+
+            Query.bind(
+                3,
+                UpdateInfo.PhoneNumber.data());
+
+            Query.bind(
+                4,
+                UpdateInfo.PanNumber.data());
+
+            Query.bind(
+                5,
+                UpdateInfo.OpeningBalance);
+
+            Query.bind(
+                6,
+                static_cast<int>(SupplierId));
+
+            Query.exec();
+        }
+
         std::vector<BookingInfo> GetBookings(App &App, const BookingQuery &Q)
         {
             std::ostringstream Sql;
@@ -1638,7 +1680,7 @@ namespace NepBill
                     Statement.getColumn("Id").getUInt();
 
                 std::memcpy(
-                    (void*)Category.UniqueID.Data(),
+                    (void *)Category.UniqueID.Data(),
                     Statement.getColumn("UniqueID").getBlob(),
                     16);
 
@@ -1776,12 +1818,12 @@ namespace NepBill
                     Statement.getColumn("Id").getUInt();
 
                 std::memcpy(
-                    (void*)Entry.CategoryId.Data(),
+                    (void *)Entry.CategoryId.Data(),
                     Statement.getColumn("CategoryId").getBlob(),
                     16);
 
                 std::memcpy(
-                    (void*)Entry.UniqueID.Data(),
+                    (void *)Entry.UniqueID.Data(),
                     Statement.getColumn("UniqueID").getBlob(),
                     16);
 
@@ -1814,6 +1856,385 @@ namespace NepBill
                         .getString()
                         .c_str(),
                     Entry.Description.size());
+
+                Results.emplace_back(
+                    std::move(Entry));
+            }
+
+            return Results;
+        }
+
+        std::vector<ItemStockLedger> GetItemStockLedgers(
+            App &App,
+            const ItemStockLedgerQuery &QueryInfo)
+        {
+            std::ostringstream Sql;
+
+            Sql << "SELECT * FROM ItemStockLedger WHERE 1=1 ";
+
+            if (QueryInfo.ItemID)
+                Sql << "AND ItemId = ? ";
+
+            if (QueryInfo.MinStockDelta)
+                Sql << "AND StockDelta >= ? ";
+
+            if (QueryInfo.MaxStockDelta)
+                Sql << "AND StockDelta <= ? ";
+
+            Sql << "ORDER BY CreatedAt DESC ";
+
+            if (QueryInfo.Page.Limit)
+                Sql << "LIMIT ? OFFSET ?";
+
+            SQLite::Statement Statement(
+                *App.Database,
+                Sql.str());
+
+            int BindIndex = 1;
+
+            if (QueryInfo.ItemID)
+                BindField(
+                    Statement,
+                    BindIndex++,
+                    *QueryInfo.ItemID);
+
+            if (QueryInfo.MinStockDelta)
+                Statement.bind(
+                    BindIndex++,
+                    *QueryInfo.MinStockDelta);
+
+            if (QueryInfo.MaxStockDelta)
+                Statement.bind(
+                    BindIndex++,
+                    *QueryInfo.MaxStockDelta);
+
+            if (QueryInfo.Page.Limit)
+            {
+                Statement.bind(
+                    BindIndex++,
+                    static_cast<int>(*QueryInfo.Page.Limit));
+
+                Statement.bind(
+                    BindIndex++,
+                    static_cast<int>(QueryInfo.Page.Offset));
+            }
+
+            std::vector<ItemStockLedger> Results;
+
+            while (Statement.executeStep())
+            {
+                ItemStockLedger Ledger;
+
+                Ledger.Id =
+                    Statement.getColumn("Id").getUInt();
+
+                std::memcpy(
+                    (void *)Ledger.ItemId.Data(),
+                    Statement.getColumn("ItemId").getBlob(),
+                    16);
+
+                Ledger.StockDelta =
+                    Statement.getColumn("StockDelta").getInt();
+
+                {
+                    time_t T =
+                        static_cast<time_t>(
+                            Statement.getColumn("CreatedAt").getInt64());
+
+                    if (T == -1)
+                    {
+                        Ledger.CreatedAt = {};
+                    }
+                    else
+                    {
+                        Ledger.CreatedAt =
+                            *std::localtime(&T);
+                    }
+                }
+
+                Results.emplace_back(
+                    std::move(Ledger));
+            }
+
+            return Results;
+        }
+
+        void UpdateItem(
+            App &App,
+            uint32_t ChangeItemID,
+            const Item &UpdateInfo)
+        {
+            SQLite::Statement Query(
+                *App.Database,
+                "UPDATE Item "
+                "SET "
+                "CategoryId = ?, "
+                "UniqueID = ?, "
+                "Name = ?, "
+                "LowStockThresold = ?, "
+                "CostPrice = ?, "
+                "SalesPrice = ?, "
+                "DiscountPercent = ?, "
+                "Description = ? "
+                "WHERE Id = ?");
+
+            int BindIndex = 1;
+
+            BindField(
+                Query,
+                BindIndex++,
+                UpdateInfo.CategoryId);
+
+            BindField(
+                Query,
+                BindIndex++,
+                UpdateInfo.UniqueID);
+
+            Query.bind(
+                BindIndex++,
+                UpdateInfo.Name.data());
+
+            Query.bind(
+                BindIndex++,
+                static_cast<int>(UpdateInfo.LowStockThresold));
+
+            Query.bind(
+                BindIndex++,
+                UpdateInfo.CostPrice);
+
+            Query.bind(
+                BindIndex++,
+                UpdateInfo.SalesPrice);
+
+            Query.bind(
+                BindIndex++,
+                UpdateInfo.DiscountPercent);
+
+            Query.bind(
+                BindIndex++,
+                UpdateInfo.Description.data());
+
+            Query.bind(
+                BindIndex++,
+                static_cast<int>(ChangeItemID));
+
+            Query.exec();
+        }
+
+        std::vector<SuppliersItemTable>
+        GetSuppliersItems(
+            App &App,
+            const SuppliersItemQuery &QueryInfo)
+        {
+            std::ostringstream Sql;
+
+            Sql << "SELECT * "
+                   "FROM SuppliersItemTable "
+                   "WHERE 1=1 ";
+
+            if (QueryInfo.Id)
+                Sql << "AND Id = ? ";
+
+            if (QueryInfo.SupplierID)
+                Sql << "AND SupplierID = ? ";
+
+            if (QueryInfo.ItemID)
+                Sql << "AND ItemID = ? ";
+
+            if (QueryInfo.Page.Limit.has_value())
+                Sql << "LIMIT ? OFFSET ?";
+
+            SQLite::Statement Statement(
+                *App.Database,
+                Sql.str());
+
+            int BindIndex = 1;
+
+            if (QueryInfo.Id)
+            {
+                Statement.bind(
+                    BindIndex++,
+                    static_cast<int>(*QueryInfo.Id));
+            }
+
+            if (QueryInfo.SupplierID)
+            {
+                BindField(
+                    Statement,
+                    BindIndex++,
+                    *QueryInfo.SupplierID);
+            }
+
+            if (QueryInfo.ItemID)
+            {
+                BindField(
+                    Statement,
+                    BindIndex++,
+                    *QueryInfo.ItemID);
+            }
+
+            if (QueryInfo.Page.Limit.has_value())
+            {
+                Statement.bind(
+                    BindIndex++,
+                    static_cast<int>(*QueryInfo.Page.Limit));
+
+                Statement.bind(
+                    BindIndex++,
+                    static_cast<int>(QueryInfo.Page.Offset));
+            }
+
+            std::vector<SuppliersItemTable> Results;
+
+            while (Statement.executeStep())
+            {
+                SuppliersItemTable Entry;
+
+                Entry.Id =
+                    Statement.getColumn("Id")
+                        .getUInt();
+
+                std::memcpy(
+                    (void *)Entry.SupplierID.Data(),
+                    Statement.getColumn("SupplierID")
+                        .getBlob(),
+                    16);
+
+                std::memcpy(
+                    (void *)Entry.ItemID.Data(),
+                    Statement.getColumn("ItemID")
+                        .getBlob(),
+                    16);
+
+                Results.emplace_back(
+                    std::move(Entry));
+            }
+
+            return Results;
+        }
+
+        std::vector<Suppliers>
+        GetSuppliers(
+            App &App,
+            const SupplierQuery &QueryInfo)
+        {
+            std::ostringstream Sql;
+
+            Sql << "SELECT * "
+                   "FROM Suppliers "
+                   "WHERE 1=1 ";
+
+            if (QueryInfo.Id)
+                Sql << "AND Id = ? ";
+
+            if (QueryInfo.UniqueId)
+                Sql << "AND UnqiueId = ? ";
+
+            if (QueryInfo.NameContains)
+                Sql << "AND Name LIKE ? ";
+
+            if (QueryInfo.PhoneContains)
+                Sql << "AND PhoneNumber LIKE ? ";
+
+            if (QueryInfo.PanContains)
+                Sql << "AND PanNumber LIKE ? ";
+
+            if (QueryInfo.Page.Limit)
+                Sql << "LIMIT ? OFFSET ?";
+
+            SQLite::Statement Statement(
+                *App.Database,
+                Sql.str());
+
+            int BindIndex = 1;
+
+            if (QueryInfo.Id)
+            {
+                Statement.bind(
+                    BindIndex++,
+                    static_cast<int>(*QueryInfo.Id));
+            }
+
+            if (QueryInfo.UniqueId)
+            {
+                BindField(
+                    Statement,
+                    BindIndex++,
+                    *QueryInfo.UniqueId);
+            }
+
+            if (QueryInfo.NameContains)
+            {
+                Statement.bind(
+                    BindIndex++,
+                    "%" + *QueryInfo.NameContains + "%");
+            }
+
+            if (QueryInfo.PhoneContains)
+            {
+                Statement.bind(
+                    BindIndex++,
+                    "%" + *QueryInfo.PhoneContains + "%");
+            }
+
+            if (QueryInfo.PanContains)
+            {
+                Statement.bind(
+                    BindIndex++,
+                    "%" + *QueryInfo.PanContains + "%");
+            }
+
+            if (QueryInfo.Page.Limit)
+            {
+                Statement.bind(
+                    BindIndex++,
+                    static_cast<int>(*QueryInfo.Page.Limit));
+
+                Statement.bind(
+                    BindIndex++,
+                    static_cast<int>(QueryInfo.Page.Offset));
+            }
+
+            std::vector<Suppliers> Results;
+
+            while (Statement.executeStep())
+            {
+                Suppliers Entry;
+
+                Entry.Id =
+                    Statement.getColumn("Id")
+                        .getUInt();
+
+                std::memcpy(
+                    (void *)Entry.UnqiueId.Data(),
+                    Statement.getColumn("UnqiueId")
+                        .getBlob(),
+                    16);
+
+                std::strncpy(
+                    Entry.Name.data(),
+                    Statement.getColumn("Name")
+                        .getString()
+                        .c_str(),
+                    Entry.Name.size());
+
+                std::strncpy(
+                    Entry.PhoneNumber.data(),
+                    Statement.getColumn("PhoneNumber")
+                        .getString()
+                        .c_str(),
+                    Entry.PhoneNumber.size());
+
+                std::strncpy(
+                    Entry.PanNumber.data(),
+                    Statement.getColumn("PanNumber")
+                        .getString()
+                        .c_str(),
+                    Entry.PanNumber.size());
+
+                Entry.OpeningBalance =
+                    Statement.getColumn("OpeningBalance")
+                        .getDouble();
 
                 Results.emplace_back(
                     std::move(Entry));

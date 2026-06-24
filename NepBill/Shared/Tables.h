@@ -28,10 +28,10 @@ namespace NepBill
         uint32_t Id = 0;
         std::array<char, kNameLength> Name = {0};
         std::array<char, kVatNumberLength> VatNumber = {0};
-        std::array<char, kAddressLength> Address;
-        std::array<char, kPanNumberLength> PanNumber;
-        std::array<char, kPhoneNumberLength> PhoneNumber;
-        std::array<char, kCountryNameLength> Country;
+        std::array<char, kAddressLength> Address = {0};
+        std::array<char, kPanNumberLength> PanNumber = {0};
+        std::array<char, kPhoneNumberLength> PhoneNumber = {0};
+        std::array<char, kCountryNameLength> Country = {0};
         UUID UniqueID;
 
         static const char *GetCreateQuerySqlite();
@@ -186,7 +186,7 @@ namespace NepBill
         // Futurre Add like rrrreceiveer u know esewa id or such stuff idk
         PaymentTicketType PaidType;
         struct tm CreatedAt;
-        std::array<char, kPaymentTicketNotesLength> Note;
+        std::array<char, kPaymentTicketNotesLength> Note = {0};
 
         static const char *GetCreateQuerySqlite();
         static const char *GetCreateQueryPostgreSQL();
@@ -202,7 +202,7 @@ namespace NepBill
     {
         uint32_t Id = 0;
         UUID UniqueID;
-        std::array<char, kNameLength> Name;
+        std::array<char, kNameLength> Name = {0};
 
         static const char *GetCreateQuerySqlite();
         static const char *GetCreateQueryPostgreSQL();
@@ -217,12 +217,12 @@ namespace NepBill
         uint32_t Id = 0;
         UUID CategoryId;
         UUID UniqueID;
-        std::array<char, ItemNameLength> Name;
+        std::array<char, ItemNameLength> Name = {0};
         uint32_t LowStockThresold = 0;
         double CostPrice = 0;
         double SalesPrice = 0;
         double DiscountPercent = 0;
-        std::array<char, ItemDescriptionLength> Description;
+        std::array<char, ItemDescriptionLength> Description = {0};
 
         static const char *GetCreateQuerySqlite();
         static const char *GetCreateQueryPostgreSQL();
@@ -253,10 +253,25 @@ namespace NepBill
     {
         uint32_t Id = 0;
         UUID UnqiueId;
-        std::array<char, kNameLength> Name;
-        std::array<char, kPhoneNumberLength> PhoneNumber;
-        std::array<char, kPanNumberLength> PanNumber;
+        std::array<char, kNameLength> Name = {0};
+        std::array<char, kPhoneNumberLength> PhoneNumber = {0};
+        std::array<char, kPanNumberLength> PanNumber = {0};
         double OpeningBalance;
+
+        static const char *GetCreateQuerySqlite();
+        static const char *GetCreateQueryPostgreSQL();
+        static const char *GetInsertQuerySqlite();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    // relates a specific supplier to the item they supply
+    struct SuppliersItemTable
+    {
+        uint32_t Id = 0;
+        UUID SupplierID;
+        UUID ItemID;
 
         static const char *GetCreateQuerySqlite();
         static const char *GetCreateQueryPostgreSQL();
@@ -287,10 +302,10 @@ namespace NepBill
     struct RoomInfo
     {
         uint32_t Id = 0;
-        std::array<char, kNameLength> Name;
+        std::array<char, kNameLength> Name = {0};
         double BasePrice = 0.0f;
         uint32_t BedCount = 0;
-        std::array<char, RoomDescriptionLength> Description;
+        std::array<char, RoomDescriptionLength> Description = {0};
         UUID UniqueID;
         RoomStates State;
 
@@ -308,7 +323,7 @@ namespace NepBill
         uint32_t Id = 0;
         UUID UniqueID;
         UUID RoomID;
-        std::array<char, RoomFacilityLength> FacilityInfo;
+        std::array<char, RoomFacilityLength> FacilityInfo = {0};
         double FacilityPrice = 0.0f;
 
         static const char *GetCreateQuerySqlite();
@@ -325,9 +340,9 @@ namespace NepBill
     {
         uint32_t Id = 0;
         UUID UniqueID;
-        std::array<char, kNameLength> Name;
-        std::array<char, kPhoneNumberLength> PhoneNumber;
-        std::array<char, kCountryNameLength> Country;
+        std::array<char, kNameLength> Name = {0};
+        std::array<char, kPhoneNumberLength> PhoneNumber = {0};
+        std::array<char, kCountryNameLength> Country = {0};
 
         static const char *GetCreateQuerySqlite();
         static const char *GetCreateQueryPostgreSQL();
@@ -396,9 +411,9 @@ namespace NepBill
     {
         uint32_t Id = 0;
         UUID UnqiueID;
-        std::array<char, kNameLength> Name;
-        std::array<char, kPhoneNumberLength> PhoneNumber;
-        std::array<char, kPhoneNumberLength> EmergencyPhoneNumber;
+        std::array<char, kNameLength> Name = {0};
+        std::array<char, kPhoneNumberLength> PhoneNumber = {0};
+        std::array<char, kPhoneNumberLength> EmergencyPhoneNumber = {0};
         bool IsActive = true;
         double SalaryPerDay;
 
@@ -434,7 +449,7 @@ namespace NepBill
         UUID StaffID;
         double Amount = 0.0;
         struct tm Date;
-        std::array<char, SalaryPaymentDescriptionLength> Description;
+        std::array<char, SalaryPaymentDescriptionLength> Description = {0};
 
         static const char *GetCreateQuerySqlite();
         static const char *GetCreateQueryPostgreSQL();

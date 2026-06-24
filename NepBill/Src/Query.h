@@ -254,6 +254,38 @@ namespace NepBill
 
         Pagination Page;
     };
+
+    struct ItemStockLedgerQuery
+    {
+        std::optional<UUID> ItemID;
+
+        std::optional<int32_t> MinStockDelta;
+        std::optional<int32_t> MaxStockDelta;
+
+        Pagination Page;
+    };
+
+    struct SuppliersItemQuery
+    {
+        std::optional<uint32_t> Id;
+
+        std::optional<UUID> SupplierID;
+        std::optional<UUID> ItemID;
+
+        Pagination Page;
+    };
+
+    struct SupplierQuery
+    {
+        std::optional<uint32_t> Id;
+        std::optional<UUID> UniqueId;
+
+        std::optional<std::string> NameContains;
+        std::optional<std::string> PhoneContains;
+        std::optional<std::string> PanContains;
+
+        Pagination Page;
+    };
 } // namespace NepBil
 
 #endif

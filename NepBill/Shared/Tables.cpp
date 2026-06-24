@@ -578,6 +578,51 @@ namespace NepBill
 
 #pragma endregion
 
+#pragma region SuppliersItemsTable
+
+    const char *SuppliersItemTable::GetCreateQuerySqlite()
+    {
+        return "CREATE TABLE IF NOT EXISTS SuppliersItemTable ("
+               "Id INTEGER PRIMARY KEY AUTOINCREMENT, "
+               "SupplierID BLOB, "
+               "ItemID BLOB"
+               ")";
+    }
+
+    const char *SuppliersItemTable::GetCreateQueryPostgreSQL()
+    {
+        return "CREATE TABLE IF NOT EXISTS SuppliersItemTable ("
+               "Id SERIAL PRIMARY KEY, "
+               "SupplierID UUID, "
+               "ItemID UUID"
+               ")";
+    }
+
+    const char *SuppliersItemTable::GetInsertQuerySqlite()
+    {
+        return "INSERT INTO SuppliersItemTable "
+               "(SupplierID, ItemID) "
+               "VALUES (?, ?)";
+    }
+
+    const char *SuppliersItemTable::GetCountQuery()
+    {
+        return "SELECT COUNT(*) FROM SuppliersItemTable";
+    }
+
+    const char *SuppliersItemTable::GetByIdQuery()
+    {
+        return "SELECT Id, SupplierID, ItemID "
+               "FROM SuppliersItemTable WHERE Id = ?";
+    }
+
+    const char *SuppliersItemTable::GetName()
+    {
+        return "SuppliersItemTable";
+    }
+
+#pragma endregion
+
 #pragma region RoomInfo
 
     const char *RoomInfo::GetCreateQuerySqlite()
