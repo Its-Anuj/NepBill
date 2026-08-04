@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Website</title>
+
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="sideMenu" class="side-menu">
+      <button class="close-btn" onclick="closeMenu()">×</button>
+
+      <div class="menu-section">
+          <h3>General</h3>
+
+          <a href="/">Home</a>
+
+          <a href="#" onclick="goToDashboard(event)">Dashboard</a>
+
+          <a href="/Common/Contact.html">Contact</a>
+      </div>
+
+      <div class="menu-section">
+        <h3>Hotel</h3>
+
+        <a href="#">Rooms</a>
+        <a href="#">Bookings</a>
+        <a href="#">Guests</a>
+      </div>
+
+      <div class="menu-section">
+        <h3>Billing</h3>
+
+        <a href="#">Invoices</a>
+        <a href="#">Payments</a>
+      </div>
+    </div>
+
+    <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
+
+    <header class="header">
+      <div class="header-left">
+        <a href="/" class="logo-link">
+          <img src="/logo.jpg" alt="NepBill" class="logo" />
+        </a>
+
+        <button class="menu-button" onclick="openMenu()">☰</button>
+      </div>
+
+      <div class="header-right">
+        <!-- Logged out -->
+        <a href="/login.html" class="login-btn"> Login </a>
+
+        <a href="/Common/Contact.html" class="signup-btn"> Contact Us </a>
+
+      </div>
+    </header>
+
+    <main>
+      <h1 class="title">Hello from NepBill!</h1>
+
+      <p class="subtitle">If you can see this purple text, CSS is working.</p>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div>
+          <h3>NepBill</h3>
+          <p>Modern billing and business management solution.</p>
+        </div>
+
+        <div>
+          <h4>Contact</h4>
+          <p>Help Line: 98563481705</p>
+          <p>Putalisadak, Kathmandu</p>
+        </div>
+
+        <div>
+          <h4>Links</h4>
+          <a href="/">Home</a><br />
+          <a href="/login.html">Login</a><br />
+          <a href="/Common/Contact.html">Contact Us</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">© 2026 NepBill. All Rights Reserved.</div>
+    </footer>
+  </body>
+  <script src="index.js" defer></script>
+</html>

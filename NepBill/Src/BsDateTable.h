@@ -1,4 +1,7 @@
+#ifndef NEPBILL_BS_DATE_TABLE_H
+#define NEPBILL_BS_DATE_TABLE_H
 // Generated BS month-days table
+
 constexpr int MinBsYear = 1970;
 constexpr int MaxBsYear = 2100;
 static const int BsMonthDaysTable[131][12] = {
@@ -134,3 +137,5 @@ static const int BsMonthDaysTable[131][12] = {
     {31, 31, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31},
     {30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31},
 };
+
+#endif

@@ -10,6 +10,7 @@ namespace NepBill
 {
     static constexpr uint32_t kNameLength = 64;
     static constexpr uint32_t kPhoneNumberLength = 16;
+    static constexpr uint32_t kEmailLength = 128;
     static constexpr uint32_t kPanNumberLength = 32;
     static constexpr uint32_t kAddressLength = 64;
     static constexpr uint32_t kVatNumberLength = 64;
@@ -20,23 +21,220 @@ namespace NepBill
     static constexpr uint32_t RoomDescriptionLength = 256;
     static constexpr uint32_t SalaryPaymentDescriptionLength = 256;
     static constexpr uint32_t kCountryNameLength = 128;
+    static constexpr uint32_t kPasswordHashLength = 128;
+    static constexpr uint32_t kContactMessageLength = 2048;
+
+    enum class ContactSubjectType
+    {
+        RegisterAccount,
+        Issue,
+        Help,
+        Billing,
+        Other
+    };
+
+    enum class ContactStates
+    {
+        None,
+        Processing,
+        Handled,
+        Failed
+    };
+
+    enum class AccountRoles : uint32_t
+    {
+        None,
+        BusinessOwner,
+        BusinessManager,
+        BusinessReceptionist,
+        BusinessAccountant,
+        BusinessInventorManager,
+        BusinessStaff,
+        BusinessKitchen,
+        Admin,
+    };
+
+    struct ContactFormInfo
+    {
+        uint32_t Id = 0;
+        UUID UniqueId;
+        std::array<char, kPhoneNumberLength> PhoneNumber = {0}; // owner's phone, for contact/billing
+        std::array<char, kEmailLength> Email = {0};             // owner's phone, for contact/billing
+        std::array<char, kContactMessageLength> Message = {0};  // owner's phone, for contact/billing
+        ContactSubjectType Type;
+        struct tm CreatedAt;
+        ContactStates State = ContactStates::None;
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    struct ContactFormStateMetaInfo
+    {
+        uint32_t Id = 0;
+        UUID FormID;
+        std::array<char, kContactMessageLength> StateMessage = {0}; // owner's phone, for contact/billing
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    struct RegisterAccountContactFormInfo
+    {
+        uint32_t Id = 0;
+        UUID ContactID;
+
+        std::array<char, kNameLength> Name = {0};
+        std::array<char, kPhoneNumberLength> PrimaryPhoneNumber = {0}; // owner's phone, for contact/billing
+        std::array<char, kVatNumberLength> VatNumber = {0};
+        std::array<char, kPanNumberLength> PanNumber = {0};
+        std::array<char, kCountryNameLength> Country = {0};
+        std::array<char, kAddressLength> Address = {0};
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    struct AccountRoleInfo
+    {
+        uint32_t Id = 0;
+        UUID AccountID;
+        AccountRoles Role = AccountRoles::None;
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    enum BillingUsage : uint32_t
+    {
+        Hotel = 1,
+        Restaurant = 2
+    };
 
     // ---- Hotel Info ----
 
-    struct HotelInfo
+    struct Business
     {
         uint32_t Id = 0;
+        UUID UniqueId;
         std::array<char, kNameLength> Name = {0};
+        std::array<char, kPhoneNumberLength> PrimaryPhoneNumber = {0}; // owner's phone, for contact/billing
         std::array<char, kVatNumberLength> VatNumber = {0};
-        std::array<char, kAddressLength> Address = {0};
         std::array<char, kPanNumberLength> PanNumber = {0};
-        std::array<char, kPhoneNumberLength> PhoneNumber = {0};
         std::array<char, kCountryNameLength> Country = {0};
-        UUID UniqueID;
+        std::array<char, kAddressLength> Address = {0};
+        UUID ParentID = UUID::InvalidUUID();
+        struct tm CreatedAt;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    enum class BusinessLoginRole : uint32_t
+    {
+        Owner,
+        Manager,
+        Staff
+    };
+
+    enum class ServiceType : uint32_t
+    {
+        Hotel = 1,
+        Restaurant = 2,
+        Hostel = 4
+    };
+
+    struct BusinessSubscription
+    {
+        uint32_t Id = 0;
+        UUID UnqiueId;
+        UUID BusinessID;
+        uint32_t Service = 0; // Hotel, Restaurant, Hostel...
+        struct tm StartedAt;
+        struct tm ExpiresAt;
+        bool IsActive = true;
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    // This will function as a businesslogin history table too so to store from where, at what time, who logined to which
+    // account for security
+    struct BusinessLogin
+    {
+        uint32_t Id = 0;
+        UUID UnqiueId;
+        UUID BusinessID;
+        std::array<char, kPhoneNumberLength> PhoneNumber = {0}; // login credential
+        std::array<char, kPasswordHashLength> PasswordHash = {0};
+        BusinessLoginRole Role; // Owner, Manager, Staff
+        bool IsActive = true;
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    struct HotelBusiness
+    {
+        uint32_t Id = 0;
+        UUID UnqiueId;
+        UUID BusinessID;
+        std::array<char, kNameLength> Name = {0};
+        std::array<char, kAddressLength> Address = {0};
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    struct HostelBusiness
+    {
+        uint32_t Id = 0;
+        UUID UnqiueId;
+        UUID BusinessID;
+        std::array<char, kNameLength> Name = {0};
+        std::array<char, kAddressLength> Address = {0};
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    struct RestaurantBusiness
+    {
+        uint32_t Id = 0;
+        UUID UnqiueId;
+        UUID BusinessID;
+        std::array<char, kNameLength> Name = {0};
+        std::array<char, kAddressLength> Address = {0};
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -64,6 +262,12 @@ namespace NepBill
         Supplier
     };
 
+    struct FinancialPaymentReceiptientInfo
+    {
+        FinancialPaymentReceipientType Type;
+        ServiceType ServiceType;
+    };
+
     static constexpr const char *ReceipientTypeStr[] = {
         "Guest",
         "OurBusiness",
@@ -71,7 +275,7 @@ namespace NepBill
         "Supplier"};
 
     // Single invoice can have multiple tickets
-    struct Invoice
+    struct ItemInvoice
     {
         uint32_t Id = 0;
         UUID SenderId;
@@ -80,8 +284,8 @@ namespace NepBill
         InvoiceStates State;
         double VatPercent = 0;
         double LineTotal = 0;
-        FinancialPaymentReceipientType SenderType;
-        FinancialPaymentReceipientType RecieverType;
+        FinancialPaymentReceiptientInfo SenderType;
+        FinancialPaymentReceiptientInfo RecieverType;
 
         struct tm CreatedAt;
         // Date specifing the last time a payment ticket was opened for this invoice
@@ -89,16 +293,15 @@ namespace NepBill
         // Closed date on either dropped or fully paid condition
         struct tm ClosedAt;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
     };
 
     // One invoie can be related to multiple item purchases
-    struct InvoiceLine
+    struct ItemInvoiceLine
     {
         uint32_t Id = 0;
         UUID InvoiceId;
@@ -111,9 +314,8 @@ namespace NepBill
         double UnitDiscountPercet;
         double LineTotal;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -124,6 +326,7 @@ namespace NepBill
     {
         uint32_t Id = 0;
         UUID GuestId;
+        UUID HotelBusinessID;
         UUID UniqueID;
         InvoiceStates State;
         double VatPercent = 0;
@@ -135,9 +338,8 @@ namespace NepBill
         // Closed date on either dropped or fully paid condition
         struct tm ClosedAt;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -153,9 +355,8 @@ namespace NepBill
         double Count;
         double LineTotal;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -172,15 +373,15 @@ namespace NepBill
     enum class InvoiceTargetType : uint32_t
     {
         ItemInvoice,
-        BookingInvoice
+        BookingInvoice,
     };
 
     struct PaymentTicket
     {
         uint32_t Id = 0;
         double PaidAmount = 0;
-        FinancialPaymentReceipientType Sender;
-        FinancialPaymentReceipientType Receiver;
+        FinancialPaymentReceiptientInfo SenderType;
+        FinancialPaymentReceiptientInfo RecieverType;
         UUID InvoiceID;
         UUID UniqueID;
         // Futurre Add like rrrreceiveer u know esewa id or such stuff idk
@@ -188,9 +389,8 @@ namespace NepBill
         struct tm CreatedAt;
         std::array<char, kPaymentTicketNotesLength> Note = {0};
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -201,12 +401,12 @@ namespace NepBill
     struct ItemCategory
     {
         uint32_t Id = 0;
+        UUID BusinessID;
         UUID UniqueID;
         std::array<char, kNameLength> Name = {0};
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -215,6 +415,7 @@ namespace NepBill
     struct Item
     {
         uint32_t Id = 0;
+        UUID BusinessID;
         UUID CategoryId;
         UUID UniqueID;
         std::array<char, ItemNameLength> Name = {0};
@@ -224,9 +425,8 @@ namespace NepBill
         double DiscountPercent = 0;
         std::array<char, ItemDescriptionLength> Description = {0};
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -235,13 +435,13 @@ namespace NepBill
     struct ItemStockLedger
     {
         uint32_t Id = 0;
+        UUID BusinessID;
         UUID ItemId;
         int32_t StockDelta = 0;
         struct tm CreatedAt;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -252,15 +452,15 @@ namespace NepBill
     struct Suppliers
     {
         uint32_t Id = 0;
+        UUID BusinessID;
         UUID UnqiueId;
         std::array<char, kNameLength> Name = {0};
         std::array<char, kPhoneNumberLength> PhoneNumber = {0};
         std::array<char, kPanNumberLength> PanNumber = {0};
         double OpeningBalance;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -270,12 +470,12 @@ namespace NepBill
     struct SuppliersItemTable
     {
         uint32_t Id = 0;
+        UUID BusinessID;
         UUID SupplierID;
         UUID ItemID;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -299,6 +499,7 @@ namespace NepBill
         "Taken",
         "Unavailable"};
 
+    // Only given for Hostel and Hotel businesses
     struct RoomInfo
     {
         uint32_t Id = 0;
@@ -308,10 +509,10 @@ namespace NepBill
         std::array<char, RoomDescriptionLength> Description = {0};
         UUID UniqueID;
         RoomStates State;
+        UUID BusinessID;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -323,12 +524,12 @@ namespace NepBill
         uint32_t Id = 0;
         UUID UniqueID;
         UUID RoomID;
+        UUID BusinessID;
         std::array<char, RoomFacilityLength> FacilityInfo = {0};
         double FacilityPrice = 0.0f;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -336,17 +537,18 @@ namespace NepBill
 
     // ---- Guest Related ----
 
+    // For restaurant, hotel and hostels
     struct GuestInfo
     {
         uint32_t Id = 0;
+        UUID BusinessID;
         UUID UniqueID;
         std::array<char, kNameLength> Name = {0};
         std::array<char, kPhoneNumberLength> PhoneNumber = {0};
         std::array<char, kCountryNameLength> Country = {0};
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -354,52 +556,53 @@ namespace NepBill
 
     // ---- Bookings ----
 
-    struct BookingInfo
+    // only for Hotels
+    struct HotelBookingInfo
     {
         uint32_t Id = 0;
         UUID UniqueID;
         UUID InvoiceID;
         UUID RoomID;
+        UUID HotelBusinessID;
 
         struct tm CreatedAt;
 
         struct tm CheckIn;
         struct tm CheckOut;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
     };
 
-    struct BookingGuestTable
+    struct HotelBookingGuestTable
     {
         uint32_t Id = 0;
+        UUID HotelBusinessID;
         UUID GuestID;
         UUID BookingID;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
     };
 
-    struct BookingAdditionalCostInfo
+    struct HotelBookingAdditionalCostInfo
     {
         uint32_t Id = 0;
+        UUID HotelBusinessID;
         UUID UnqiueID;
         UUID BookingID;
         UUID ItemID;
         double PricePerUnit = 0;
         uint32_t UnitCount = 0;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -407,9 +610,11 @@ namespace NepBill
 
     // ---- Staff related ----
 
+    // For all restaruants, hotels and hostels
     struct StaffInfo
     {
         uint32_t Id = 0;
+        UUID BusinessID;
         UUID UnqiueID;
         std::array<char, kNameLength> Name = {0};
         std::array<char, kPhoneNumberLength> PhoneNumber = {0};
@@ -417,9 +622,8 @@ namespace NepBill
         bool IsActive = true;
         double SalaryPerDay;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -428,15 +632,15 @@ namespace NepBill
     struct StaffLedger
     {
         uint32_t Id = 0;
+        UUID BusinessID;
         UUID StaffID;
         struct tm CheckIn;
         struct tm CheckOut;
         bool PaymentRelated = false;
         UUID SalaryPaymentID;
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();
@@ -445,15 +649,15 @@ namespace NepBill
     struct StaffSalaryPayment
     {
         uint32_t Id = 0;
+        UUID BusinessID;
         UUID UnqiueID;
         UUID StaffID;
         double Amount = 0.0;
         struct tm Date;
         std::array<char, SalaryPaymentDescriptionLength> Description = {0};
 
-        static const char *GetCreateQuerySqlite();
-        static const char *GetCreateQueryPostgreSQL();
-        static const char *GetInsertQuerySqlite();
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
         static const char *GetCountQuery();
         static const char *GetByIdQuery();
         static const char *GetName();

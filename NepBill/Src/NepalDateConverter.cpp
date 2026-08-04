@@ -1,7 +1,7 @@
-#include "NepaliDateConverter.h"
+#include "NepalDateConverter.h"
 #include <array>
 #include <vector>
-#include "bs_month_days_table.h"
+#include "BsDateTable.h"
 
 namespace NepBill
 {

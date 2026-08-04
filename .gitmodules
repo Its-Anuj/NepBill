@@ -1,0 +1,15 @@
+[submodule "NepBill/Libs/Crow"]
+	path = NepBill/Libs/Crow
+	url = https://github.com/CrowCpp/Crow.git
+[submodule "NepBill/Libs/Asio"]
+	path = NepBill/Libs/Asio
+	url = https://github.com/chriskohlhoff/asio.git
+[submodule "NepBill/Libs/Libpqxx"]
+	path = NepBill/Libs/Libpqxx
+	url = https://github.com/jtv/libpqxx.git
+[submodule "NepBill/Libs/JwtCpp"]
+	path = NepBill/Libs/JwtCpp
+	url = https://github.com/Thalhammer/jwt-cpp.git
+[submodule "NepBill/Libs/TlExpected"]
+	path = NepBill/Libs/TlExpected
+	url = https://github.com/TartanLlama/expected.git

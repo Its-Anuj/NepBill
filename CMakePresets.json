@@ -7,10 +7,15 @@
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/out/Debug",
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "C:/msys64/mingw64/bin/clang.exe",
-                "CMAKE_CXX_COMPILER": "C:/msys64/mingw64/bin/clang++.exe",
+                "CMAKE_C_COMPILER": "C:/msys64/clang64/bin/clang.exe",
+                "CMAKE_CXX_COMPILER": "C:/msys64/clang64/bin/clang++.exe",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                "CMAKE_BUILD_TYPE" :"Debug"
+                "CMAKE_BUILD_TYPE": "Debug",
+                "OPENSSL_ROOT_DIR": "C:/msys64/clang64",
+                "CMAKE_PREFIX_PATH": "C:/msys64/clang64"
+            },
+            "environment": {
+                "PATH": "C:/msys64/clang64/bin;$ENV{PATH}"
             }
         }
     ]

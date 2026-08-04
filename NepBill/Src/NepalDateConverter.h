@@ -1,4 +1,5 @@
-#pragma once
+#ifndef NEPBILL_NEPAL_DATE_CONVERTER_H
+#define NEPBILL_NEPAL_DATE_CONVERTER_H
 
 #include <cstddef>
 #include <stdexcept>
@@ -27,3 +28,5 @@ public:
 };
 
 } // namespace nepali_date_picker
+
+#endif
