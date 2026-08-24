@@ -13,3 +13,6 @@
 [submodule "NepBill/Libs/TlExpected"]
 	path = NepBill/Libs/TlExpected
 	url = https://github.com/TartanLlama/expected.git
+[submodule "NepBill/Libs/LibSodium"]
+	path = NepBill/Libs/LibSodium
+	url = https://github.com/robinlinden/libsodium-cmake.git

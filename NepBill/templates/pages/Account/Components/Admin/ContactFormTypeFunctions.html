@@ -1,0 +1,189 @@
+<div
+  id="RegisterAccountView"
+  class="register-account-panel"
+  style="display: none"
+>
+  <!-- SECTION 1: BUSINESS & OWNER INFO -->
+  <div class="panel-section">
+    <h4 class="section-subtitle">Business Overview</h4>
+    <div class="info-grid">
+      <div class="field-group">
+        <label>Business Name</label>
+        <input
+          type="text"
+          id="reg-business-name"
+          class="dashboard-input"
+          value="Himalayan Traders Pvt. Ltd."
+          readonly
+        />
+      </div>
+
+      <div class="field-group">
+        <label>Owner Name</label>
+        <input
+          type="text"
+          id="reg-owner-name"
+          class="dashboard-input"
+          value="Ram Bahadur Shrestha"
+          readonly
+        />
+      </div>
+
+      <div class="field-group">
+        <label>PAN Number</label>
+        <input
+          type="text"
+          id="reg-pan-number"
+          class="dashboard-input"
+          value="600123456"
+          readonly
+        />
+      </div>
+
+      <div class="field-group">
+        <label>VAT Number</label>
+        <input
+          type="text"
+          id="reg-vat-number"
+          class="dashboard-input"
+          value="301987654"
+          readonly
+        />
+      </div>
+
+      <div class="field-group">
+        <label>Country</label>
+        <input
+          type="text"
+          id="reg-country"
+          class="dashboard-input"
+          value="Nepal"
+          readonly
+        />
+      </div>
+
+      <div class="field-group">
+        <label>Address</label>
+        <input
+          type="text"
+          id="reg-address"
+          class="dashboard-input"
+          value="New Road, Ward-08, Kathmandu"
+          readonly
+        />
+      </div>
+
+      <div class="field-group full-width">
+        <label>Password Hash</label>
+        <div class="hash-wrapper">
+          <input
+            type="text"
+            id="reg-password-hash"
+            class="dashboard-input code-font"
+            value="$2b$12$e83B/9v9aQz.K2Oa.d7Yue1yBq7ZqL3..."
+            readonly
+          />
+          <button
+            type="button"
+            class="btn-copy"
+            title="Copy Hash"
+            onclick="
+              navigator.clipboard.writeText(
+                document.getElementById('reg-password-hash').value,
+              )
+            "
+          >
+            📋
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: VERIFICATION DOCUMENTS & MEDIA -->
+  <div class="panel-section">
+    <h4 class="section-subtitle">Verification Documents</h4>
+    <div class="document-grid">
+      <!-- PAN Card Pic -->
+      <div class="doc-card">
+        <span class="doc-label">PAN Card Photo</span>
+        <div class="doc-preview">
+          <img id="img-pan-pic" alt="PAN Card Document" />
+          <a
+            href="/assets/placeholder-doc.jpg"
+            target="_blank"
+            class="doc-overlay"
+            id="img_href-pan-pic"
+            >View Full Image</a
+          >
+        </div>
+      </div>
+
+      <!-- Business / VAT Certificate Pic -->
+      <div class="doc-card">
+        <span class="doc-label">VAT / Business Cert</span>
+        <div class="doc-preview">
+          <img id="img-vat-cert" alt="VAT Certificate" />
+          <a
+            href="/assets/placeholder-doc.jpg"
+            target="_blank"
+            class="doc-overlay"
+            id="img_href-vat-cert"
+            >View Full Image</a
+          >
+        </div>
+      </div>
+
+      <!-- Business Storefront Pic -->
+      <div class="doc-card">
+        <span class="doc-label">Storefront Photo</span>
+        <div class="doc-preview">
+          <img id="img-business-front" alt="Business Front View" />
+          <a
+            href="/assets/placeholder-store.jpg"
+            target="_blank"
+            class="doc-overlay"
+            id="img_href-business-front"
+            >View Full Image</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: ADMIN ACTION CONTROLS -->
+  <div class="panel-section action-section">
+    <h4 class="section-subtitle">Admin Verification & Response</h4>
+
+    <!-- Error/Rejection Notice Builder -->
+    <div class="rejection-box">
+      <label for="reg-error-message"
+        >Rejection Reason / Missing Information Notice</label
+      >
+      <textarea
+        id="reg-error-message"
+        class="dashboard-textarea"
+        rows="3"
+        placeholder="e.g., The PAN document photo is blurred. Please resubmit a clear scan of your PAN certificate."
+      ></textarea>
+      <div class="rejection-actions">
+        <button type="button" id="btn-send-error" class="btn btn-warning">
+          ✉️ Send Error Notice (SMS & Email)
+        </button>
+      </div>
+    </div>
+
+    <hr class="panel-divider" />
+
+    <!-- Approval Action -->
+    <div class="approval-actions">
+      <button
+        type="button"
+        id="btn-allow-creation"
+        class="btn btn-success btn-large"
+      >
+        ✓ Approve & Provision Account
+      </button>
+    </div>
+  </div>
+</div>

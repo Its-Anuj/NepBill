@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NepBill</title>
+
+    <link rel="stylesheet" href="/login.css" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-container">
+        <div class="nav-left">
+          <a href="/" class="brand">Nep<span>Bill</span></a>
+          <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <select class="lang-select">
+            <option value="en">English</option>
+            <option value="np">Nepali</option>
+          </select>
+          <div id="AccountHeaderSection">
+            <a href="/Login.html" class="btn-login">Login</a>
+            <a href="/ContactUs.html" class="btn-primary">Contact Us</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <!-- HERO -->
+      <section>
+        <h1 class="hero-title">Welcome to NepBill</h1>
+        <p class="hero-subtitle">
+          Efficient invoicing, record management, and customer billing built for
+          quick daily workflows.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#get-started" class="btn-primary">Get Started</a>
+          <a href="#docs" class="btn-secondary">View Documentation</a>
+        </div>
+      </section>
+
+      <!-- FORMS SECTION -->
+      <div class="forms-grid">
+        <!-- LOGIN FORM -->
+        <section id="login" class="card">
+          <h2 class="card-title">Login</h2>
+          <p class="card-subtitle">Access your billing dashboard.</p>
+
+          <form action="#" method="POST">
+            <div class="form-group">
+              <label for="account_id">Phone Number or Email</label>
+              <input
+                type="text"
+                id="account_id"
+                name="account_id"
+                placeholder="Phone or email address"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            <button type="button" class="btn-primary btn-full" onclick="SubmitLogin()">Login</button>
+          </form>
+        </section>  -
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <span>&copy; 2026 NepBill</span>
+        <ul class="footer-links">
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+    <script src="/Login.js"  defer></script>
+    <script src="/index.js"  defer></script>
+
+  </body>
+</html>

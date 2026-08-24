@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account - NepBill</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/ContactForms.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-container">
+        <div class="nav-left">
+          <a href="/" class="brand">Nep<span>Bill</span></a>
+          <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <select class="lang-select">
+            <option value="en">English</option>
+            <option value="np">Nepali</option>
+          </select>
+          <div id="AccountHeaderSection"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- BOXED MAIN CONTAINER -->
+    <main class="dashboard-wrapper">
+      <div class="dashboard-box">
+        <aside id="sidebar-container" class="sidebar"></aside>
+
+        <!-- DASHBOARD CONTENT (INSIDE BOX) -->
+        <section class="dashboard-content">
+          <div class="dashboard-split-grid">
+            <!-- LEFT SIDE: Info Table & Actions -->
+            <div class="dashboard-card left-pane">
+              <div class="card-header">
+                <h3>Record Details</h3>
+                <span class="status-badge" id="badge-handled-state">
+                  Pending
+                </span>
+              </div>
+
+              <div class="table-container">
+                <table class="detail-table">
+                  <tbody>
+                    <tr>
+                      <th>UUID</th>
+                      <td>
+                        <input
+                          type="text"
+                          id="val-uuid"
+                          value="+977 9801234567"
+                          disabled
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Phone</th>
+                      <td>
+                        <input
+                          type="text"
+                          id="val-phone"
+                          value="+977 9801234567"
+                          disabled
+                        />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Email</th>
+                      <td>
+                        <input type="email" id="val-email" disabled />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Type</th>
+                      <td>
+                        <input type="text" id="val-type" disabled />
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Handled State</th>
+                      <td>
+                        <select
+                          id="val-state"
+                          class="dashboard-select"
+                          disabled
+                        ></select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>Created At</th>
+                      <td>
+                        <input type="text" id="val-created" disabled />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Action Buttons below Left Side -->
+              <div class="action-bar">
+                <button id="btn-edit" class="btn btn-secondary">Edit</button>
+                <button id="btn-save" class="btn btn-primary" disabled>
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <!-- RIGHT SIDE: Type-Specific Functions -->
+            <div class="dashboard-card right-pane">
+              <div class="card-header">
+                <h3 id="type-panel-title">Type Functions</h3>
+              </div>
+              <div>
+                <aside
+                  id="Type-Specific-Container"
+                  class="type-container"
+                ></aside>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <span>&copy; 2026 NepBill</span>
+        <ul class="footer-links">
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="/AccountTypes.js" type="module"></script>
+    <script src="/index.js" type="module"></script>
+    <script src="/Account.js" type="module"></script>
+    <script src="/Admin/ContactFormDetails.js" type="module"></script>
+    <script src="/Admin/ContactEnums.js" type="module"></script>
+    <script src="/Admin/Dashboard.js" defer></script>
+    <script src="/SideBar.js" type="module"></script>
+  </body>
+</html>

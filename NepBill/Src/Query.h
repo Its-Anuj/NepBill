@@ -11,7 +11,24 @@ namespace NepBill
         std::optional<uint32_t> Limit;
         uint32_t Offset = 0;
     };
+    // ---- ContactFormStateMetaInfo ----
+    enum class ContactStateMetaSortField
+    {
+        Id,
+        FormID
+    };
 
+    struct ContactFormStateMetaInfoQuery
+    {
+        std::optional<uint32_t> Id;
+        std::optional<UUID> FormID;
+
+        Pagination Pagination;
+        ContactStateMetaSortField SortField = ContactStateMetaSortField::Id;
+        bool SortDescending = true;
+    };
+
+    // ---- ContactFormInfo ----
     enum class ContactSortField
     {
         CreatedAt,
@@ -20,7 +37,6 @@ namespace NepBill
 
     struct ContactFormQuery
     {
-        // ---- Filters ----
         std::optional<uint32_t> Id;
         std::optional<UUID> UniqueId;
         std::optional<std::string> PhoneNumber;
@@ -28,22 +44,20 @@ namespace NepBill
         std::optional<ContactSubjectType> Type;
         std::optional<ContactStates> State;
 
-        // ---- Date filters ----
         std::optional<time_t> CreatedAfter;
         std::optional<time_t> CreatedBefore;
 
-        // ---- Pagination ----
         Pagination Pagination;
-
-        // ---- Sorting ----
         ContactSortField SortField = ContactSortField::CreatedAt;
         bool SortDescending = true;
     };
 
-    enum class RegisterAccountSortField
+    enum class RegisterAccountContactSortField
     {
+        Id,
         Name,
-        PrimaryPhoneNumber
+        Ownername,
+        Country
     };
 
     struct RegisterAccountContactFormQuery
@@ -52,6 +66,7 @@ namespace NepBill
         std::optional<uint32_t> Id;
         std::optional<UUID> ContactID;
         std::optional<std::string> Name;
+        std::optional<std::string> Ownername;
         std::optional<std::string> PrimaryPhoneNumber;
         std::optional<std::string> VatNumber;
         std::optional<std::string> PanNumber;
@@ -61,52 +76,136 @@ namespace NepBill
         Pagination Pagination;
 
         // ---- Sorting ----
-        RegisterAccountSortField SortField =
-            RegisterAccountSortField::Name;
-
-        bool SortDescending = false;
+        RegisterAccountContactSortField SortField = RegisterAccountContactSortField::Id;
+        bool SortDescending = true;
     };
 
-    enum class AccountRoleSortField
+    enum class PdfDocumentSortField
     {
         Id,
-        AccountID,
-        Role
+        Name
     };
 
-    struct AccountRoleQuery
+    struct PdfDocumentQuery
     {
         // ---- Filters ----
         std::optional<uint32_t> Id;
-        std::optional<UUID> AccountID;
+        std::optional<UUID> UniqueId;
+        std::optional<std::string> Name;
+
+        // ---- Pagination ----
+        Pagination Pagination;
+
+        // ---- Sorting ----
+        PdfDocumentSortField SortField = PdfDocumentSortField::Id;
+        bool SortDescending = true;
+    };
+
+    enum class ImageSortField
+    {
+        Id,
+        Name
+    };
+
+    struct ImageQuery
+    {
+        // ---- Filters ----
+        std::optional<uint32_t> Id;
+        std::optional<UUID> UniqueId;
+        std::optional<std::string> Name;
+
+        // ---- Pagination ----
+        Pagination Pagination;
+
+        // ---- Sorting ----
+        ImageSortField SortField = ImageSortField::Id;
+        bool SortDescending = true;
+    };
+
+    enum class BusinessSortField
+    {
+        Id,
+        UniqueId,
+        RegisterAccountFormId,
+        CreatedAt
+    };
+
+    struct BusinessQuery
+    {
+        // ---- Filters ----
+        std::optional<uint32_t> Id;
+        std::optional<UUID> UniqueId;
+        std::optional<UUID> RegisterAccountFormId;
+
+        // ---- Pagination ----
+        Pagination Pagination;
+
+        // ---- Sorting ----
+        BusinessSortField SortField = BusinessSortField::Id;
+        bool SortDescending = true;
+    };
+
+    enum class AccountSortField
+    {
+        Id,
+        UniqueId,
+        BusinessID,
+        ContactFormID,
+        Role,
+        IsActive
+    };
+
+    struct AccountQuery
+    {
+        // ---- Filters ----
+        std::optional<uint32_t> Id;
+        std::optional<UUID> UniqueId;
+        std::optional<UUID> BusinessID;
+        std::optional<UUID> ContactFormID;
+        std::optional<UUID> ParentID;
         std::optional<AccountRoles> Role;
+        std::optional<bool> IsActive;
 
         // ---- Pagination ----
         Pagination Pagination;
 
         // ---- Sorting ----
-        AccountRoleSortField SortField = AccountRoleSortField::Id;
-        bool SortDescending = false;
+        AccountSortField SortField = AccountSortField::Id;
+        bool SortDescending = true;
     };
 
-    enum class ContactFormStateMetaSortField
+    enum class EncryptedSecretSortField
     {
-        Id,
-        FormID
+        AccountID,
+        ActualCiphertextSize
     };
 
-    struct ContactFormStateMetaQuery
+    struct EncryptedSecretQuery
     {
         // ---- Filters ----
-        std::optional<uint32_t> Id;
-        std::optional<UUID> FormID;
+        std::optional<UUID> AccountID;
 
         // ---- Pagination ----
         Pagination Pagination;
 
         // ---- Sorting ----
-        ContactFormStateMetaSortField SortField = ContactFormStateMetaSortField::Id;
-        bool SortDescending = false;
+        EncryptedSecretSortField SortField = EncryptedSecretSortField::AccountID;
+        bool SortDescending = true;
+    };
+
+    // Update query
+    struct UpdateContactFormQuery
+    {
+        // Identifier to specify which record to update
+        std::optional<UUID> UniqueId;
+        std::optional<uint32_t> Id;
+
+        // Fields to update (only non-null fields will be updated)
+        std::optional<std::string> PhoneNumber;
+        std::optional<std::string> Email;
+        std::optional<std::string> Message;
+        std::optional<ContactSubjectType> Type;
+        std::optional<ContactStates> State;
     };
 }
 #endif

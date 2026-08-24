@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NepBill</title>
+
+    <link rel="stylesheet" href="/login.css" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-container">
+        <div class="nav-left">
+          <a href="/" class="brand">Nep<span>Bill</span></a>
+          <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <select class="lang-select">
+            <option value="en">English</option>
+            <option value="np">Nepali</option>
+          </select>
+          <div id="AccountHeaderSection"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <!-- HERO -->
+      <section>
+        <h1 class="hero-title">Welcome to NepBill</h1>
+        <p class="hero-subtitle">
+          Efficient invoicing, record management, and customer billing built for
+          quick daily workflows.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#get-started" class="btn-primary">Get Started</a>
+          <a href="#docs" class="btn-secondary">View Documentation</a>
+        </div>
+      </section>
+
+      <!-- FORMS SECTION -->
+      <div class="forms-grid">
+        <!-- CONTACT US FORM -->
+        <section id="contact" class="card">
+          <h2 class="card-title">Contact Us</h2>
+          <p class="card-subtitle">
+            Submit a request or reach out to our team.
+          </p>
+
+          <!-- Added enctype="multipart/form-data" for file uploads -->
+          <form
+            onsubmit="SubmitContact(event)"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="+977 9800000000"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="name@company.com"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="issue_type">Select Issue / Topic</label>
+              <select
+                id="issue_type"
+                name="issue_type"
+                onchange="handleIssueChange(this.value)"
+                required
+              >
+                <option value="">-- Choose Category --</option>
+                <option value="RegisterAccount">Register Account</option>
+                <option value="Issue">Issues / Technical Error</option>
+                <option value="Help">Help & Guidance</option>
+                <option value="Billing">Billing & Payments</option>
+                <option value="Other">Others</option>
+              </select>
+            </div>
+
+            <!-- DYNAMIC FIELDS WRAPPER -->
+            <div id="dynamic-fields-wrapper">
+              <!-- 1. REGISTER ACCOUNT FIELDS -->
+              <div
+                id="fields-RegisterAccount"
+                class="dynamic-group"
+                style="display: none"
+              >
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="reg_business_name"
+                      >Company / Business Name *</label
+                    >
+                    <input
+                      type="text"
+                      id="reg_business_name"
+                      name="business_name"
+                      placeholder="e.g., Kathmandu Traders Pvt. Ltd."
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="reg_owner_name">Owner / Full Name *</label>
+                    <input
+                      type="text"
+                      id="reg_owner_name"
+                      name="owner_name"
+                      placeholder="e.g., Ram Bahadur Shrestha"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="reg_pan">PAN Number *</label>
+                    <input
+                      type="text"
+                      id="reg_pan"
+                      name="pan_number"
+                      placeholder="9-digit PAN Number"
+                      pattern="[0-9]{9}"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="reg_vat">VAT Number (If registered)</label>
+                    <input
+                      type="text"
+                      id="reg_vat"
+                      name="vat_number"
+                      placeholder="VAT Registration No."
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="reg_continent">Continent *</label>
+                    <input
+                      type="text"
+                      id="reg_continent"
+                      name="business_continent"
+                      placeholder="Asia"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="reg_country">Country *</label>
+                    <input
+                      type="text"
+                      id="reg_country"
+                      name="business_country"
+                      placeholder="Nepal"
+                    />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="reg_address"
+                      >Business Location / Address *</label
+                    >
+                    <input
+                      type="text"
+                      id="reg_address"
+                      name="business_address"
+                      placeholder="e.g., New Road, Kathmandu - Ward 22"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="reg_password"
+                      >Preferred Account Password *</label
+                    >
+                    <input
+                      type="password"
+                      id="reg_password"
+                      name="account_password"
+                      placeholder="Set account password"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="reg_pan_photo"
+                      >PAN / VAT Certificate Photo *</label
+                    >
+                    <input
+                      type="file"
+                      id="reg_pan_photo"
+                      name="pan_vat_photo"
+                      accept="image/*,.pdf"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="reg_biz_cert"
+                      >Business Registration Document *</label
+                    >
+                    <input
+                      type="file"
+                      id="reg_biz_cert"
+                      name="business_cert_photo"
+                      accept="image/*,.pdf"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="reg_businessfront_photo"
+                      >Business Front Photo *</label
+                    >
+                    <input
+                      type="file"
+                      id="reg_businessfront_photo"
+                      name="businessfront_photo"
+                      accept="image/*"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. ISSUES / TECHNICAL ERROR FIELDS -->
+              <div
+                id="fields-Issue"
+                class="dynamic-group"
+                style="display: none"
+              >
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="issue_code">Error Code or Page Title</label>
+                    <input
+                      type="text"
+                      id="issue_code"
+                      name="error_code"
+                      placeholder="e.g., ERR_404 or Invoice Generation Page"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="issue_screenshot"
+                      >Attach Screenshot (Optional)</label
+                    >
+                    <input
+                      type="file"
+                      id="issue_screenshot"
+                      name="error_screenshot"
+                      accept="image/*"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3. HELP & GUIDANCE -->
+              <div id="fields-Help" class="dynamic-group" style="display: none">
+                <div class="form-group">
+                  <label for="help_feature">Feature You Need Help With</label>
+                  <input
+                    type="text"
+                    id="help_feature"
+                    name="help_feature"
+                    placeholder="e.g., Tax Export, Receipt Printing, IRD Sync"
+                  />
+                </div>
+              </div>
+
+              <!-- 4. BILLING & PAYMENTS -->
+              <div
+                id="fields-Billing"
+                class="dynamic-group"
+                style="display: none"
+              >
+                <div class="form-group">
+                  <label for="billing_id">Invoice / Transaction ID</label>
+                  <input
+                    type="text"
+                    id="billing_id"
+                    name="billing_id"
+                    placeholder="e.g., INV-2026-0092"
+                  />
+                </div>
+              </div>
+
+              <!-- 5. OTHERS -->
+              <div
+                id="fields-Other"
+                class="dynamic-group"
+                style="display: none"
+              >
+                <div class="form-group">
+                  <label for="others_subject">Subject Summary</label>
+                  <input
+                    type="text"
+                    id="others_subject"
+                    name="others_subject"
+                    placeholder="Brief summary of your inquiry"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Describe your inquiry or business details in full..."
+                required
+              ></textarea>
+            </div>
+
+            <button
+              type="submit"
+              class="btn-primary btn-full"
+            >
+              Submit Inquiry
+            </button>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <span>&copy; 2026 NepBill</span>
+        <ul class="footer-links">
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="/index.js" defer></script>
+    <script src="/ContactUs.js" defer></script>
+  </body>
+</html>

@@ -102,88 +102,25 @@ namespace NepBill
         return Stream.str();
     }
 
-#pragma region ContactFormInfo
-
-    const char *ContactFormInfo::GetCreateQuery()
-    {
-        static std::string Query = BuildCreateQuery(
-            "ContactFormInfo",
-            {
-                {"Id", "SERIAL PRIMARY KEY"},
-                {"UniqueId", "UUID"},
-                {"PhoneNumber", MakeVarchar(kPhoneNumberLength)},
-                {"Email", MakeVarchar(kEmailLength)},
-                {"Message", MakeVarchar(kContactMessageLength)},
-                {"Type", "INT"},
-                {"CreatedAt", "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"},
-                {"State", "INT DEFAULT 0"} // Changed from BOOLEAN DEFAULT FALSE
-            });
-
-        return Query.c_str();
-    }
-
-    const char *ContactFormInfo::GetInsertQuery()
-    {
-        static std::string Query = BuildInsertQuery(
-            "ContactFormInfo",
-            {"UniqueId",
-             "PhoneNumber",
-             "Email",
-             "Message",
-             "Type",
-             "CreatedAt",
-             "State"});
-
-        return Query.c_str();
-    }
-
-    const char *ContactFormInfo::GetCountQuery()
-    {
-        static std::string Query =
-            BuildCountQuery("ContactFormInfo");
-
-        return Query.c_str();
-    }
-
-    const char *ContactFormInfo::GetByIdQuery()
-    {
-        static std::string Query = BuildByIdQuery(
-            "ContactFormInfo",
-            {"Id",
-             "UniqueId",
-             "PhoneNumber",
-             "Email",
-             "Message",
-             "Type",
-             "CreatedAt",
-             "State"});
-
-        return Query.c_str();
-    }
-
-    const char *ContactFormInfo::GetName()
-    {
-        return "ContactFormInfo";
-    }
-
-#pragma endregion
-
 #pragma region RegisterAccountContactFormInfo
 
     const char *RegisterAccountContactFormInfo::GetCreateQuery()
     {
         static std::string Query = BuildCreateQuery(
             "RegisterAccountContactFormInfo",
-            {
-                {"Id", "SERIAL PRIMARY KEY"},
-                {"ContactID", "UUID"},
-                {"Name", MakeVarchar(kNameLength)},
-                {"PrimaryPhoneNumber", MakeVarchar(kPhoneNumberLength)},
-                {"VatNumber", MakeVarchar(kVatNumberLength)},
-                {"PanNumber", MakeVarchar(kPanNumberLength)},
-                {"Country", MakeVarchar(kCountryNameLength)},
-                {"Address", MakeVarchar(kAddressLength)},
-            });
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"ContactID", "UUID"},
+             {"Name", MakeVarchar(kNameLength)},
+             {"Ownername", MakeVarchar(kNameLength)},
+             {"PrimaryPhoneNumber", MakeVarchar(kPhoneNumberLength)},
+             {"VatNumber", MakeVarchar(kVatNumberLength)},
+             {"PanNumber", MakeVarchar(kPanNumberLength)},
+             {"Country", MakeVarchar(kCountryNameLength)},
+             {"Address", MakeVarchar(kAddressLength)},
+             {"Password", MakeVarchar(kPasswordLength)},
+             {"VatCertificatePdf", "UUID"},
+             {"PanPdf", "UUID"},
+             {"BusinessFrontImage", "UUID"}});
 
         return Query.c_str();
     }
@@ -192,23 +129,25 @@ namespace NepBill
     {
         static std::string Query = BuildInsertQuery(
             "RegisterAccountContactFormInfo",
-            {
-                "ContactID",
-                "Name",
-                "PrimaryPhoneNumber",
-                "VatNumber",
-                "PanNumber",
-                "Country",
-                "Address",
-            });
+            {"ContactID",
+             "Name",
+             "Ownername",
+             "PrimaryPhoneNumber",
+             "VatNumber",
+             "PanNumber",
+             "Country",
+             "Address",
+             "Password",
+             "VatCertificatePdf",
+             "PanPdf",
+             "BusinessFrontImage"});
 
         return Query.c_str();
     }
 
     const char *RegisterAccountContactFormInfo::GetCountQuery()
     {
-        static std::string Query =
-            BuildCountQuery("RegisterAccountContactFormInfo");
+        static std::string Query = BuildCountQuery("RegisterAccountContactFormInfo");
 
         return Query.c_str();
     }
@@ -217,16 +156,19 @@ namespace NepBill
     {
         static std::string Query = BuildByIdQuery(
             "RegisterAccountContactFormInfo",
-            {
-                "Id",
-                "ContactID",
-                "Name",
-                "PrimaryPhoneNumber",
-                "VatNumber",
-                "PanNumber",
-                "Country",
-                "Address",
-            });
+            {"Id",
+             "ContactID",
+             "Name",
+             "Ownername",
+             "PrimaryPhoneNumber",
+             "VatNumber",
+             "PanNumber",
+             "Country",
+             "Address",
+             "Password",
+             "VatCertificatePdf",
+             "PanPdf",
+             "BusinessFrontImage"});
 
         return Query.c_str();
     }
@@ -234,6 +176,226 @@ namespace NepBill
     const char *RegisterAccountContactFormInfo::GetName()
     {
         return "RegisterAccountContactFormInfo";
+    }
+
+#pragma endregion
+
+#pragma region Account
+
+    const char *Account::GetCreateQuery()
+    {
+        static std::string Query = BuildCreateQuery(
+            "Account",
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"UniqueId", "UUID UNIQUE NOT NULL"},
+             {"BusinessID", "UUID NOT NULL"},
+             {"ContactFormID", "UUID NOT NULL"},
+             {"ParentID", "UUID"},
+             {"PasswordHash", MakeVarchar(kPasswordHashLength)},
+             {"Role", "INT NOT NULL"},
+             {"IsActive", "BOOLEAN NOT NULL DEFAULT TRUE"}});
+
+        return Query.c_str();
+    }
+
+    const char *Account::GetInsertQuery()
+    {
+        static std::string Query = BuildInsertQuery(
+            "Account",
+            {"UniqueId",
+             "BusinessID",
+             "ContactFormID",
+             "ParentID",
+             "PasswordHash",
+             "Role",
+             "IsActive"});
+
+        return Query.c_str();
+    }
+
+    const char *Account::GetCountQuery()
+    {
+        static std::string Query = BuildCountQuery("Account");
+
+        return Query.c_str();
+    }
+
+    const char *Account::GetByIdQuery()
+    {
+        static std::string Query = BuildByIdQuery(
+            "Account",
+            {"Id",
+             "UniqueId",
+             "BusinessID",
+             "ContactFormID",
+             "ParentID",
+             "PasswordHash",
+             "Role",
+             "IsActive"});
+
+        return Query.c_str();
+    }
+
+    const char *Account::GetName()
+    {
+        return "Account";
+    }
+
+#pragma endregion
+
+#pragma region EncryptedSecret Queries
+
+    const char *EncryptedSecret::GetCreateQuery()
+    {
+        static std::string Query = BuildCreateQuery(
+            "EncryptedSecret",
+            {{"AccountID", "UUID PRIMARY KEY"},
+             {"KeySalt", "BYTEA NOT NULL"},
+             {"EncryptionNonce", "BYTEA NOT NULL"},
+             {"Ciphertext", "BYTEA NOT NULL"},
+             {"ActualCiphertextSize", "BIGINT NOT NULL"}});
+
+        return Query.c_str();
+    }
+
+    const char *EncryptedSecret::GetInsertQuery()
+    {
+        static std::string Query = BuildInsertQuery(
+            "EncryptedSecret",
+            {"AccountID",
+             "KeySalt",
+             "EncryptionNonce",
+             "Ciphertext",
+             "ActualCiphertextSize"});
+
+        return Query.c_str();
+    }
+
+    const char *EncryptedSecret::GetCountQuery()
+    {
+        static std::string Query = BuildCountQuery("EncryptedSecret");
+        return Query.c_str();
+    }
+
+    const char *EncryptedSecret::GetByIdQuery()
+    {
+        static std::string Query = BuildByIdQuery(
+            "EncryptedSecret",
+            {"AccountID",
+             "KeySalt",
+             "EncryptionNonce",
+             "Ciphertext",
+             "ActualCiphertextSize"});
+
+        return Query.c_str();
+    }
+
+    const char *EncryptedSecret::GetName()
+    {
+        return "EncryptedSecret";
+    }
+
+#pragma endregion
+
+#pragma region PdfDocument
+
+    const char *PdfDocument::GetCreateQuery()
+    {
+        // BYTEA is fully optimized for PDF streams, compressed binaries, and documents
+        static std::string Query = BuildCreateQuery(
+            "PdfDocument",
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"UniqueId", "UUID UNIQUE NOT NULL"},
+             {"Name", MakeVarchar(kNameLength)},
+             {"Data", "BYTEA NOT NULL"}});
+
+        return Query.c_str();
+    }
+
+    const char *PdfDocument::GetInsertQuery()
+    {
+        static std::string Query = BuildInsertQuery(
+            "PdfDocument",
+            {"UniqueId",
+             "Name",
+             "Data"});
+
+        return Query.c_str();
+    }
+
+    const char *PdfDocument::GetCountQuery()
+    {
+        static std::string Query = BuildCountQuery("PdfDocument");
+        return Query.c_str();
+    }
+
+    const char *PdfDocument::GetByIdQuery()
+    {
+        static std::string Query = BuildByIdQuery(
+            "PdfDocument",
+            {"Id",
+             "UniqueId",
+             "Name",
+             "Data"});
+
+        return Query.c_str();
+    }
+
+    const char *PdfDocument::GetName()
+    {
+        return "PdfDocument";
+    }
+
+#pragma endregion
+
+#pragma region Image
+
+    const char *Image::GetCreateQuery()
+    {
+        // Maps 'Name' to VARCHAR using your helper and 'Data' to BYTEA for binary streams
+        static std::string Query = BuildCreateQuery(
+            "Image",
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"UniqueId", "UUID UNIQUE NOT NULL"},
+             {"Name", MakeVarchar(kNameLength)},
+             {"Data", "BYTEA NOT NULL"}});
+
+        return Query.c_str();
+    }
+
+    const char *Image::GetInsertQuery()
+    {
+        // 'Id' is handled by SERIAL, so it is omitted from the insert targets
+        static std::string Query = BuildInsertQuery(
+            "Image",
+            {"UniqueId",
+             "Name",
+             "Data"});
+
+        return Query.c_str();
+    }
+
+    const char *Image::GetCountQuery()
+    {
+        static std::string Query = BuildCountQuery("Image");
+        return Query.c_str();
+    }
+
+    const char *Image::GetByIdQuery()
+    {
+        static std::string Query = BuildByIdQuery(
+            "Image",
+            {"Id",
+             "UniqueId",
+             "Name",
+             "Data"});
+
+        return Query.c_str();
+    }
+
+    const char *Image::GetName()
+    {
+        return "Image";
     }
 
 #pragma endregion
@@ -263,8 +425,7 @@ namespace NepBill
 
     const char *ContactFormStateMetaInfo::GetCountQuery()
     {
-        static std::string Query =
-            BuildCountQuery("ContactFormStateMetaInfo");
+        static std::string Query = BuildCountQuery("ContactFormStateMetaInfo");
 
         return Query.c_str();
     }
@@ -283,6 +444,69 @@ namespace NepBill
     const char *ContactFormStateMetaInfo::GetName()
     {
         return "ContactFormStateMetaInfo";
+    }
+
+#pragma endregion
+
+#pragma region ContactFormInfo
+
+    const char *ContactFormInfo::GetCreateQuery()
+    {
+        static std::string Query = BuildCreateQuery(
+            "ContactFormInfo",
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"UniqueId", "UUID"},
+             {"PhoneNumber", MakeVarchar(kPhoneNumberLength)},
+             {"Email", MakeVarchar(kEmailLength)},
+             {"Message", MakeVarchar(kContactMessageLength)},
+             {"Type", "INTEGER"},
+             {"CreatedAt", "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"},
+             {"State", "INTEGER"}});
+
+        return Query.c_str();
+    }
+
+    const char *ContactFormInfo::GetInsertQuery()
+    {
+        static std::string Query = BuildInsertQuery(
+            "ContactFormInfo",
+            {"UniqueId",
+             "PhoneNumber",
+             "Email",
+             "Message",
+             "Type",
+             "CreatedAt",
+             "State"});
+
+        return Query.c_str();
+    }
+
+    const char *ContactFormInfo::GetCountQuery()
+    {
+        static std::string Query = BuildCountQuery("ContactFormInfo");
+
+        return Query.c_str();
+    }
+
+    const char *ContactFormInfo::GetByIdQuery()
+    {
+        static std::string Query = BuildByIdQuery(
+            "ContactFormInfo",
+            {"Id",
+             "UniqueId",
+             "PhoneNumber",
+             "Email",
+             "Message",
+             "Type",
+             "CreatedAt",
+             "State"});
+
+        return Query.c_str();
+    }
+
+    const char *ContactFormInfo::GetName()
+    {
+        return "ContactFormInfo";
     }
 
 #pragma endregion
@@ -339,23 +563,15 @@ namespace NepBill
 #pragma endregion
 
 #pragma region Business
-
     const char *Business::GetCreateQuery()
     {
         static std::string Query = BuildCreateQuery(
             "Business",
-            {
-                {"Id", "SERIAL PRIMARY KEY"},
-                {"UniqueId", "UUID"},
-                {"Name", MakeVarchar(kNameLength)},
-                {"PrimaryPhoneNumber", MakeVarchar(kPhoneNumberLength)},
-                {"VatNumber", MakeVarchar(kVatNumberLength)},
-                {"PanNumber", MakeVarchar(kPanNumberLength)},
-                {"Country", MakeVarchar(kCountryNameLength)},
-                {"Address", MakeVarchar(kAddressLength)},
-                {"ParentID", "UUID"},
-                {"CreatedAt", "TIMESTAMP"},
-            });
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"UniqueId", "UUID UNIQUE NOT NULL"},
+             {"RegisterAccountFormId", "UUID NOT NULL"},
+             {"CreatedAt", "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP"}});
+
         return Query.c_str();
     }
 
@@ -363,7 +579,10 @@ namespace NepBill
     {
         static std::string Query = BuildInsertQuery(
             "Business",
-            {"UniqueId", "Name", "PrimaryPhoneNumber", "VatNumber", "PanNumber", "Country", "Address", "ParentID", "CreatedAt"});
+            {"UniqueId",
+             "RegisterAccountFormId",
+             "CreatedAt"});
+
         return Query.c_str();
     }
 
@@ -377,7 +596,11 @@ namespace NepBill
     {
         static std::string Query = BuildByIdQuery(
             "Business",
-            {"Id", "UniqueId", "Name", "PrimaryPhoneNumber", "VatNumber", "PanNumber", "Country", "Address", "ParentID", "CreatedAt"});
+            {"Id",
+             "UniqueId",
+             "RegisterAccountFormId",
+             "CreatedAt"});
+
         return Query.c_str();
     }
 

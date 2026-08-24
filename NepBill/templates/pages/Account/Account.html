@@ -3,153 +3,181 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Account</title>
-
+    <title>Account - NepBill</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <div id="sideMenu" class="side-menu">
-      <button class="close-btn" onclick="closeMenu()">×</button>
-
-      <div class="menu-section">
-        <h3>General</h3>
-
-        <a href="/">Home</a>
-        <a href="/Common/Contact.html">Contact</a>
-      </div>
-
-      <div class="menu-section">
-        <h3>Hotel</h3>
-
-        <a href="#">Rooms</a>
-        <a href="#">Bookings</a>
-        <a href="#">Guests</a>
-      </div>
-
-      <div class="menu-section">
-        <h3>Billing</h3>
-
-        <a href="#">Invoices</a>
-        <a href="#">Payments</a>
-      </div>
-    </div>
-
-    <div id="menuOverlay" class="menu-overlay" onclick="closeMenu()"></div>
-
-    <header class="header">
-      <div class="header-left">
-        <a href="/" class="logo-link">
-          <img src="/logo.jpg" alt="NepBill" class="logo" />
-        </a>
-
-        <button class="menu-button" onclick="openMenu()">☰</button>
-      </div>
-
-      <div class="header-right">
-        <!-- Logged out -->
-        <a href="/login.html" class="login-btn"> Login </a>
-
-        <a href="/Common/Contact.html" class="signup-btn"> Contact Us </a>
-
-        <!-- Logged in example -->
-        <!--
-        <div class="user-info">
-            Anuj
+    <!-- HEADER -->
+    <header>
+      <div class="header-container">
+        <div class="nav-left">
+          <a href="/" class="brand">Nep<span>Bill</span></a>
+          <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
         </div>
-        -->
+
+        <div class="nav-right">
+          <select class="lang-select">
+            <option value="en">English</option>
+            <option value="np">Nepali</option>
+          </select>
+          <div id="AccountHeaderSection"></div>
+        </div>
       </div>
     </header>
 
-    <main class="account-page">
-      <div class="account-card">
-        <h1>My Account</h1>
-
-        <p class="account-subtitle">
-          Manage your NepBill account, subscription and business information.
-        </p>
-
-        <div class="account-grid">
-          <a href="/business-.html" class="account-item">
-            <div class="account-icon">🏢</div>
-
-            <div>
-              <h3>Business Details</h3>
-              <p>View your registered business information.</p>
+    <!-- BOXED MAIN CONTAINER -->
+    <main class="dashboard-wrapper">
+      <div class="dashboard-box">
+        <!-- SIDEBAR (INSIDE BOX) -->
+        <aside id="sidebar-container" class="sidebar"></aside>
+        <!-- DASHBOARD CONTENT (INSIDE BOX) -->
+        <section class="dashboard-content">
+          <!-- 1. DEFAULT ACCOUNT OVERVIEW -->
+          <div id="view-overview" class="dashboard-view">
+            <div class="page-header">
+              <h2>Account Overview</h2>
+              <p class="subtitle">
+                Manage your NepBill profile and registered business details.
+              </p>
             </div>
-          </a>
-
-          <a href="/subscription.html" class="account-item">
-            <div class="account-icon">💳</div>
-
-            <div>
-              <h3>Subscription</h3>
-              <p>View your active plans and renew subscriptions.</p>
+            <div class="grid-cards">
+              <div class="card">
+                <h3>Active Businesses</h3>
+                <p class="card-value" id="overview-active-businesses">0</p>
+              </div>
+              <div class="card">
+                <h3>Total Invoices</h3>
+                <p class="card-value" id="overview-total-invoices">0</p>
+              </div>
             </div>
-          </a>
-
-          <a href="/Account/Documents.html" class="account-item">
-            <div class="account-icon">📄</div>
-
-            <div>
-              <h3>My Documents</h3>
-              <p>Invoices, receipts and uploaded documents.</p>
+            <div class="content-panel">
+              <h3>Your Details</h3>
+              <p class="text-muted">Account active and fully verified.</p>
             </div>
-          </a>
+          </div>
 
-          <a href="/change-password.html" class="account-item">
-            <div class="account-icon">🔒</div>
-
-            <div>
-              <h3>Change Password</h3>
-              <p>Update your login password securely.</p>
+          <!-- 2. SYSTEM ADMIN VIEW -->
+          <div id="view-admin" class="dashboard-view" style="display: none">
+            <div class="page-header">
+              <h2>System Admin Dashboard</h2>
+              <p class="subtitle">
+                Platform-wide system metrics and verification requests.
+              </p>
             </div>
-          </a>
-
-          <a href="/terms.html" class="account-item">
-            <div class="account-icon">📜</div>
-
-            <div>
-              <h3>Terms & Conditions</h3>
-              <p>Read NepBill policies and agreements.</p>
+            <div class="grid-cards">
+              <div class="card">
+                <h3>Pending Verifications</h3>
+                <p class="card-value" id="admin-pending-count">14</p>
+              </div>
+              <div class="card">
+                <h3>Total Registered Businesses</h3>
+                <p class="card-value" id="admin-total-businesses">342</p>
+              </div>
+              <div class="card">
+                <h3>System Status</h3>
+                <p class="card-value" style="color: #10b981">Operational</p>
+              </div>
             </div>
-          </a>
-
-          <button class="account-item logout-btn" onclick="logout()">
-            <div class="account-icon">🚪</div>
-
-            <div>
-              <h3>Logout</h3>
-              <p>Sign out of your account.</p>
+            <div class="content-panel">
+              <h3>Recent Business Registration Requests</h3>
+              <p class="text-muted">
+                Review submitted PAN/VAT certificates from new applicants.
+              </p>
+              <div class="admin-request-card">
+                <strong>Kathmandu Bakery Pvt. Ltd.</strong> — PAN: 609823412
+                (Submitted 2h ago)
+              </div>
             </div>
-          </button>
-        </div>
+          </div>
+
+          <!-- 3. BUSINESS OWNER VIEW -->
+          <div id="view-owner" class="dashboard-view" style="display: none">
+            <div class="page-header">
+              <h2>Owner Overview</h2>
+              <p class="subtitle" id="owner-welcome-subtitle">
+                Welcome back to your enterprise management panel.
+              </p>
+            </div>
+            <div class="grid-cards">
+              <div class="card">
+                <h3>Active Branches</h3>
+                <p class="card-value" id="owner-active-branches">3</p>
+              </div>
+              <div class="card">
+                <h3>Today's Total Sales</h3>
+                <p class="card-value" id="owner-today-sales">NPR 142,500</p>
+              </div>
+              <div class="card">
+                <h3>Total Active Staff</h3>
+                <p class="card-value" id="owner-staff-count">18</p>
+              </div>
+            </div>
+            <div class="content-panel">
+              <h3>Active Outlets Overview</h3>
+              <div class="outlets-grid">
+                <div class="outlet-card">
+                  <h4>New Road Branch</h4>
+                  <p class="text-muted">Status: Active</p>
+                  <p><strong>IRD Sync:</strong> Up to date</p>
+                </div>
+                <div class="outlet-card">
+                  <h4>Patan Outlet</h4>
+                  <p class="text-muted">Status: Active</p>
+                  <p><strong>IRD Sync:</strong> Up to date</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. KITCHEN DISPLAY SYSTEM VIEW -->
+          <div
+            id="view-kds-active"
+            class="dashboard-view"
+            style="display: none"
+          >
+            <div class="page-header">
+              <h2>Kitchen Display System</h2>
+              <p class="subtitle">Live order ticket monitoring.</p>
+            </div>
+            <div class="content-panel">
+              <h3>Live Kitchen Orders</h3>
+              <p>Real-time order tickets streaming from POS counter.</p>
+            </div>
+          </div>
+
+          <!-- 5. GENERIC FALLBACK VIEW -->
+          <div id="view-generic" class="dashboard-view" style="display: none">
+            <div class="page-header">
+              <h2 id="generic-view-title">Dashboard Feature</h2>
+              <p class="subtitle">Feature view details.</p>
+            </div>
+            <div class="content-panel">
+              <p class="text-muted">Content for this section will load here.</p>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
 
-    <footer class="footer">
-      <div class="footer-content">
-        <div>
-          <h3>NepBill</h3>
-          <p>Modern billing and business management solution.</p>
-        </div>
-
-        <div>
-          <h4>Contact</h4>
-          <p>Help Line: 98563481705</p>
-          <p>Putalisadak, Kathmandu</p>
-        </div>
-
-        <div>
-          <h4>Links</h4>
-          <a href="/">Home</a><br />
-          <a href="/login.html">Login</a><br />
-          <a href="/signup.html">Sign Up</a>
-        </div>
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <span>&copy; 2026 NepBill</span>
+        <ul class="footer-links">
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
       </div>
-
-      <div class="footer-bottom">© 2026 NepBill. All Rights Reserved.</div>
     </footer>
+
+    <script src="/AccountTypes.js" type="module"></script>
+    <script src="/index.js" type="module"></script>
+    <script src="/SideBar.js" type="module"></script>
+    <script src="/Account.js" type="module"></script>
   </body>
-  <script src="/index.js" defer></script>
-  <script src="/Account/Account.js" defer></script>
 </html>

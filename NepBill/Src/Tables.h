@@ -22,7 +22,11 @@ namespace NepBill
     static constexpr uint32_t SalaryPaymentDescriptionLength = 256;
     static constexpr uint32_t kCountryNameLength = 128;
     static constexpr uint32_t kPasswordHashLength = 128;
+    static constexpr uint32_t kPasswordLength = 64;
+    static constexpr uint32_t kSaltBytesLength = 16;
+    static constexpr uint32_t kNonceBytesLength = 24;
     static constexpr uint32_t kContactMessageLength = 2048;
+    static constexpr uint32_t kSecretKeySize = 32;
 
     enum class ContactSubjectType
     {
@@ -33,6 +37,77 @@ namespace NepBill
         Other
     };
 
+    enum class AccountIdType
+    {
+        None,
+        PhoneNumber,
+        Email
+    };
+
+    // Convert Enum to String
+    constexpr const char *ContactSubjectTypeToStr(ContactSubjectType role) noexcept
+    {
+        switch (role)
+        {
+        case ContactSubjectType::RegisterAccount:
+        {
+            return "RegisterAccount";
+        }
+        case ContactSubjectType::Issue:
+        {
+            return "Issue";
+        }
+        case ContactSubjectType::Help:
+        {
+            return "Help";
+        }
+        case ContactSubjectType::Billing:
+        {
+            return "Billing";
+        }
+        case ContactSubjectType::Other:
+        {
+            return "Other";
+        }
+        default:
+            return "Unknown";
+        }
+    }
+
+    // Convert String to Enum
+    constexpr std::optional<ContactSubjectType> StrToContactSubjectType(const char *role_str) noexcept
+    {
+        if (role_str == nullptr)
+        {
+            return std::nullopt;
+        }
+
+        const std::string_view str(role_str);
+
+        if (str == "RegisterAccount")
+        {
+            return ContactSubjectType::RegisterAccount;
+        }
+        if (str == "Issue")
+        {
+            return ContactSubjectType::Issue;
+        }
+        if (str == "Help")
+        {
+            return ContactSubjectType::Help;
+        }
+        if (str == "Billing")
+        {
+            return ContactSubjectType::Billing;
+        }
+        if (str == "Other")
+        {
+            return ContactSubjectType::Other;
+        }
+
+        return std::nullopt; // Returns empty if string matches nothing
+    }
+
     enum class ContactStates
     {
         None,
@@ -40,6 +115,37 @@ namespace NepBill
         Handled,
         Failed
     };
+
+    // Convert enum to string
+    inline std::string ContactStatesToStr(ContactStates state)
+    {
+        switch (state)
+        {
+        case ContactStates::None:
+            return "None";
+        case ContactStates::Processing:
+            return "Processing";
+        case ContactStates::Handled:
+            return "Handled";
+        case ContactStates::Failed:
+            return "Failed";
+        }
+        return "Unknown";
+    }
+
+    // Convert string to enum (using std::optional for safety)
+    inline std::optional<ContactStates> StrToContactStates(const std::string &str)
+    {
+        if (str == "None")
+            return ContactStates::None;
+        if (str == "Processing")
+            return ContactStates::Processing;
+        if (str == "Handled")
+            return ContactStates::Handled;
+        if (str == "Failed")
+            return ContactStates::Failed;
+        return std::nullopt; // Invalid string case
+    }
 
     enum class AccountRoles : uint32_t
     {
@@ -54,6 +160,58 @@ namespace NepBill
         Admin,
     };
 
+    // Convert Enum to String
+    constexpr const char *AccountRolesToStr(AccountRoles role) noexcept
+    {
+        switch (role)
+        {
+        case AccountRoles::None:
+            return "None";
+        case AccountRoles::BusinessOwner:
+            return "BusinessOwner";
+        case AccountRoles::BusinessManager:
+            return "BusinessManager";
+        case AccountRoles::BusinessReceptionist:
+            return "BusinessReceptionist";
+        case AccountRoles::BusinessAccountant:
+            return "BusinessAccountant";
+        case AccountRoles::BusinessInventorManager:
+            return "BusinessInventorManager";
+        case AccountRoles::BusinessStaff:
+            return "BusinessStaff";
+        case AccountRoles::BusinessKitchen:
+            return "BusinessKitchen";
+        case AccountRoles::Admin:
+            return "Admin";
+        default:
+            return "Unknown";
+        }
+    }
+
+    // Convert String to Enum
+    constexpr std::optional<AccountRoles> StrToAccountRoles(const char *role_str) noexcept
+    {
+        if (role_str == "None")
+            return AccountRoles::None;
+        if (role_str == "BusinessOwner")
+            return AccountRoles::BusinessOwner;
+        if (role_str == "BusinessManager")
+            return AccountRoles::BusinessManager;
+        if (role_str == "BusinessReceptionist")
+            return AccountRoles::BusinessReceptionist;
+        if (role_str == "BusinessAccountant")
+            return AccountRoles::BusinessAccountant;
+        if (role_str == "BusinessInventorManager")
+            return AccountRoles::BusinessInventorManager;
+        if (role_str == "BusinessStaff")
+            return AccountRoles::BusinessStaff;
+        if (role_str == "BusinessKitchen")
+            return AccountRoles::BusinessKitchen;
+        if (role_str == "Admin")
+            return AccountRoles::Admin;
+        return std::nullopt; // Returns empty if string matches nothing
+    }
+
     struct ContactFormInfo
     {
         uint32_t Id = 0;
@@ -64,6 +222,34 @@ namespace NepBill
         ContactSubjectType Type;
         struct tm CreatedAt;
         ContactStates State = ContactStates::None;
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    struct PdfDocument
+    {
+        uint32_t Id = 0;
+        UUID UniqueId;
+        std::array<char, kNameLength> Name;
+        std::vector<uint8_t> Data; // Holds the raw PDF binary stream
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    struct Image
+    {
+        uint32_t Id = 0;
+        UUID UniqueId;
+        std::array<char, kNameLength> Name;
+        std::vector<uint8_t> Data; // Manages binary data and stores size automatically
 
         static const char *GetCreateQuery();
         static const char *GetInsertQuery();
@@ -91,11 +277,49 @@ namespace NepBill
         UUID ContactID;
 
         std::array<char, kNameLength> Name = {0};
+        std::array<char, kNameLength> Ownername = {0};
         std::array<char, kPhoneNumberLength> PrimaryPhoneNumber = {0}; // owner's phone, for contact/billing
         std::array<char, kVatNumberLength> VatNumber = {0};
         std::array<char, kPanNumberLength> PanNumber = {0};
         std::array<char, kCountryNameLength> Country = {0};
         std::array<char, kAddressLength> Address = {0};
+        std::array<char, kPasswordLength> Password = {0};
+        UUID VatCertificatePdf;
+        UUID PanPdf;
+        UUID BusinessFrontImage;
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    struct Account
+    {
+        uint32_t Id = 0;
+        UUID UniqueId;
+        UUID BusinessID;    // which business this account belongs to
+        UUID ContactFormID; // the RegisterAccount submission that created this account
+        UUID ParentID = UUID::InvalidUUID();
+        std::array<char, kPasswordHashLength> PasswordHash = {0};
+        AccountRoles Role = AccountRoles::None;
+        bool IsActive = true;
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    struct EncryptedSecret
+    {
+        UUID AccountID; // Links back to Account.UniqueId
+        std::array<unsigned char, kSaltBytesLength> KeySalt = {0};
+        std::array<unsigned char, kNonceBytesLength> EncryptionNonce = {0};
+        std::array<unsigned char, kPasswordHashLength> Ciphertext = {0};
+        std::size_t ActualCiphertextSize = 0;
 
         static const char *GetCreateQuery();
         static const char *GetInsertQuery();
@@ -117,6 +341,22 @@ namespace NepBill
         static const char *GetName();
     };
 
+    struct FeaturePermission
+    {
+        uint32_t Id = 0;
+        UUID UniqueId;
+        UUID BusinessID;
+        AccountRoles Role;
+        std::array<char, kNameLength> FeatureKey = {0}; // e.g. "view_salary", "cancel_booking"
+        bool IsAllowed = true;
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
     enum BillingUsage : uint32_t
     {
         Hotel = 1,
@@ -129,13 +369,7 @@ namespace NepBill
     {
         uint32_t Id = 0;
         UUID UniqueId;
-        std::array<char, kNameLength> Name = {0};
-        std::array<char, kPhoneNumberLength> PrimaryPhoneNumber = {0}; // owner's phone, for contact/billing
-        std::array<char, kVatNumberLength> VatNumber = {0};
-        std::array<char, kPanNumberLength> PanNumber = {0};
-        std::array<char, kCountryNameLength> Country = {0};
-        std::array<char, kAddressLength> Address = {0};
-        UUID ParentID = UUID::InvalidUUID();
+        UUID RegisterAccountFormId;
         struct tm CreatedAt;
 
         static const char *GetCreateQuery();

@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NepBill</title>
-
+    <title>Account - NepBill</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
@@ -12,7 +11,7 @@
     <header>
       <div class="header-container">
         <div class="nav-left">
-          <a href="#" class="brand">Nep<span>Bill</span></a>
+          <a href="/" class="brand">Nep<span>Bill</span></a>
           <ul class="nav-links">
             <li><a href="#products">Products</a></li>
             <li><a href="#partners">Partners</a></li>
@@ -25,25 +24,18 @@
             <option value="en">English</option>
             <option value="np">Nepali</option>
           </select>
-          <div id="AccountHeaderSection">
-            <a href="/Login.html" class="btn-login">Login</a>
-            <a href="/ContactUs.html" class="btn-primary">Contact Us</a>
-          </div>
+          <div id="AccountHeaderSection"></div>
         </div>
       </div>
     </header>
 
-    <!-- MAIN HERO -->
-    <main>
-      <h1 class="hero-title">Welcome to NepBill</h1>
-      <p class="hero-subtitle">
-        Efficient invoicing, record management, and customer billing built for
-        quick daily workflows.
-      </p>
+    <!-- BOXED MAIN CONTAINER -->
+    <main class="dashboard-wrapper">
+      <div class="dashboard-box">
+        <aside id="sidebar-container" class="sidebar"></aside>
 
-      <div class="hero-actions">
-        <a href="#get-started" class="btn-primary">Get Started</a>
-        <a href="#docs" class="btn-secondary">View Documentation</a>
+        <!-- DASHBOARD CONTENT (INSIDE BOX) -->
+        <section class="dashboard-content"> DASHBOARD</section>
       </div>
     </main>
 
@@ -58,6 +50,11 @@
         </ul>
       </div>
     </footer>
-    <script src="/index.js" defer></script>
+
+    <script src="/AccountTypes.js" type="module"></script>
+    <script src="/index.js" type="module"></script>
+    <script src="/Account.js" type="module"></script>
+    <script src="/Admin/Dashboard.js" defer></script>
+    <script src="/SideBar.js" type="module"></script>
   </body>
 </html>

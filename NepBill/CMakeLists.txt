@@ -1,4 +1,4 @@
-add_executable(NepBill Main.cpp Src/UUID.cpp Src/NepalDateConverter.cpp Src/Tables.cpp Src/NepBill.cpp)
+add_executable(NepBill Main.cpp Src/UUID.cpp Src/EncryptionManager.cpp Src/NepalDateConverter.cpp Src/Routers.cpp Src/Tables.cpp Src/NepBill.cpp)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wno-error=c++11-narrowing)
@@ -10,6 +10,7 @@ target_include_directories(
     NepBill PRIVATE
     Libs/asio/include
     Libs/Crow/include
+    Libs/LibSodium/libsodium/src/libsodium/include/sodium
     Src/
     Libs/Libpqxx/include
     Libs/JwtCpp/include
@@ -24,10 +25,11 @@ set(PostgreSQL_INCLUDE_DIR "D:/Downloads/PostgressSQL/include")
 
 add_subdirectory("Libs/Crow/")
 add_subdirectory("Libs/Libpqxx/")
+add_subdirectory("Libs/LibSodium/")
 
 target_compile_features(NepBill PRIVATE cxx_std_20)
 
-target_link_libraries(NepBill kernel32 Crow ws2_32 iphlpapi mswsock pqxx OpenSSL::Crypto OpenSSL::SSL)
+target_link_libraries(NepBill kernel32 Crow ws2_32 iphlpapi mswsock pqxx OpenSSL::Crypto OpenSSL::SSL sodium)
 
 target_precompile_headers(NepBill PRIVATE
     Src/PCH.h

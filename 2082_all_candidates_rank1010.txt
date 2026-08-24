@@ -1,0 +1,487 @@
+======================================================================================================================================================
+ALL CANDIDATES WITH IOE RANK <= 1010 (SORTED BY IOE RANK ASCENDING)
+======================================================================================================================================================
+
+Order  SN    App ID    Name                    Gender  District          IOE Rank  p1  p2  p3  p4  p5  p6  p7  p8  p9  p10 p11 p12 p13 p14 Quota               
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+1      93    2269      ABHISHEK KARN           Male    Mahottari         14        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+2      632   4445      MUKESH BHATT            Male    Kailali           29        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+3      384   804       DEV CHANDRA ADHIKARI    Male    Tanahun           33        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+4      1271  4886      SUBASH SHRESTHA         Male    Dhading           47        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+5      659   3178      NIKIT SHRESTHA          Male    Rupandehi         50        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+6      627   3578      MOHIT AWASTHI           Male    Baitadi           51        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+7      743   312       PRABODH BHURTEL         Male    Nawalparasi East  54        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+8      503   3864      JASMAN POUDEL           Male    Tanahun           70        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+9      249   9897      AVISHEK KUMAR SAH       Male    Siraha            75        11  7.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+10     505   433       JAYADHARMA SAPKOTA      Male    Morang            80        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+11     1426  1903      YUV RAJ KHANAL          Male    Arghakhanchi      83        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+12     728   3525      PAWAN NEUPANE           Male    Kapilbastu        84        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+13     342   8061      BIRENDRA MAHARA         Male    Kanchanpur        89        11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+14     1409  4451      VISION SAPKOTA          Male    Chitawan          101       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+15     435   1433      DIWAS POUDEL            Male    Bara              105       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+16     1417  1531      YOGESH ALE MAGAR        Male    Sindhuli          107       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+17     350   2708      BISHESH KHATRI          Male    Kathmandu         109       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+18     681   8305      NIRNAYA SINGH BASNET    Male    Dailekh           112       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+19     95    100       ABHISHEK THAGUNNA       Male    Darchula          113       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+20     1012  1315      SAKSHAM GIRI            Male    Parsa             115       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+21     1357  2971      SWASTIK BAHADUR BAJRACHARYAMale    Palpa             116       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+22     1363  3180      SWIKRIT SAPKOTA         Male    Rupandehi         122       11  7.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+23     1403  5643      UTSAV KHANAL            Male    Kapilbastu        124       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+24     734   268       PRABESH DHAKAL          Male    Gulmi             126       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+25     698   2203      NITESH CHHETRI          Male    Bardiya           127       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+26     1427  2591      YUVRAJ TIMILSENA        Male    Surkhet           132       9   10.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+27     604   5836      MAHENDRA SHARMA         Male    Jajarkot          134       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+28     537   2771      KAUSHAL PANDEY          Male    Kavrepalanchok    135       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+29     568   2000      KRITARTHA ADHIKARI      Male    Kathmandu         137       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+30     378   47        DARSHANA GAHA           Female  Palpa             139       7   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+31     328   6706      BIPAN SHRESTHA          Male    Sindhupalchok     140       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+32     272   4636      BHARAT OLI              Male    Salyan            142       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+33     759   1751      PRAKASH KUMAR BADAILA   Male    Kailali           143       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+34     1160  1862      SHIKHAR G.C.            Male    Pyuthan           144       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+35     324   2908      BINAYAK ROKA CHHETRI    Male    Baglung           146       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+36     848   96        PRITHAK BAJRACHARYA     Male    Bhaktapur         151       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+37     323   2264      BINAYAK NEUPANE         Male    Kaski             155       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+38     410   2362      DINESH THAGUNNA         Male    Kanchanpur        156       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+39     353   4838      BISHNU BAHADUR PRADHAN  Male    Morang            157       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+40     129   2336      ALIZ BHATTARAI          Male    Jhapa             161       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+41     525   6542      KAMAL GHARTI MAGAR      Male    Arghakhanchi      163       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+42     1260  2279      SRIJEEB WAGLE           Male    Chitawan          166       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+43     1376  4688      TRIJAN KOJU             Male    Bhaktapur         169       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+44     755   2844      PRAJWOL ADHIKARI        Male    Morang            174       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+45     433   1201      DIWAKAR TULADHAR        Male    Kathmandu         178       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+46     1015  193       SAKSHAM LAMICHHANE      Male    Kavrepalanchok    179       11  2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+47     684   6890      NISCHAL CHAND           Male    Kanchanpur        180       11  7.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+48     248   1361      AVISHEK DEVKOTA         Male    Kathmandu         181       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+49     1052  82        SAMMRIDDHA THAPA        Male    Kaski             182       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+50     1325  108       SUMIN SHRESTHA          Male    Ramechhap         186       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+51     1124  448       SATKAR PURI             Male    Gulmi             188       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+52     833   589       PRAZEN MAHARJAN         Male    Kathmandu         192       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+53     866   3177      PUSKAR GYAWALI          Male    Rupandehi         193       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+54     392   836       DHIRAJ KUMAR JHA        Male    Saptari           194       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+55     1225  736       SIPENDRA YADAV          Male    Siraha            195       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+56     349   1124      BISHESH CHAPAGAIN       Male    Chitawan          196       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+57     19    4177      AAKRISH MISHRA          Male    Makwanpur         203       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+58     7     844       AADITYA KUMAR CHAUDHARY Male    Sarlahi           204       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+59     1278  443       SUBIGYA TRIPATHI        Male    Kaski             207       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+60     1163  5152      SHIRSHAK RAJBAHAK       Male    Kathmandu         209       3   4.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+61     585   4426      KUSHAL POKHAREL         Male    Sarlahi           211       11  12.07.0 -   -   -   -   -   -   -   -   -   -   -   None                
+62     380   6364      DEBENDRA KATHAYAT       Male    Kailali           213       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+63     501   192       JANARJAN AIR            Male    Baitadi           214       9   15.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+64     1085  6816      SANDIP DHAKAL           Male    Syangja           215       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+65     343   2990      BISHAL BANJADE          Male    Arghakhanchi      218       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+66     233   2714      ASHWIN DAHAL            Male    Kathmandu         219       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+67     1030  59        SAMBAT SHAHI            Male    Myagdi            222       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+68     918   6904      RIDAM GIRI              Male    Bhaktapur         223       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+69     690   113       NISHAN NEUPANE          Male    Jhapa             224       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+70     753   4023      PRAJWAL KHADKA          Male    Gulmi             225       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+71     1043  5894      SAMIR KAPADI            Male    Kailali           226       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+72     449   1226      GANESH RIJAL            Male    Terhathum         227       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+73     300   1495      BICKEY THARU            Male    Jhapa             233       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+74     152   6766      ANANTA RIJAL            Male    Kathmandu         234       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+75     135   4099      AMAN PAUDEL             Male    Chitawan          241       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+76     320   40        BINAMRA BHANDARI        Male    Bhaktapur         245       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+77     370   6254      CHANDRA KANT SHARMA     Male    Sunsari           251       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+78     1128  197       SAUGAT NEUPANE          Male    Rupandehi         252       7   12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+79     1168  6227      SHIV GAIRE              Male    Rupandehi         253       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+80     649   4592      NAVIN AVIRAL PUN MAGAR  Male    Rolpa             254       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+81     961   1430      ROJINA SHRESTHA         Female  Sindhuli          255       3   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+82     101   1380      ABIRAL KHAREL           Male    Jhapa             256       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+83     24    796       AARJU POKHREL           Female  Ilam              259       1   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+84     1033  4325      SAMEER SAH              Male    Siraha            260       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+85     882   905       RAJ SHRESTHA            Male    Palpa             261       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+86     365   2165      BIYAMSON DHAKAL         Male    Morang            263       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+87     1311  167       SULAV NEUPANE           Male    Rupandehi         266       7   12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+88     766   1738      PRANAV SHARMA           Male    Mahottari         268       11  7.0 -   -   -   -   -   -   -   -   -   -   -   -   RQ,Madheshi         
+89     444   3789      ERICA PRAJAPATI         Female  Bhaktapur         269       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+90     176   1219      ANMOL SUBEDI            Male    Kaski             273       11  12.07.0 -   -   -   -   -   -   -   -   -   -   -   None                
+91     1313  3917      SULAV NEUPANE           Male    Dolakha           275       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+92     1205  3107      SHUVA AASHISH GYAWALI   Male    Gulmi             278       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+93     1137  4802      SAURAV KARN             Male    Dhanusha          279       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+94     260   3038      AYUSH SUBEDI            Male    Kaski             282       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+95     1173  4158      SHIVAM PATEL            Male    Rautahat          284       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+96     1412  3469      YALISHA BK              Female  Rukum West        287       1   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+97     1120  3043      SASHANK BHURTEL         Male    Rupandehi         289       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+98     44    2287      AASHUTOSH ADHIKARI      Male    Dhading           292       7   12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+99     443   5575      ENJAL DHAKAL            Male    Chitawan          293       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+100    1330  1023      SURAJ BISTA             Male    Sunsari           296       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+101    1148  3628      SEEJU NIRAULA           Female  Kathmandu         297       1   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+102    1069  1792      SAMYANK THAPA MAGAR     Male    Gorkha            298       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+103    306   2677      BIDHAN YADAV            Male    Saptari           300       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+104    1000  2458      SAHIL GHIMIRE           Male    Morang            307       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+105    1149  56        SHAHIL THAPA            Male    Rupandehi         308       7   1.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+106    1129  5887      SAUGAT RIJAL            Male    Dhading           309       11  12.07.0 -   -   -   -   -   -   -   -   -   -   -   None                
+107    1334  3891      SURAKSHA KARKI          Female  Khotang           310       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+108    840   829       PRINCE KUMAR SHAH       Male    Jhapa             313       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+109    584   284       KUSHAL CHHETRI          Male    Tanahun           314       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+110    1255  1932      SPARSHA BARTAULA        Male    Makwanpur         315       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+111    390   2163      DHIRAJ BHATTARAI        Male    Jhapa             318       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+112    311   3715      BIJAN DAWADI            Male    Kathmandu         319       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+113    266   2099      BARSHAD PANDAY          Male    Jhapa             321       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+114    141   150       AMOL BHATTARAI          Male    Chitawan          323       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+115    187   3456      ANUP KUMAR AYADI        Male    Bajhang           325       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+116    194   2988      ANURODH BASNET          Male    Kathmandu         326       11  12.07.0 -   -   -   -   -   -   -   -   -   -   -   None                
+117    65    168       AAYUSH JOSHI            Male    Kathmandu         327       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+118    1040  6083      SAMIP RAJ SAH           Male    Dhanusha          329       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+119    1317  7071      SUMAN POUDEL            Male    Rupandehi         330       12  7.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+120    282   178       BHUWAN RAJ JOSHI        Male    Darchula          331       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+121    984   3743      RUPESH KUMAR MANDAL     Male    Dhanusha          333       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+122    1034  7032      SAMEK BHANDARI          Male    Doti              334       11  7.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+123    32    2856      AARYAN SINGH BHANDARI   Male    Baitadi           336       12  11.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+124    1400  600       UTSAB BASTAKOTI         Male    Chitawan          337       7   9.0 11.0-   -   -   -   -   -   -   -   -   -   -   None                
+125    1035  3397      SAMESH POKHREL          Male    Panchthar         340       11  1.0 12.02.0 -   -   -   -   -   -   -   -   -   -   None                
+126    541   3900      KESHAV DEO              Male    Saptari           341       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+127    752   487       PRAGYAN SHRESTHA        Male    Tanahun           342       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+128    293   1012      BIBEK POUDEL            Male    Tanahun           344       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+129    836   271       PREM ACHARYA            Male    Rupandehi         345       12  8.0 19.0-   -   -   -   -   -   -   -   -   -   -   None                
+130    281   2125      BHUWAN PRASAD LAMSAL    Male    Palpa             346       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+131    879   880       RAJ BHETWAL             Male    Kavrepalanchok    348       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+132    127   9969      ALFRED DAHAL            Male    Kathmandu         351       11  7.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+133    804   131       PRASIN MAHARJAN         Male    Kathmandu         353       1   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+134    1254  757       SPARSH POKHAREL         Male    Morang            354       7   12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+135    476   4480      HIMAL ACHARYA           Male    Parbat            356       11  7.0 12.08.0 -   -   -   -   -   -   -   -   -   -   None                
+136    1221  206       SIMON BHATTARAI         Male    Kathmandu         361       11  9.0 12.0-   -   -   -   -   -   -   -   -   -   -   None                
+137    377   485       DARPAN SHAHI            Male    Surkhet           362       11  12.07.0 -   -   -   -   -   -   -   -   -   -   -   None                
+138    193   8350      ANURAG KARKI            Male    Saptari           363       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+139    94    1939      ABHISHEK KUMAR YADAV    Male    Mahottari         364       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+140    79    282       ABASAR BASYAL           Male    Arghakhanchi      366       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+141    981   1182      RULES MEHTA             Male    Sunsari           368       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+142    373   2285      CREATION DUWAL          Male    Bhaktapur         371       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+143    781   1556      PRARUP K.C.             Male    Okhaldhunga       372       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+144    269   881       BASANTA KARKI           Male    Morang            374       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+145    330   2922      BIPERSON POUDEL         Male    Parbat            376       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+146    655   4999      NETRAJUNG BASNET        Male    Solukhumbu        377       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+147    357   4943      BISHWAS DHAKAL          Male    Gulmi             378       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+148    38    523       AASHISH DANGAL          Male    Kavrepalanchok    381       11  7.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+149    485   4213      ISHA BUDHATHOKI         Female  Lalitpur          385       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+150    889   1441      RAJESH POUDEL           Male    Arghakhanchi      387       12  1.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+151    1171  9427      SHIVAM KUMAR PAJIYAR    Male    Dhanusha          392       7   1.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+152    86    2785      ABHINAV SUBEDI          Male    Parbat            393       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+153    861   3924      PURUSHOTTAM GUPTA       Male    Parsa             394       7   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+154    432   1959      DIWAKAR GHIMIRE         Male    Chitawan          396       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+155    232   1350      ASHUTOSH SUBEDI         Male    Surkhet           400       12  7.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+156    405   4749      DIKSHYANTA KARKI        Male    Palpa             403       12  7.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+157    742   683       PRABIN MAHARA           Male    Dang              405       12  1.0 2.0 -   -   -   -   -   -   -   -   -   -   -   None                
+158    461   5336      GOKARNA NATH YOGI       Male    Baitadi           407       11  12.07.0 8.0 1.0 2.0 -   -   -   -   -   -   -   -   None                
+159    895   3458      RAMIT SHRESTHA          Male    Morang            408       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+160    225   4154      ASEEM SUBEDI            Male    Parbat            410       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+161    273   1626      BHASKAR ARYAL           Male    Syangja           412       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+162    76    331       AAYUSH TIMILSINA        Male    Syangja           413       12  1.0 9.0 -   -   -   -   -   -   -   -   -   -   -   None                
+163    1049  4845      SAMIR SHRESTHA          Male    Kathmandu         414       7   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+164    1299  1464      SUJAN PANTHEE           Male    Rupandehi         416       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+165    985   6166      RUPESH SAUD             Male    Lalitpur          417       1   12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+166    326   7624      BINOD CHAPAGAIN         Male    Nawalparasi East  418       1   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+167    26    3310      AAROGYA NEPAL           Male    Dailekh           419       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+168    904   761       RATIONAL GYAWALI        Male    Arghakhanchi      421       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+169    496   367       JAMES THAPA             Male    Rupandehi         422       1   -   -   -   -   -   -   -   -   -   -   -   -   -   IOE Reserverd       
+170    497   367       JAMES THAPA             Male    Rupandehi         422       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+171    870   7214      RABIN PATHAK            Male    Nuwakot           423       11  12.07.0 -   -   -   -   -   -   -   -   -   -   -   None                
+172    986   5506      SABIGYA ADHIKARI        Male    Sindhuli          425       7   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+173    388   809       DEWASHISH MAN JOSHI     Male    Lalitpur          427       11  12.07.0 8.0 -   -   -   -   -   -   -   -   -   -   None                
+174    35    154       AASHISH BASNET          Male    Sindhuli          428       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+175    1026  3729      SALINA SHRESTHA         Female  Gorkha            429       3   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+176    518   186       JONSON KATWAL           Male    Okhaldhunga       431       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+177    420   1699      DIPESH DAHAL            Male    Banke             432       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+178    543   8762      KIRAN BASNET            Male    Arghakhanchi      434       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+179    397   811       DIJUL BHANDARI          Male    Kailali           435       7   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+180    59    4232      AAYUSH BHANDARI         Male    Bhaktapur         436       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+181    726   4069      PAWAN KUMAR AWASTHI     Male    Kanchanpur        437       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+182    1235  3761      SMIRTEE BUDHA           Female  Surkhet           438       1   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+183    228   2775      ASHISH GIRI             Male    Pyuthan           440       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+184    203   743       ANWESHAN OJHA           Male    Kaski             442       3   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+185    993   4447      SACHIN SHRESTHA         Male    Tanahun           443       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+186    846   4796      PRITAM ADHIKARI         Male    Nuwakot           445       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+187    609   1004      MANIKA POUDEL           Female  Jhapa             447       11  7.0 12.08.0 -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+188    1123  3402      SATISH KUMAR            Male    Rautahat          448       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+189    318   7449      BIKASH LAMA             Male    Kavrepalanchok    450       1   12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+190    737   10237     PRABIGYA ACHARYA        Male    Makwanpur         451       11  7.0 8.0 -   -   -   -   -   -   -   -   -   -   -   None                
+191    1418  219       YOGESH POUDEL           Male    Kaski             452       11  12.01.0 2.0 -   -   -   -   -   -   -   -   -   -   None                
+192    1365  3947      SWORNIM PANDEY          Male    Arghakhanchi      456       12  8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+193    195   2605      ANUSANDHAN BHATTARAI    Male    Sankhuwasabha     460       11  1.0 12.0-   -   -   -   -   -   -   -   -   -   -   None                
+194    883   4055      RAJANISH BHATTARAI      Male    Siraha            461       11  2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+195    51    2659      AAYAM PAUDYAL           Male    Jhapa             462       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+196    58    1203      AAYUSH BHANDARI         Male    Gulmi             463       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+197    1328  6032      SUNASH MAGAR            Male    Okhaldhunga       464       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+198    966   2422      ROSHAN GYAWALI          Male    Gulmi             466       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+199    1059  959       SAMRAT PRATAP SINGH     Male    Kathmandu         467       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+200    1187  4583      SHREEYA ACHARYA         Female  Surkhet           468       11  12.07.0 8.0 -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+201    534   5795      KARUN RAJ RAUT          Male    Bara              472       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+202    1008  152       SAKAR KARKI             Male    Bhojpur           473       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+203    11    3650      AAGAMAN PAUDEL          Male    Parbat            475       12  1.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+204    222   1937      ARYAN KHADKA            Male    Chitawan          479       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+205    427   2335      DIPIN SHRESTHA          Male    Tanahun           480       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+206    440   245       DIWASH PAUDEL           Male    Bardiya           487       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+207    620   109       MEDINA BHANDARI         Female  Jhapa             491       1   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+208    66    9197      AAYUSH KAFLE KHATRI     Male    Dolakha           496       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+209    37    1453      AASHISH CHAUDHARY       Male    Dang              497       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+210    446   5851      EZONE KC                Male    Banke             500       12  7.0 8.0 -   -   -   -   -   -   -   -   -   -   -   None                
+211    831   8059      PRAYUSH LAMSAL          Male    Nawalparasi West  501       12  7.0 8.0 -   -   -   -   -   -   -   -   -   -   -   None                
+212    948   5449      ROCHAK BASKOTA          Male    Dhading           503       9   10.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+213    515   1431      JIGYASHA SAPKOTA        Female  Morang            505       1   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+214    307   1358      BIDHATA BHUSAL          Female  Kapilbastu        507       11  7.0 12.0-   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+215    1340  7412      SUSHANT GHIMIRE         Male    Nawalparasi East  508       12  1.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+216    338   5845      BIRAJ BHATTA            Male    Kailali           509       1   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+217    484   6259      ISHA BHUSAL             Female  Syangja           510       11  12.07.0 -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+218    1305  6672      SUJESH SHRESTHA         Male    Tanahun           512       12  7.0 9.0 -   -   -   -   -   -   -   -   -   -   -   None                
+219    732   1734      POOJA ADHIKARI          Female  Siraha            514       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+220    1279  4101      SUBITOSH NAPIT          Male    Kathmandu         515       3   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+221    1413  5215      YASMIN KHATUN           Female  Parsa             516       1   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+222    1387  2047      UJWAL POUDEL            Male    Tanahun           518       1   9.0 15.0-   -   -   -   -   -   -   -   -   -   -   None                
+223    183   153       ANUJ SAPKOTA            Male    Kathmandu         520       12  7.0 8.0 -   -   -   -   -   -   -   -   -   -   -   None                
+224    1112  2374      SARTHAK ACHARYA         Male    Kathmandu         521       11  12.07.0 8.0 -   -   -   -   -   -   -   -   -   -   None                
+225    122   1863      AJAY KUMAR SAH          Male    Mahottari         522       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+226    418   5383      DIPESH BARAL            Male    Sindhuli          523       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+227    675   2975      NIRDESHAN THAPA         Male    Arghakhanchi      524       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+228    1130  4297      SAUGAT SHRESTHA         Male    Okhaldhunga       526       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+229    863   6153      PURUSHOTTAM SAPKOTA     Male    Nawalparasi East  527       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+230    447   7802      GAGAN KATEL             Male    Solukhumbu        528       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+231    818   67        PRATIK SHARMA           Male    Baglung           529       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+232    150   62        ANAMOL PAUDEL           Male    Kaski             531       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+233    972   5111      ROSHAN SAPKOTA          Male    Sindhuli          532       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+234    33    2904      AARYAWART BHANDARI      Male    Morang            534       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+235    361   1540      BISHWO KHANAL           Male    Banke             537       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+236    1094  4004      SANJEEB SHARMA          Male    Rupandehi         539       12  8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+237    1191  6047      SHREYA TAMRAKAR         Female  Bhaktapur         541       11  7.0 -   -   -   -   -   -   -   -   -   -   -   -   RQ,Female, Adivashi/Janajati
+238    1301  994       SUJAN THAPA             Male    Tanahun           542       1   11.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+239    517   2225      JIWAN THAPA             Male    Jhapa             543       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+240    1319  4309      SUMAN SHARMA            Male    Pyuthan           544       9   19.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+241    28    1051      AAROHAN KHADKA          Male    Banke             545       12  8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+242    100   2301      ABIRAL GAUTAM           Male    Lalitpur          546       12  7.0 8.0 -   -   -   -   -   -   -   -   -   -   -   None                
+243    1039  3971      SAMIP PANDEY            Male    Arghakhanchi      548       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+244    1165  6222      SHISHIR POKHAREL        Male    Banke             550       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+245    441   6319      DWARIKA SINGH GHIMIRE   Male    Baglung           551       11  7.0 12.08.0 -   -   -   -   -   -   -   -   -   -   None                
+246    1204  3698      SHUBHAM SHRESTHA        Male    Kathmandu         553       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+247    490   201       ISHOR NEUPANE           Male    Jhapa             558       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+248    1164  639       SHISHEER RANA           Male    Surkhet           559       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+249    409   2516      DINESH SHRESTHA         Male    Chitawan          561       15  9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+250    990   337       SACHIN GAUTAM           Male    Gulmi             564       8   1.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+251    424   3286      DIPESH YADAV            Male    Saptari           565       11  12.07.0 8.0 -   -   -   -   -   -   -   -   -   -   None                
+252    1252  4267      SOYAM PANDEY            Male    Nawalparasi West  566       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+253    539   1861      KAVYESH JHA KAVI        Male    Rautahat          570       7   1.0 12.0-   -   -   -   -   -   -   -   -   -   -   None                
+254    216   358       ARYA LAMSAL             Male    Sunsari           571       1   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+255    1276  9989      SUBHASH KUMAR YADAV     Male    Mahottari         572       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+256    735   3569      PRABESH DHUNGANA        Male    Syangja           573       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+257    274   1666      BHASKAR SHARMA          Male    Dhanusha          575       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+258    1398  7050      UTPAL CHAPAGAIN         Male    Dhankuta          576       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+259    1371  451       TEJ BAHADUR DANUWAR     Male    Udayapur          578       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+260    1108  731       SARISH SHRESTHA         Male    Kathmandu         579       12  1.0 2.0 -   -   -   -   -   -   -   -   -   -   -   None                
+261    1287  488       SUDEEP SAPKOTA          Male    Sindhupalchok     585       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+262    1295  305       SUJAL PIYA              Male    Chitawan          586       12  8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+263    481   4437      INDRA SAUD              Male    Kailali           587       1   12.02.0 -   -   -   -   -   -   -   -   -   -   -   None                
+264    60    1382      AAYUSH BK               Male    Chitawan          588       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+265    89    1526      ABHISEK RAWAL           Male    Banke             590       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+266    312   1369      BIJAY GHIMIRE           Male    Rupandehi         591       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+267    12    421       AAGAMAN SHRESTHA        Male    Dhading           592       1   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+268    246   95        AVIGYA BELBASE          Female  Arghakhanchi      593       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+269    531   5187      KAPIL K.C               Male    Gulmi             597       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+270    739   1428      PRABIN GAUTAM           Male    Dang              598       9   1.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+271    1021  194       SAKSHI DEV              Female  Morang            599       11  -   -   -   -   -   -   -   -   -   -   -   -   -   RQ,Reserverd Quota, Female
+272    366   8984      BIYOG MAN DANGOL        Male    Nuwakot           601       1   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+273    1355  1772      SUYOG SEDHAI            Male    Lamjung           602       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+274    1425  8660      YUSUSH MAGAR            Male    Kathmandu         604       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+275    81    1423      ABHAYA CHAKRADHAR       Female  Kathmandu         608       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+276    581   4032      KUMUD BASNET            Male    Udayapur          610       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+277    996   582       SAFAL THAPA             Male    Nawalparasi West  612       11  -   -   -   -   -   -   -   -   -   -   -   -   -   RQ,Adivashi/Janajati
+278    810   6966      PRASUBH POKHAREL        Male    Kathmandu         613       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+279    869   8484      RABIN B.K.              Male    Gorkha            614       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+280    823   2195      PRATIMA SAH             Female  Siraha            616       11  12.01.0 7.0 -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+281    1333  3446      SURAJ RAM               Male    Kathmandu         617       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+282    1091  3776      SANIYA SALMAH           Female  Saptari           619       11  7.0 15.0-   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+283    838   7958      PRINCE ACHARYA          Male    Surkhet           621       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+284    598   1005      MABIN PANDEY            Male    Syangja           624       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+285    664   3961      NINGSAHANG LIMBU        Male    Lalitpur          625       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+286    45    4763      AASHUTOSH DAHAL         Male    Kathmandu         626       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+287    299   1632      BIBINA DHUNGANA         Female  Nawalparasi East  628       7   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+288    884   1071      RAJAT PAUDEL            Male    Kaski             629       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+289    1126  460       SAUGAT BHATTARAI        Male    Dhanusha          631       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+290    1042  7219      SAMIR GHIMIRE           Male    Makwanpur         632       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+291    694   1513      NISHAN SIGDEL           Male    Lalitpur          633       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+292    493   4572      JAGDISH SAH             Male    Siraha            634       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+293    669   2124      NIRAJ PANDEY            Male    Palpa             637       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+294    471   172       HARISH JOSHI            Male    Bajhang           638       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+295    1308  1816      SULAV ADHIKARI          Male    Chitawan          640       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+296    997   5081      SAFIAN BASHYAL          Male    Rupandehi         641       11  -   -   -   -   -   -   -   -   -   -   -   -   -   RQ,Others           
+297    951   141       ROHAN SHRESTHA          Male    Lalitpur          643       3   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+298    637   3121      NABIN CHAUDHARY         Male    Dang              645       9   10.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+299    1140  4711      SAURAV PAUDEL           Male    Parbat            646       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+300    1414  6639      YODIN TAMANG            Male    Morang            647       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+301    359   6983      BISHWAS GHIMIRE         Male    Lamjung           648       9   10.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+302    302   879       BIDHAN DHAKAL           Male    Bara              653       7   -   -   -   -   -   -   -   -   -   -   -   -   -   TU Reserverd        
+303    303   879       BIDHAN DHAKAL           Male    Bara              653       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+304    628   1168      MOHIT BHATTA            Male    Kailali           658       7   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+305    1032  2916      SAMEER DEVKOTA          Male    Makwanpur         659       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+306    1326  1768      SUMIT SHRESTHA          Male    Dolakha           660       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+307    22    1109      AAKRITI PANTA           Female  Baglung           664       11  12.01.0 2.0 7.0 8.0 -   -   -   -   -   -   -   -   Open, Female Quota  
+308    800   395       PRASIDDHA DAWADI        Male    Chitawan          665       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+309    277   5342      BHESHAJA SHARMA LAMICHHANEFemale  Bardiya           667       3   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+310    871   7098      RABINDRA KHADKA         Male    Doti              668       12  1.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+311    580   3081      KSHITIZ THAPA           Male    Lamjung           669       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+312    1143  57        SAURAV SHARMA           Male    Rupandehi         670       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+313    291   6406      BIBEK POKHREL           Male    Parbat            672       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+314    760   6093      PRAKRITI KUMARI SAH     Female  Bara              676       9   10.0-   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+315    1075  6753      SANAT RIMAL             Male    Dhanusha          677       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+316    263   7125      BANI KARKI              Female  Jhapa             679       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+317    923   9059      RIJAN PAYANGU LIMBU     Male    Terhathum         680       11  12.09.0 1.0 -   -   -   -   -   -   -   -   -   -   None                
+318    1011  390       SAKSHAM ADHIKARI        Male    Gorkha            682       12  8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+319    782   6849      PRASANNA BAHADUR ADHIKARIMale    Kaski             683       7   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+320    1428  4321      YUWARAJ ACHARYA         Male    Nawalparasi East  684       1   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+321    748   6959      PRADIP NIRAULA          Male    Sunsari           687       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+322    1002  4295      SAHIL SHRESTHA          Male    Parbat            690       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+323    125   2318      ALEX DHAKAL             Male    Chitawan          691       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+324    1044  1466      SAMIR KC                Male    Sunsari           694       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+325    1083  5615      SANDESH RAHU MAGAR      Male    Pyuthan           696       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+326    244   544       AVASH DHUNGEL           Male    Dolakha           698       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+327    579   8635      KSHITIZ SHRESTHA        Male    Gorkha            700       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+328    304   9910      BIDHAN KARKEE           Male    Panchthar         701       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+329    144   3508      AMRIT PAUDEL            Male    Surkhet           704       8   12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+330    880   1507      RAJ SHARMA              Male    Dhanusha          705       12  8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+331    362   2363      BISHWO POKHAREL         Male    Dolakha           711       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+332    488   3343      ISHANT BISTA            Male    Bhojpur           712       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+333    217   1442      ARYAN ADHIKARI          Male    Chitawan          714       12  1.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+334    754   2781      PRAJWAL SHRESTHA        Male    Nuwakot           717       1   8.0 2.0 -   -   -   -   -   -   -   -   -   -   -   None                
+335    499   7843      JANAK CHAUDHARY         Male    Kanchanpur        718       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+336    1138  1022      SAURAV NEPAL            Male    Sunsari           720       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+337    336   294       BIPUL MAHARJAN          Male    Kathmandu         722       11  12.07.0 8.0 -   -   -   -   -   -   -   -   -   -   None                
+338    1300  2157      SUJAN PHUYAL            Male    Khotang           723       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+339    251   4064      AYOOSH RAI              Male    Sankhuwasabha     724       11  7.0 12.01.0 8.0 2.0 -   -   -   -   -   -   -   -   None                
+340    1179  6050      SHRADDHA TAMRAKAR       Female  Bhaktapur         727       11  7.0 -   -   -   -   -   -   -   -   -   -   -   -   RQ,Female, Adivashi/Janajati
+341    843   1468      PRINCE SUBEDI           Male    Chitawan          730       7   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+342    844   4571      PRINCE YADAV            Male    Dhanusha          736       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+343    230   902       ASHISH KUMAR OJHA       Male    Mahottari         737       12  2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+344    661   2563      NIKITA SHRESTHA         Female  Dang              741       1   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+345    1372  3356      THOMAS UPRETY           Male    Jhapa             742       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+346    549   3441      KRIJAN MAHARJAN         Male    Lalitpur          744       7   8.0 12.0-   -   -   -   -   -   -   -   -   -   -   None                
+347    1019  4707      SAKSHAM SUBEDI          Male    Chitawan          746       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+348    369   3417      CHANDAN KUMAR YADAV     Male    Siraha            747       9   19.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+349    953   3128      ROHIT BHATT             Male    Kanchanpur        748       12  8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+350    1222  1923      SIMON MAJKOTI           Male    Nuwakot           750       1   -   -   -   -   -   -   -   -   -   -   -   -   -   RQ,Dalit            
+351    164   3554      ANJAN GARAUJA           Male    Dhading           751       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+352    1366  2888      SWOYAM SHRESTHA         Male    Gorkha            754       8   1.0 2.0 -   -   -   -   -   -   -   -   -   -   -   None                
+353    1286  4664      SUDARSHAN DANGI         Male    Salyan            756       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+354    1285  4664      SUDARSHAN DANGI         Male    Salyan            756       1   -   -   -   -   -   -   -   -   -   -   -   -   -   RQ,Others           
+355    333   5953      BIPIN RIJAL             Male    Arghakhanchi      758       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+356    686   3074      NISCHAL NEPAL           Male    Okhaldhunga       759       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+357    586   3172      KUSHAL RAJ JOSHI        Male    Kanchanpur        760       1   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+358    1095  2912      SANJOG KUNWAR           Male    Jhapa             761       9   19.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+359    4     6757      AADARSHA KHANAL         Male    Sindhupalchok     762       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+360    52    2293      AAYAM SHRESTHA          Male    Kathmandu         765       9   10.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+361    725   2176      PAWAN K.C.              Male    Salyan            766       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+362    404   1838      DIKSHYA JOSHI           Female  Baitadi           767       1   12.09.0 10.0-   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+363    1351  4811      SUYOG BHATTARAI         Male    Tanahun           770       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+364    610   4201      MANISH KUMAR MANDAL     Male    Dhanusha          771       12  7.0 9.0 -   -   -   -   -   -   -   -   -   -   -   None                
+365    131   4738      ALVIN BHATTARAI         Male    Kathmandu         772       9   10.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+366    309   3765      BIGYAN POUDEL           Male    Gorkha            778       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+367    166   2085      ANJILA JOSHI            Female  Bhaktapur         782       11  1.0 -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+368    1360  4164      SWATE PRASAD SUBEDI     Male    Kathmandu         786       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+369    1315  4460      SUMAN KHADKA            Male    Kathmandu         787       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+370    463   2325      GOVINDA MAHAT           Male    Jumla             788       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+371    608   3713      MANAVI KUWAR            Female  Bara              792       3   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+372    1142  3683      SAURAV SAUDEN           Male    Ilam              795       11  1.0 -   -   -   -   -   -   -   -   -   -   -   -   RQ,Adivashi/Janajati
+373    1141  3683      SAURAV SAUDEN           Male    Ilam              795       11  -   -   -   -   -   -   -   -   -   -   -   -   -   TU Reserverd        
+374    897   7444      RANGISH BAHADUR KHATRI  Male    Myagdi            796       1   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+375    710   7356      OSHAN SANGROULA         Male    Jhapa             798       7   8.0 9.0 -   -   -   -   -   -   -   -   -   -   -   None                
+376    1003  786       SAHITYA KARKI           Male    Terhathum         799       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+377    1084  8118      SANDESH SHAHI           Male    Jajarkot          800       1   -   -   -   -   -   -   -   -   -   -   -   -   -   RQ,Durgam Chettra, Others
+378    41    6958      AASHISH SAUD            Male    Kanchanpur        803       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+379    67    6783      AAYUSH KHANAL           Male    Sindhupalchok     804       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+380    1167  861       SHISHIR THAPA CHHETRI   Male    Dang              808       1   19.02.0 -   -   -   -   -   -   -   -   -   -   -   None                
+381    57    4084      AAYUSH BASTOLA          Male    Sunsari           810       12  7.0 8.0 -   -   -   -   -   -   -   -   -   -   -   None                
+382    341   970       BIRAT KAFLE             Male    Kathmandu         811       7   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+383    799   1099      PRASIDDHA BAGALE        Male    Chitawan          812       9   1.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+384    252   8724      AYURVA PRADHANANGA      Female  Kathmandu         814       12  -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+385    921   2078      RIJAN G.C.              Male    Nawalparasi East  816       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+386    635   458       NABARAJ KHANAL          Male    Dang              817       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+387    271   447       BHAGAWAN PAUDEL         Male    Chitawan          819       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+388    973   2994      ROSHAN TIMALSINA        Male    Lalitpur          820       1   -   -   -   -   -   -   -   -   -   -   -   -   -   RQ,Others           
+389    5     1726      AADESH BARAL            Male    Jhapa             821       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+390    321   574       BINAY POUDYAL           Male    Syangja           822       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+391    700   2749      NITISH ADHIKARI         Male    Arghakhanchi      823       12  8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+392    1265  1991      STUTI PANTHA            Female  Nawalparasi West  824       7   11.08.0 12.0-   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+393    1411  3016      YABIN SHRESTHA          Male    Lalitpur          826       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+394    417   5718      DIPERSON B.K.           Male    Kaski             827       19  20.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+395    34    2138      AASHIKA POUDEL          Female  Dhankuta          828       1   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+396    641   6040      NABIN THAPA             Male    Bajhang           829       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+397    301   1374      BIDHAN ARYAL            Male    Dhading           830       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+398    63    4935      AAYUSH DHAKAL           Male    Nawalparasi East  832       1   9.0 19.0-   -   -   -   -   -   -   -   -   -   -   None                
+399    149   5243      ANAMOL GHIMIRE          Male    Lalitpur          835       9   19.015.0-   -   -   -   -   -   -   -   -   -   -   None                
+400    1010  3775      SAKET ADHIKARI          Male    Bhaktapur         837       12  8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+401    778   37        PRANSHU PARAJULI        Male    Morang            838       7   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+402    1146  5083      SAYAN BHANDARI          Male    Kaski             840       1   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+403    464   244       GRESHY SHAKYA           Female  Kathmandu         843       9   10.0-   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+404    156   9980      ANIL PRASHAD BHATTA     Male    Kanchanpur        844       1   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+405    958   10375     ROJAN SHRESTHA          Male    Jhapa             845       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+406    472   1444      HARSH KUMAR JHA         Male    Mahottari         849       8   9.0 2.0 -   -   -   -   -   -   -   -   -   -   -   None                
+407    950   6389      ROHAN SHAH              Male    Sarlahi           852       7   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+408    540   5231      KESHAV BHATTARAI        Male    Kapilbastu        855       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+409    2     4957      AADARSH PANDEYA         Male    Kanchanpur        858       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+410    860   4111      PURUSHOTAM BHANDARI     Male    Sindhupalchok     859       1   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+411    29    1318      AARON NEUPANE           Male    Chitawan          860       2   7.0 8.0 -   -   -   -   -   -   -   -   -   -   -   None                
+412    512   1268      JENISHA REGMI           Female  Dhading           863       3   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+413    1270  2658      SUBASH RAWAL            Male    Banke             866       15  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+414    287   3101      BIBEK KUMAR SAH         Male    Dhanusha          867       1   -   -   -   -   -   -   -   -   -   -   -   -   -   RQ,Madheshi         
+415    929   1664      RISHAV KUMAR SINGH      Male    Sarlahi           868       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+416    459   2968      GHANASHYAM GAUTAM       Male    Rukum West        869       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+417    1408  5771      VESHRAJ DHUNGANA        Male    Kapilbastu        870       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+418    939   3023      RITISHMA SUBEDI GHARTI  Female  Myagdi            874       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+419    148   3667      AMUL THAPA MAGAR        Male    Lalitpur          876       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+420    218   5216      ARYAN BARAL             Male    Lamjung           880       7   8.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+421    160   5399      ANISH TIMALSINA         Male    Kavrepalanchok    881       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+422    827   6628      PRATYUSH ANAND KARN     Male    Rautahat          885       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+423    603   984       MAHENDRA MEHTA          Male    Sunsari           888       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+424    526   3479      KAMAL KHANAL            Male    Arghakhanchi      889       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+425    738   1396      PRABIN ADHIKARI         Male    Jhapa             891       9   19.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+426    912   1029      RAVI VERMA              Male    Nawalparasi West  892       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+427    1277  5563      SUBHECHCHHA TAMANG      Female  Kanchanpur        900       1   -   -   -   -   -   -   -   -   -   -   -   -   -   RQ,Female, Adivashi/Janajati
+428    1211  7250      SIDDHANTA SHRESTHA      Male    Jhapa             901       7   8.0 9.0 -   -   -   -   -   -   -   -   -   -   -   None                
+429    750   4618      PRAGATI POUDYAL         Female  Kathmandu         903       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+430    538   1796      KAUSTUV GHIMIRE         Male    Palpa             905       12  2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+431    205   1682      APURWA GAUTAM           Male    Dhanusha          908       8   1.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+432    662   9323      NIKSHYA DHAKAL          Male    Kathmandu         911       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+433    137   29        AMBIKA SHRESTHA         Female  Ramechhap         914       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+434    892   8802      RAKSHYA SUBEDI          Female  Kaski             916       9   -   -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+435    1393  5934      UNNAT SHRESTHA          Male    Kathmandu         917       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+436    483   4203      IPSHU UPRETI            Female  Kavrepalanchok    919       8   12.0-   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+437    17    6649      AAKASH KUMAR SAH        Male    Mahottari         922       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+438    551   1362      KRISH ADHIKARI          Male    Dhading           924       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+439    73    2719      AAYUSH PANDEY           Male    Syangja           926       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+440    1359  1849      SWASTIKA MAHARJAN       Female  Lalitpur          928       2   1.0 -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+441    106   2366      ABISHEK ARYAL           Male    Palpa             929       11  9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+442    186   2136      ANUP ARYAL              Male    Palpa             930       10  19.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+443    868   111       PUSPMANI BHATT          Male    Kanchanpur        931       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+444    181   1243      ANUBHAV THADA MAGAR     Male    Lalitpur          934       1   2.0 3.0 7.0 8.0 -   -   -   -   -   -   -   -   -   None                
+445    945   6341      RIYA MALLA ALE          Female  Siraha            935       3   4.0 -   -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+446    891   1486      RAKHI JHA               Female  Dhanusha          936       12  7.0 8.0 -   -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+447    1419  478       YOGESH RAUT             Male    Sindhuli          937       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+448    136   3000      AMAN ROUNIYAR           Male    Morang            939       12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+449    56    5481      AAYUSH BASNET           Male    Gulmi             942       11  12.07.0 8.0 -   -   -   -   -   -   -   -   -   -   None                
+450    1213  3091      SIDDHARTHA BHATTA       Male    Kathmandu         943       2   10.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+451    430   3625      DISHANT PAUDEL          Male    Rupandehi         949       7   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+452    351   4661      BISHESH POUDEL          Male    Kaski             952       8   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+453    647   4709      NASIB RANA              Male    Tanahun           953       8   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+454    936   2423      RITESH GHIMIRE          Male    Chitawan          957       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+455    111   5132      ADHYAN GAUTAM           Male    Makwanpur         959       8   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+456    1405  2568      UTSHAB RIJAL            Male    Sunsari           961       9   10.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+457    467   3491      HARI KUNWAR             Male    Gulmi             962       1   7.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+458    910   10219     RAVI KUMAR SAH          Male    Dhanusha          964       9   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+459    172   6268      ANKIT RAJ KARNA         Male    Dhanusha          966       11  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+460    1273  2349      SUBHAM PANT             Male    Kanchanpur        967       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+461    847   3762      PRITAM YADAV            Male    Sarlahi           968       11  9.0 -   -   -   -   -   -   -   -   -   -   -   -   RQ,Madheshi         
+462    1125  3258      SAUBHAGYA RAJ SIJAPATI  Male    Dailekh           970       8   12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+463    1212  4617      SIDDHARTHA BASTAKOTI    Male    Tanahun           972       7   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+464    692   10906     NISHAN RAI              Male    Udayapur          974       8   2.0 9.0 -   -   -   -   -   -   -   -   -   -   -   None                
+465    118   5140      AGRAJ GYAWALI           Male    Gulmi             977       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+466    406   6584      DILESHWOR SHAHU         Male    Morang            979       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+467    182   4686      ANUJ KARNA              Male    Mahottari         981       8   9.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+468    415   4034      DIPEN PAUDEL            Male    Surkhet           982       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+469    31    3572      AARYAN ADHIKARI         Male    Jhapa             985       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+470    1080  921       SANDESH BHUSAL          Male    Rupandehi         986       11  12.0-   -   -   -   -   -   -   -   -   -   -   -   None                
+471    1183  2707      SHREEJAL MAN SINGH BANIAMale    Kathmandu         987       19  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+472    1384  4844      UJJWAL SUBEDI           Male    Parbat            988       12  7.0 8.0 -   -   -   -   -   -   -   -   -   -   -   None                
+473    922   472       RIJAN PARAJULI          Male    Bhojpur           990       1   2.0 -   -   -   -   -   -   -   -   -   -   -   -   None                
+474    1177  6723      SHOVA REGMI BAGALE      Female  Nawalparasi West  992       7   8.0 3.0 4.0 -   -   -   -   -   -   -   -   -   -   Open, Female Quota  
+475    1072  2434      SAMYOG SHRESTHA         Male    Kathmandu         995       11  12.07.0 8.0 1.0 2.0 -   -   -   -   -   -   -   -   None                
+476    438   2037      DIWASH JOSHI            Male    Doti              997       2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+477    1090  1515      SANGYE THINLEY LAMA     Male    Humla             999       1   2.0 9.0 10.0-   -   -   -   -   -   -   -   -   -   None                
+478    1099  3769      SANSKAR KARKI           Male    Gulmi             1001      12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+479    1113  2300      SARTHAK JUNG RAWAL      Male    Kathmandu         1002      12  -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+480    468   5429      HARI OM DAHAL           Male    Kailali           1004      2   -   -   -   -   -   -   -   -   -   -   -   -   -   None                
+481    1320  7888      SUMAN SHRESTHA          Male    Kathmandu         1010      8   7.0 -   -   -   -   -   -   -   -   -   -   -   -   None                

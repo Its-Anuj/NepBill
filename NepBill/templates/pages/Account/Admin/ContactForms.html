@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account - NepBill</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/ContactForms.css" />
+    <!-- Include Nepali Datepicker CSS & JS (via CDN) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nepali-date-picker@2.0.1/dist/nepaliDatePicker.min.css">
+<script src="https://cdn.jsdelivr.net/npm/nepali-date-picker@2.0.1/dist/nepaliDatePicker.min.js"></script>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-container">
+        <div class="nav-left">
+          <a href="/" class="brand">Nep<span>Bill</span></a>
+          <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <select class="lang-select">
+            <option value="en">English</option>
+            <option value="np">Nepali</option>
+          </select>
+          <div id="AccountHeaderSection"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- BOXED MAIN CONTAINER -->
+    <main class="dashboard-wrapper">
+      <div class="dashboard-box">
+        <aside id="sidebar-container" class="sidebar"></aside>
+
+        <!-- DASHBOARD CONTENT (INSIDE BOX) -->
+        <section class="dashboard-content">
+          <div class="dashboard-view-container">
+            <!-- PAGE HEADER -->
+            <div class="page-header">
+              <h2>Contact Form Submissions</h2>
+              <p class="subtitle">
+                Search, filter, and inspect incoming support tickets and
+                business inquiries.
+              </p>
+            </div>
+
+            <!-- QUERY / FILTER BAR -->
+            <div class="filter-card">
+              <div class="filter-grid">
+                <!-- Search Input -->
+                <div class="filter-group filter-search">
+                  <label for="filter-search-input"
+                    >Search Contact / Account</label
+                  >
+                  <input
+                    type="text"
+                    id="filter-search-input"
+                    placeholder="Phone, Email, or Account ID..."
+                    oninput="ApplyFilters()"
+                  />
+                </div>
+
+                <!-- Form Type Dropdown -->
+                <div class="filter-group">
+                  <label for="filter-type-select">Form Type</label>
+                  <select id="filter-type-select" onchange="ApplyFilters()">
+                    <option value="None">None</option>
+                    <option value="RegisterAccount Inquiry">Register Account</option>
+                    <option value="Issue">Issue</option>
+                    <option value="Help">Help</option>
+                    <option value="Billing">Billing</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+
+                <!-- State Dropdown -->
+                <div class="filter-group">
+                  <label for="filter-state-select">Status</label>
+                  <select id="filter-state-select" onchange="ApplyFilters()">
+                    <option value="None">None</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Handled">Handled</option>
+                    <option value="Failed">Failed</option>      
+                  </select>
+                </div>
+                <div class="filter-container">
+                  <!-- Calendar System Switcher -->
+                  <div class="filter-group">
+                    <label for="calendar-type">Calendar Type</label>
+                    <select id="calendar-type">
+                      <option value="BS" selected>BS (Bikram Sambat)</option>
+                      <option value="AD">AD (Gregorian)</option>
+                    </select>
+                  </div>
+
+                  <!-- Date Range: Start -->
+                  <div class="filter-group">
+                    <label for="filter-start-date">From Date</label>
+                    <input
+                      type="text"
+                      id="filter-start-date"
+                      placeholder="YYYY-MM-DD"
+                      autocomplete="off"
+                    />
+                  </div>
+
+                  <!-- Date Range: End -->
+                  <div class="filter-group">
+                    <label for="filter-end-date">To Date</label>
+                    <input
+                      type="text"
+                      id="filter-end-date"
+                      placeholder="YYYY-MM-DD"
+                      autocomplete="off"
+                    />
+                  </div>
+                </div>
+
+              <div class="filter-actions">
+                <button class="btn-secondary" onclick="ResetFilters()">
+                  Reset Filters
+                </button>
+              </div>
+            </div>
+
+            <!-- TABLE CONTAINER -->
+            <div class="table-card">
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Account / Contact</th>
+                      <th>Form Type</th>
+                      <th>Submitted At</th>
+                      <th>State</th>
+                      <th class="text-right">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tableBody">
+                    <!-- Rows dynamically rendered via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <span>&copy; 2026 NepBill</span>
+        <ul class="footer-links">
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="/AccountTypes.js" type="module"></script>
+    <script src="/Admin/ContactForms.js" type="module"></script>
+    <script src="/index.js" type="module"></script>
+    <script src="/Account.js" type="module"></script>
+    <script src="/Admin/Dashboard.js" defer></script>
+    <script src="/SideBar.js" type="module"></script>
+  </body>
+</html>
