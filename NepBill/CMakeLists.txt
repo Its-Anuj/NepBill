@@ -1,44 +1,52 @@
-add_executable(NepBill Main.cpp Src/UUID.cpp Src/EncryptionManager.cpp Src/NepalDateConverter.cpp Src/Routers.cpp Src/Tables.cpp Src/NepBill.cpp)
+cmake_minimum_required(VERSION 3.16)
+project(NepBill)
 
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    add_compile_options(-Wno-error=c++11-narrowing)
-endif()
+add_executable(NepBill
+    Main.cpp
+    Src/UUID.cpp
+    Src/EncryptionManager.cpp
+    Src/NepalDateConverter.cpp
+    Src/Routers.cpp
+    Src/Tables.cpp
+    Src/NepBill.cpp
+)
+
 # 1. Find OpenSSL
 find_package(OpenSSL REQUIRED)
+find_package(PostgreSQL REQUIRED)
 
-target_include_directories(
-    NepBill PRIVATE
-    Libs/asio/include
-    Libs/Crow/include
-    Libs/LibSodium/libsodium/src/libsodium/include/sodium
-    Src/
-    Libs/Libpqxx/include
-    Libs/JwtCpp/include
-    Libs/TlExpected/include
-)
+# Option B: build from source as subdirectory (if you keep Libs/Libpqxx/)
+add_subdirectory("Libs/Libpqxx/")
 
 set(ASIO_INCLUDE_DIR
     "Libs/Asio/include")
 
-set(PostgreSQL_LIBRARY "D:/Downloads/PostgressSQL/lib/libpq.lib")
-set(PostgreSQL_INCLUDE_DIR "D:/Downloads/PostgressSQL/include")
+# Disable tests before making available
+set(SODIUM_DISABLE_TESTS ON)
+target_include_directories(
+    NepBill PRIVATE
+    Libs/Asio/include
+    Libs/Crow/include
+    Libs/LibSodium/libsodium/src/libsodium/include/sodium
+    Src/
+    Libs/JwtCpp/include
+    Libs/TlExpected/include
+)
 
 add_subdirectory("Libs/Crow/")
-add_subdirectory("Libs/Libpqxx/")
 add_subdirectory("Libs/LibSodium/")
 
 target_compile_features(NepBill PRIVATE cxx_std_20)
 
-target_link_libraries(NepBill kernel32 Crow ws2_32 iphlpapi mswsock pqxx OpenSSL::Crypto OpenSSL::SSL sodium)
-
-target_precompile_headers(NepBill PRIVATE
-    Src/PCH.h
+# Linux: no kernel32/ws2_32/iphlpapi/mswsock needed
+target_link_libraries(NepBill
+    Crow
+    pqxx
+    PostgreSQL::PostgreSQL
+    OpenSSL::Crypto
+    OpenSSL::SSL
+    sodium
+    pthread
 )
 
-message(STATUS "Templates dir = ${CMAKE_SOURCE_DIR}/NepBill/templates")
-
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_link_options(NepBill PRIVATE "-static-openmp" "-static-libgcc")
-    # Note: Full static linking on Windows can sometimes conflict with runtime UCRT dlls, 
-    # so Environment Path updates (Solution 1 & 2) remain cleanest for local development workflows.
-endif()
+target_precompile_headers(NepBill PRIVATE Src/PCH.h)   

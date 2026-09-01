@@ -2,20 +2,15 @@
     "version": 8,
     "configurePresets": [
         {
-            "name": "ninja-clang",
-            "displayName": "Ninja + MSYS2 Clang",
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/out/Debug",
+            "name": "Debug",
+            "displayName": "Debug",
+            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "C:/msys64/clang64/bin/clang.exe",
-                "CMAKE_CXX_COMPILER": "C:/msys64/clang64/bin/clang++.exe",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
-                "CMAKE_BUILD_TYPE": "Debug",
-                "OPENSSL_ROOT_DIR": "C:/msys64/clang64",
-                "CMAKE_PREFIX_PATH": "C:/msys64/clang64"
-            },
-            "environment": {
-                "PATH": "C:/msys64/clang64/bin;$ENV{PATH}"
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "CMAKE_BUILD_TYPE": "Debug"
             }
         }
     ]

@@ -499,7 +499,7 @@ namespace NepBill
     struct FinancialPaymentReceiptientInfo
     {
         FinancialPaymentReceipientType Type;
-        ServiceType ServiceType;
+        enum ServiceType ServiceType;
     };
 
     static constexpr const char *ReceipientTypeStr[] = {
@@ -666,12 +666,23 @@ namespace NepBill
         static const char *GetName();
     };
 
+    enum class StockMovementReason
+    {
+        PurchaseDelivery, // came from a supplier via PO
+        BookingUsage,     // used for a guest booking charge
+        ManualAdjustment, // manual correction — spoilage, breakage, count error
+        StockTake,        // periodic physical count correction
+    };
+
     struct ItemStockLedger
     {
         uint32_t Id = 0;
         UUID BusinessID;
+        UUID PurchaseOrderID = UUID::InvalidUUID(); // set if stock came from a PO delivery
         UUID ItemId;
         int32_t StockDelta = 0;
+        UUID AccountID;             // who recorded this movement
+        StockMovementReason Reason; // enum below
         struct tm CreatedAt;
 
         static const char *GetCreateQuery();
@@ -692,6 +703,82 @@ namespace NepBill
         std::array<char, kPhoneNumberLength> PhoneNumber = {0};
         std::array<char, kPanNumberLength> PanNumber = {0};
         double OpeningBalance;
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    enum class PurchaseOrderState
+    {
+        Draft,
+        Sent,
+        PartiallyReceived,
+        Completed
+    };
+
+    // Enum → string
+    inline constexpr std::string PurchaseOrderStateToStr(PurchaseOrderState state)
+    {
+        switch (state)
+        {
+        case PurchaseOrderState::Draft:
+            return "Draft";
+        case PurchaseOrderState::Sent:
+            return "Sent";
+        case PurchaseOrderState::PartiallyReceived:
+            return "PartiallyReceived";
+        case PurchaseOrderState::Completed:
+            return "Completed";
+        }
+        return "Unknown";
+    }
+
+    // string → Enum
+    inline PurchaseOrderState StrToPurchaseOrderState(const std::string &str)
+    {
+        static const std::unordered_map<std::string_view, PurchaseOrderState> map = {
+            {"Draft", PurchaseOrderState::Draft},
+            {"Sent", PurchaseOrderState::Sent},
+            {"PartiallyReceived", PurchaseOrderState::PartiallyReceived},
+            {"Completed", PurchaseOrderState::Completed},
+        };
+
+        auto it = map.find(str);
+        if (it == map.end())
+            throw std::invalid_argument("Unknown PurchaseOrderState: " + std::string(str));
+        return it->second;
+    }
+
+    struct PurchaseOrder
+    {
+        uint32_t Id = 0;
+        UUID UniqueID;
+        UUID BusinessID;
+        UUID SupplierID; // remove ItemId from here
+        UUID ItemInvoiceId = UUID::InvalidUUID();
+        PurchaseOrderState State = PurchaseOrderState::Draft;
+        struct tm CreatedAt;
+
+        static const char *GetCreateQuery();
+        static const char *GetInsertQuery();
+        static const char *GetCountQuery();
+        static const char *GetByIdQuery();
+        static const char *GetName();
+    };
+
+    struct PurchaseOrderLine
+    {
+        uint32_t Id = 0;
+        UUID UniqueID;
+        UUID PurchaseOrderID;
+        UUID ItemID;
+        uint32_t OrderedQuantity = 0;
+        uint32_t ReceivedQuantity = 0; // updated as deliveries happen
+        double UnitPrice = 0.0;
+        double DiscountPercent = 0.0;
 
         static const char *GetCreateQuery();
         static const char *GetInsertQuery();

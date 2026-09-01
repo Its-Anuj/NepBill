@@ -23,6 +23,23 @@ namespace NepBill
         return static_cast<int64_t>(std::mktime(&Copy));
     }
 
+    // Function to get time exactly one week ago
+    inline std::tm getTimeOneWeekAgo()
+    {
+        // 1. Get current time as seconds since epoch
+        std::time_t nowTime = std::time(nullptr);
+
+        // 2. Subtract exactly 7 days (7 * 24 * 60 * 60 seconds)
+        const int64_t oneWeekSeconds = 7 * 24 * 60 * 60;
+        std::time_t weekAgoTime = nowTime - oneWeekSeconds;
+
+        // 3. Convert back to struct tm
+        // Note: localtime is not thread-safe. Use localtime_r (POSIX) or localtime_s (Windows) in production.
+        std::tm weekAgoTm = *std::localtime(&weekAgoTime);
+
+        return weekAgoTm;
+    }
+
     inline std::tm getCurrentTime()
     {
         std::time_t Now = std::time(nullptr);
@@ -178,6 +195,137 @@ namespace NepBill
         Tx.commit();
     }
 
+    inline void Insert(pqxx::connection &Db, const ItemStockLedger &Ledger)
+    {
+        pqxx::work Tx(Db);
+        Tx.exec(
+            Ledger.GetInsertQuery(),
+            pqxx::params{
+                Ledger.BusinessID.ToString(),
+                Ledger.PurchaseOrderID.ToString(),
+                Ledger.ItemId.ToString(),
+                Ledger.StockDelta,
+                Ledger.AccountID.ToString(),
+                static_cast<int>(Ledger.Reason),
+                getPostgresTimestamp(ToUnixTime(Ledger.CreatedAt))});
+        Tx.commit();
+    }
+
+    inline void Insert(pqxx::connection &Db, const PurchaseOrder &Order)
+    {
+        pqxx::work Tx(Db);
+        Tx.exec(
+            Order.GetInsertQuery(),
+            pqxx::params{
+                Order.UniqueID.ToString(),
+                Order.BusinessID.ToString(),
+                Order.SupplierID.ToString(),
+                Order.ItemInvoiceId.ToString(),
+                static_cast<int>(Order.State),
+                getPostgresTimestamp(ToUnixTime(Order.CreatedAt))});
+        Tx.commit();
+    }
+
+    inline void Insert(pqxx::connection &Db, const PurchaseOrderLine &Line)
+    {
+        pqxx::work Tx(Db);
+        Tx.exec(
+            Line.GetInsertQuery(),
+            pqxx::params{
+                Line.UniqueID.ToString(),
+                Line.PurchaseOrderID.ToString(),
+                Line.ItemID.ToString(),
+                Line.OrderedQuantity,
+                Line.ReceivedQuantity,
+                Line.UnitPrice,
+                Line.DiscountPercent});
+        Tx.commit();
+    }
+
+    inline void Insert(pqxx::connection &Db, const ItemInvoice &Invoice)
+    {
+        pqxx::work Tx(Db);
+        Tx.exec(
+            Invoice.GetInsertQuery(),
+            pqxx::params{
+                Invoice.SenderId.ToString(),
+                Invoice.RecieverId.ToString(),
+                Invoice.UniqueID.ToString(),
+                static_cast<int>(Invoice.State),
+                Invoice.VatPercent,
+                Invoice.LineTotal,
+                static_cast<int>(Invoice.SenderType.Type),
+                static_cast<uint32_t>(Invoice.SenderType.ServiceType),
+                static_cast<int>(Invoice.RecieverType.Type),
+                static_cast<uint32_t>(Invoice.RecieverType.ServiceType),
+                getPostgresTimestamp(ToUnixTime(Invoice.CreatedAt)),
+                getPostgresTimestamp(ToUnixTime(Invoice.LastPaymentTicketDate)),
+                getPostgresTimestamp(ToUnixTime(Invoice.ClosedAt))});
+        Tx.commit();
+    }
+
+    inline void Insert(pqxx::connection &Db, const ItemInvoiceLine &Line)
+    {
+        pqxx::work Tx(Db);
+        Tx.exec(
+            Line.GetInsertQuery(),
+            pqxx::params{
+                Line.InvoiceId.ToString(),
+                Line.ItemId.ToString(),
+                Line.UnqiueId.ToString(),
+                Line.OrderedQuantity,
+                Line.DeliveredQuantity,
+                Line.ItemWeight,
+                Line.UnitPrice,
+                Line.UnitDiscountPercet,
+                Line.LineTotal});
+        Tx.commit();
+    }
+
+    inline void Insert(pqxx::connection &Db, const Suppliers &Supplier)
+    {
+        pqxx::work Tx(Db);
+        Tx.exec(
+            Supplier.GetInsertQuery(),
+            pqxx::params{
+                Supplier.BusinessID.ToString(),
+                Supplier.UnqiueId.ToString(),
+                Supplier.Name.data(),
+                Supplier.PhoneNumber.data(),
+                Supplier.PanNumber.data(),
+                Supplier.OpeningBalance});
+        Tx.commit();
+    }
+
+    inline void Insert(pqxx::connection &Db, const ItemCategory &Category)
+    {
+        pqxx::work Tx(Db);
+        Tx.exec(
+            Category.GetInsertQuery(),
+            pqxx::params{
+                Category.BusinessID.ToString(),
+                Category.UniqueID.ToString(),
+                Category.Name.data()});
+        Tx.commit();
+    }
+
+    inline void Insert(pqxx::connection &Db, const Item &ItemObj)
+    {
+        pqxx::work Tx(Db);
+        Tx.exec(
+            ItemObj.GetInsertQuery(),
+            pqxx::params{
+                ItemObj.BusinessID.ToString(),
+                ItemObj.CategoryId.ToString(),
+                ItemObj.UniqueID.ToString(),
+                ItemObj.Name.data(),
+                ItemObj.LowStockThresold,
+                ItemObj.CostPrice,
+                ItemObj.SalesPrice,
+                ItemObj.DiscountPercent,
+                ItemObj.Description.data()});
+        Tx.commit();
+    }
 
     std::vector<ContactFormInfo> GetContactForms(
         pqxx::connection &Connection,
@@ -218,6 +366,38 @@ namespace NepBill
     bool UpdateContactForm(
         pqxx::connection &Connection,
         const ContactFormInfo &Info);
+
+    std::vector<ItemStockLedger> GetItemStockLedgers(
+        pqxx::connection &Connection,
+        const ItemStockLedgerQuery &Query);
+
+    std::vector<PurchaseOrder> GetPurchaseOrders(
+        pqxx::connection &Connection,
+        const PurchaseOrderQuery &Query);
+
+    std::vector<PurchaseOrderLine> GetPurchaseOrderLines(
+        pqxx::connection &Connection,
+        const PurchaseOrderLineQuery &Query);
+
+    std::vector<ItemInvoiceLine> GetItemInvoiceLines(
+        pqxx::connection &Connection,
+        const ItemInvoiceLineQuery &Query);
+
+    std::vector<ItemInvoice> GetItemInvoices(
+        pqxx::connection &Connection,
+        const ItemInvoiceQuery &Query);
+
+    std::vector<Suppliers> GetSuppliers(
+        pqxx::connection &Connection,
+        const SuppliersQuery &Query);
+
+    std::vector<Item> GetItems(
+        pqxx::connection &Connection,
+        const ItemQuery &Query);
+
+    std::vector<ItemCategory> GetItemCategories(
+        pqxx::connection &Connection,
+        const ItemCategoryQuery &Query);
 } // namespace NepBill
 
 #endif

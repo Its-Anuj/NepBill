@@ -23,7 +23,7 @@ namespace NepBill
         std::optional<uint32_t> Id;
         std::optional<UUID> FormID;
 
-        Pagination Pagination;
+        struct Pagination Pagination;
         ContactStateMetaSortField SortField = ContactStateMetaSortField::Id;
         bool SortDescending = true;
     };
@@ -47,7 +47,7 @@ namespace NepBill
         std::optional<time_t> CreatedAfter;
         std::optional<time_t> CreatedBefore;
 
-        Pagination Pagination;
+        struct Pagination Pagination;
         ContactSortField SortField = ContactSortField::CreatedAt;
         bool SortDescending = true;
     };
@@ -73,7 +73,7 @@ namespace NepBill
         std::optional<std::string> Country;
 
         // ---- Pagination ----
-        Pagination Pagination;
+        struct Pagination Pagination;
 
         // ---- Sorting ----
         RegisterAccountContactSortField SortField = RegisterAccountContactSortField::Id;
@@ -94,7 +94,7 @@ namespace NepBill
         std::optional<std::string> Name;
 
         // ---- Pagination ----
-        Pagination Pagination;
+        struct Pagination Pagination;
 
         // ---- Sorting ----
         PdfDocumentSortField SortField = PdfDocumentSortField::Id;
@@ -115,7 +115,7 @@ namespace NepBill
         std::optional<std::string> Name;
 
         // ---- Pagination ----
-        Pagination Pagination;
+        struct Pagination Pagination;
 
         // ---- Sorting ----
         ImageSortField SortField = ImageSortField::Id;
@@ -138,7 +138,7 @@ namespace NepBill
         std::optional<UUID> RegisterAccountFormId;
 
         // ---- Pagination ----
-        Pagination Pagination;
+        struct Pagination Pagination;
 
         // ---- Sorting ----
         BusinessSortField SortField = BusinessSortField::Id;
@@ -167,7 +167,7 @@ namespace NepBill
         std::optional<bool> IsActive;
 
         // ---- Pagination ----
-        Pagination Pagination;
+        struct Pagination Pagination;
 
         // ---- Sorting ----
         AccountSortField SortField = AccountSortField::Id;
@@ -186,7 +186,7 @@ namespace NepBill
         std::optional<UUID> AccountID;
 
         // ---- Pagination ----
-        Pagination Pagination;
+        struct Pagination Pagination;
 
         // ---- Sorting ----
         EncryptedSecretSortField SortField = EncryptedSecretSortField::AccountID;
@@ -206,6 +206,186 @@ namespace NepBill
         std::optional<std::string> Message;
         std::optional<ContactSubjectType> Type;
         std::optional<ContactStates> State;
+    };
+
+    enum class ItemStockLedgerSortField
+    {
+        Id,
+        CreatedAt,
+        StockDelta
+    };
+
+    struct ItemStockLedgerQuery
+    {
+        std::optional<uint32_t> Id;
+        std::optional<UUID> BusinessID;
+        std::optional<UUID> PurchaseOrderID;
+        std::optional<UUID> ItemId;
+        std::optional<UUID> AccountID;
+        std::optional<StockMovementReason> Reason;
+
+        std::optional<time_t> CreatedAfter;
+        std::optional<time_t> CreatedBefore;
+
+        struct Pagination Pagination;
+        ItemStockLedgerSortField SortField = ItemStockLedgerSortField::CreatedAt;
+        bool SortDescending = true;
+    };
+
+    // ---- PurchaseOrder Query ----
+    enum class PurchaseOrderSortField
+    {
+        Id,
+        CreatedAt
+    };
+
+    struct PurchaseOrderQuery
+    {
+        std::optional<uint32_t> Id;
+        std::optional<UUID> UniqueID;
+        std::optional<UUID> BusinessID;
+        std::optional<UUID> SupplierID;
+        std::optional<UUID> ItemInvoiceId;
+        std::optional<PurchaseOrderState> State;
+
+        std::optional<time_t> CreatedAfter;
+        std::optional<time_t> CreatedBefore;
+
+        struct Pagination Pagination;
+        PurchaseOrderSortField SortField = PurchaseOrderSortField::CreatedAt;
+        bool SortDescending = true;
+    };
+
+    // ---- PurchaseOrderLine Query ----
+    enum class PurchaseOrderLineSortField
+    {
+        Id,
+        OrderedQuantity,
+        UnitPrice
+    };
+
+    struct PurchaseOrderLineQuery
+    {
+        std::optional<uint32_t> Id;
+        std::optional<UUID> UniqueID;
+        std::optional<UUID> PurchaseOrderID;
+        std::optional<UUID> ItemID;
+
+        struct Pagination Pagination;
+        PurchaseOrderLineSortField SortField = PurchaseOrderLineSortField::Id;
+        bool SortDescending = false;
+    };
+
+    // ---- ItemInvoice Query ----
+    enum class ItemInvoiceSortField
+    {
+        Id,
+        CreatedAt,
+        LineTotal
+    };
+
+    // Add service type filters to ItemInvoiceQuery struct
+    struct ItemInvoiceQuery
+    {
+        std::optional<uint32_t> Id;
+        std::optional<UUID> SenderId;
+        std::optional<UUID> RecieverId;
+        std::optional<UUID> UniqueID;
+        std::optional<InvoiceStates> State;
+        std::optional<FinancialPaymentReceipientType> SenderType;
+        std::optional<ServiceType> SenderServiceType;
+        std::optional<FinancialPaymentReceipientType> RecieverType;
+        std::optional<ServiceType> RecieverServiceType;
+
+        std::optional<time_t> CreatedAfter;
+        std::optional<time_t> CreatedBefore;
+
+        struct Pagination Pagination;
+        ItemInvoiceSortField SortField = ItemInvoiceSortField::CreatedAt;
+        bool SortDescending = true;
+    };
+
+    // ---- ItemInvoiceLine Query ----
+    enum class ItemInvoiceLineSortField
+    {
+        Id,
+        OrderedQuantity,
+        UnitPrice,
+        LineTotal
+    };
+
+    struct ItemInvoiceLineQuery
+    {
+        std::optional<uint32_t> Id;
+        std::optional<UUID> InvoiceId;
+        std::optional<UUID> ItemId;
+        std::optional<UUID> UnqiueId;
+
+        struct Pagination Pagination;
+        ItemInvoiceLineSortField SortField = ItemInvoiceLineSortField::Id;
+        bool SortDescending = false;
+    };
+
+    enum class SuppliersSortField
+    {
+        Id,
+        Name,
+        OpeningBalance
+    };
+
+    struct SuppliersQuery
+    {
+        std::optional<uint32_t> Id;
+        std::optional<UUID> BusinessID;
+        std::optional<UUID> UnqiueId;
+        std::optional<std::string> Name;
+        std::optional<std::string> PhoneNumber;
+        std::optional<std::string> PanNumber;
+
+        struct Pagination Pagination;
+        SuppliersSortField SortField = SuppliersSortField::Id;
+        bool SortDescending = false;
+    };
+
+    enum class ItemCategorySortField
+    {
+        Id,
+        Name
+    };
+
+    struct ItemCategoryQuery
+    {
+        std::optional<uint32_t> Id;
+        std::optional<UUID> BusinessID;
+        std::optional<UUID> UniqueID;
+        std::optional<std::string> Name;
+
+        struct Pagination Pagination;
+        ItemCategorySortField SortField = ItemCategorySortField::Id;
+        bool SortDescending = false;
+    };
+
+    // ---- Item Query ----
+    enum class ItemSortField
+    {
+        Id,
+        Name,
+        CostPrice,
+        SalesPrice,
+        LowStockThresold
+    };
+
+    struct ItemQuery
+    {
+        std::optional<uint32_t> Id;
+        std::optional<UUID> BusinessID;
+        std::optional<UUID> CategoryId;
+        std::optional<UUID> UniqueID;
+        std::optional<std::string> Name;
+
+        struct Pagination Pagination;
+        ItemSortField SortField = ItemSortField::Id;
+        bool SortDescending = false;
     };
 }
 #endif

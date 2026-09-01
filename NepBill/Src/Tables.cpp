@@ -180,6 +180,143 @@ namespace NepBill
 
 #pragma endregion
 
+#pragma region ItemStockLedger
+
+    const char *ItemStockLedger::GetCreateQuery()
+    {
+        static std::string Query = BuildCreateQuery(
+            "ItemStockLedger",
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"BusinessID", "UUID"},
+             {"PurchaseOrderID", "UUID"},
+             {"ItemId", "UUID"},
+             {"StockDelta", "INTEGER"},
+             {"AccountID", "UUID"},
+             {"Reason", "INTEGER"},
+             {"CreatedAt", "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP"}});
+        return Query.c_str();
+    }
+
+    const char *ItemStockLedger::GetInsertQuery()
+    {
+        static std::string Query = BuildInsertQuery(
+            "ItemStockLedger",
+            {"BusinessID", "PurchaseOrderID", "ItemId", "StockDelta", "AccountID", "Reason", "CreatedAt"});
+        return Query.c_str();
+    }
+
+    const char *ItemStockLedger::GetCountQuery()
+    {
+        static std::string Query = BuildCountQuery("ItemStockLedger");
+        return Query.c_str();
+    }
+
+    const char *ItemStockLedger::GetByIdQuery()
+    {
+        static std::string Query = BuildByIdQuery(
+            "ItemStockLedger",
+            {"Id", "BusinessID", "PurchaseOrderID", "ItemId", "StockDelta", "AccountID", "Reason", "CreatedAt"});
+        return Query.c_str();
+    }
+
+    const char *ItemStockLedger::GetName()
+    {
+        return "ItemStockLedger";
+    }
+
+#pragma endregion
+
+#pragma region PurchaseOrder
+
+    const char *PurchaseOrder::GetCreateQuery()
+    {
+        static std::string Query = BuildCreateQuery(
+            "PurchaseOrder",
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"UniqueID", "UUID"},
+             {"BusinessID", "UUID"},
+             {"SupplierID", "UUID"},
+             {"ItemInvoiceId", "UUID"},
+             {"State", "INTEGER"},
+             {"CreatedAt", "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP"}});
+        return Query.c_str();
+    }
+
+    const char *PurchaseOrder::GetInsertQuery()
+    {
+        static std::string Query = BuildInsertQuery(
+            "PurchaseOrder",
+            {"UniqueID", "BusinessID", "SupplierID", "ItemInvoiceId", "State", "CreatedAt"});
+        return Query.c_str();
+    }
+
+    const char *PurchaseOrder::GetCountQuery()
+    {
+        static std::string Query = BuildCountQuery("PurchaseOrder");
+        return Query.c_str();
+    }
+
+    const char *PurchaseOrder::GetByIdQuery()
+    {
+        static std::string Query = BuildByIdQuery(
+            "PurchaseOrder",
+            {"Id", "UniqueID", "BusinessID", "SupplierID", "ItemInvoiceId", "State", "CreatedAt"});
+        return Query.c_str();
+    }
+
+    const char *PurchaseOrder::GetName()
+    {
+        return "PurchaseOrder";
+    }
+
+#pragma endregion
+
+#pragma region PurchaseOrderLine
+
+    const char *PurchaseOrderLine::GetCreateQuery()
+    {
+        static std::string Query = BuildCreateQuery(
+            "PurchaseOrderLine",
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"UniqueID", "UUID"},
+             {"PurchaseOrderID", "UUID"},
+             {"ItemID", "UUID"},
+             {"OrderedQuantity", "INTEGER"},
+             {"ReceivedQuantity", "INTEGER"},
+             {"UnitPrice", "DOUBLE PRECISION"},
+             {"DiscountPercent", "DOUBLE PRECISION"}});
+        return Query.c_str();
+    }
+
+    const char *PurchaseOrderLine::GetInsertQuery()
+    {
+        static std::string Query = BuildInsertQuery(
+            "PurchaseOrderLine",
+            {"UniqueID", "PurchaseOrderID", "ItemID", "OrderedQuantity", "ReceivedQuantity", "UnitPrice", "DiscountPercent"});
+        return Query.c_str();
+    }
+
+    const char *PurchaseOrderLine::GetCountQuery()
+    {
+        static std::string Query = BuildCountQuery("PurchaseOrderLine");
+        return Query.c_str();
+    }
+
+    const char *PurchaseOrderLine::GetByIdQuery()
+    {
+        static std::string Query = BuildByIdQuery(
+            "PurchaseOrderLine",
+            {"Id", "UniqueID", "PurchaseOrderID", "ItemID", "OrderedQuantity", "ReceivedQuantity", "UnitPrice", "DiscountPercent"});
+        return Query.c_str();
+    }
+
+    const char *PurchaseOrderLine::GetName()
+    {
+        return "PurchaseOrderLine";
+    }
+
+#pragma endregion
+
 #pragma region Account
 
     const char *Account::GetCreateQuery()
@@ -706,7 +843,6 @@ namespace NepBill
 #pragma endregion
 
 #pragma region ItemInvoice
-
     const char *ItemInvoice::GetCreateQuery()
     {
         static std::string Query = BuildCreateQuery(
@@ -720,7 +856,9 @@ namespace NepBill
                 {"VatPercent", "DOUBLE PRECISION"},
                 {"LineTotal", "DOUBLE PRECISION"},
                 {"SenderType", "INTEGER"},
+                {"SenderServiceType", "INTEGER"},
                 {"RecieverType", "INTEGER"},
+                {"RecieverServiceType", "INTEGER"},
                 {"CreatedAt", "TIMESTAMP"},
                 {"LastPaymentTicketDate", "TIMESTAMP"},
                 {"ClosedAt", "TIMESTAMP"},
@@ -732,13 +870,19 @@ namespace NepBill
     {
         static std::string Query = BuildInsertQuery(
             "ItemInvoice",
-            {"SenderId", "RecieverId", "UniqueID", "State", "VatPercent", "LineTotal", "SenderType", "RecieverType", "CreatedAt", "LastPaymentTicketDate", "ClosedAt"});
-        return Query.c_str();
-    }
-
-    const char *ItemInvoice::GetCountQuery()
-    {
-        static std::string Query = BuildCountQuery("ItemInvoice");
+            {"SenderId",
+             "RecieverId",
+             "UniqueID",
+             "State",
+             "VatPercent",
+             "LineTotal",
+             "SenderType",
+             "SenderServiceType",
+             "RecieverType",
+             "RecieverServiceType",
+             "CreatedAt",
+             "LastPaymentTicketDate",
+             "ClosedAt"});
         return Query.c_str();
     }
 
@@ -746,7 +890,26 @@ namespace NepBill
     {
         static std::string Query = BuildByIdQuery(
             "ItemInvoice",
-            {"Id", "SenderId", "RecieverId", "UniqueID", "State", "VatPercent", "LineTotal", "SenderType", "RecieverType", "CreatedAt", "LastPaymentTicketDate", "ClosedAt"});
+            {"Id",
+             "SenderId",
+             "RecieverId",
+             "UniqueID",
+             "State",
+             "VatPercent",
+             "LineTotal",
+             "SenderType",
+             "SenderServiceType",
+             "RecieverType",
+             "RecieverServiceType",
+             "CreatedAt",
+             "LastPaymentTicketDate",
+             "ClosedAt"});
+        return Query.c_str();
+    }
+
+    const char *ItemInvoice::GetCountQuery()
+    {
+        static std::string Query = BuildCountQuery("ItemInvoice");
         return Query.c_str();
     }
 
@@ -1042,51 +1205,6 @@ namespace NepBill
     const char *Item::GetName()
     {
         return "Item";
-    }
-
-#pragma endregion
-
-#pragma region ItemStockLedger
-
-    const char *ItemStockLedger::GetCreateQuery()
-    {
-        static std::string Query = BuildCreateQuery(
-            "ItemStockLedger",
-            {
-                {"Id", "SERIAL PRIMARY KEY"},
-                {"BusinessID", "UUID"},
-                {"ItemId", "UUID"},
-                {"StockDelta", "INTEGER"},
-                {"CreatedAt", "TIMESTAMP"},
-            });
-        return Query.c_str();
-    }
-
-    const char *ItemStockLedger::GetInsertQuery()
-    {
-        static std::string Query = BuildInsertQuery(
-            "ItemStockLedger",
-            {"BusinessID", "ItemId", "StockDelta", "CreatedAt"});
-        return Query.c_str();
-    }
-
-    const char *ItemStockLedger::GetCountQuery()
-    {
-        static std::string Query = BuildCountQuery("ItemStockLedger");
-        return Query.c_str();
-    }
-
-    const char *ItemStockLedger::GetByIdQuery()
-    {
-        static std::string Query = BuildByIdQuery(
-            "ItemStockLedger",
-            {"Id", "BusinessID", "ItemId", "StockDelta", "CreatedAt"});
-        return Query.c_str();
-    }
-
-    const char *ItemStockLedger::GetName()
-    {
-        return "ItemStockLedger";
     }
 
 #pragma endregion

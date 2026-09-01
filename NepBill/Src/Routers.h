@@ -21,5 +21,8 @@ namespace NepBill
     crow::response AdminContactFormRegisterQuery(NepBill::App &Backend, const crow::request &Req);
     crow::response AdminContactFormRegisterApprove(NepBill::App &Backend, const crow::request &Req);
 
+    crow::response QuerySuppliersIncomingOrders(NepBill::App &Backend, const crow::request &Req);
+    crow::response AddItem(NepBill::App &Backend, const crow::request &Req);
+
 
 } // namespace NepBill

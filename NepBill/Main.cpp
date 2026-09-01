@@ -20,6 +20,17 @@ void CreateTables(pqxx::connection &Db)
     tx.exec(NepBill::Business::GetCreateQuery());
     tx.exec(NepBill::Account::GetCreateQuery());
 
+    // Inventory Related
+    tx.exec(NepBill::Item::GetCreateQuery());
+    tx.exec(NepBill::ItemStockLedger::GetCreateQuery());
+    tx.exec(NepBill::ItemCategory::GetCreateQuery());
+    tx.exec(NepBill::Suppliers::GetCreateQuery());
+    // Inventory Finance Related
+    tx.exec(NepBill::ItemInvoice::GetCreateQuery());
+    tx.exec(NepBill::ItemInvoiceLine::GetCreateQuery());
+    tx.exec(NepBill::PurchaseOrder::GetCreateQuery());
+    tx.exec(NepBill::PurchaseOrderLine::GetCreateQuery());
+
     tx.commit();
     std::cout << "Created Tables\n";
 }
@@ -29,7 +40,7 @@ int main(int argc, char const *argv[])
     try
     {
         std::string conn_string =
-            "host=localhost dbname=nepbill user=anuj password=heroisanuj7";
+            "host=localhost dbname=nepbill user=anuj password=1019";
 
         NepBill::App Backend(conn_string);
         crow::SimpleApp App;
@@ -68,6 +79,7 @@ int main(int argc, char const *argv[])
         App.static_file("/styles.css", "templates/static/Styles/styles.css");
         App.static_file("/login.css", "templates/static/Styles/login.css");
         App.static_file("/ContactForms.css", "templates/static/Styles/Admin/ContactForms.css");
+        App.static_file("/Specific/BusinessOwner.css", "templates/static/Styles/Specific/BusinessOwner.css");
 
         App.static_file("/ContactUs.html", "templates/pages/Common/ContactUs.html");
         App.static_file("/Account/Account.html", "templates/pages/Account/Account.html");
@@ -77,6 +89,32 @@ int main(int argc, char const *argv[])
         App.static_file("/Admin/ContactFormDetail.html", "templates/pages/Account/Admin/ContactFormDetail.html");
         App.static_file("/Account/Components/SideBar.html", "templates/pages/Account/Components/SideBar.html");
         App.static_file("/Account/Components/Admin/ContactFormTypeFunctions.html", "templates/pages/Account/Components/Admin/ContactFormTypeFunctions.html");
+
+        App.static_file("/Account/BusinessOwner/Overview.html", "templates/pages/Account/BusinessOwner/Overview.html");
+        App.static_file("/Account/BusinessOwner/Profile_Settings.html", "templates/pages/Account/BusinessOwner/Profile_Settings.html");
+        App.static_file("/Account/BusinessOwner/Security.html", "templates/pages/Account/BusinessOwner/Security.html");
+        App.static_file("/Account/BusinessOwner/Business.html", "templates/pages/Account/BusinessOwner/Business.html");
+        App.static_file("/Account/BusinessOwner/Branches_Locations.html", "templates/pages/Account/BusinessOwner/Branches_Locations.html");
+        App.static_file("/Account/BusinessOwner/Subscription_Plans.html", "templates/pages/Account/BusinessOwner/Subscription_Plans.html");
+        App.static_file("/Account/BusinessOwner/Business_Documents.html", "templates/pages/Account/BusinessOwner/Business_Documents.html");
+        App.static_file("/Account/BusinessOwner/Accounts_Roles.html", "templates/pages/Account/BusinessOwner/Accounts_Roles.html");
+        App.static_file("/Account/BusinessOwner/Salary_Overview.html", "templates/pages/Account/BusinessOwner/Salary_Overview.html ");
+        App.static_file("/Account/BusinessOwner/Revenue_Report.html", "templates/pages/Account/BusinessOwner/Revenue_Report.html");
+        App.static_file("/Account/BusinessOwner/Expense_Report.html", "templates/pages/Account/BusinessOwner/Expense_Report.html");
+        App.static_file("/Account/BusinessOwner/VAT_Summary.html", "templates/pages/Account/BusinessOwner/VAT_Summary.html");
+        App.static_file("/Account/BusinessOwner/Supplier_Payables.html", "templates/pages/Account/BusinessOwner/Supplier_Payables.html");
+        App.static_file("/Account/BusinessOwner/Hotel.html", "templates/pages/Account/BusinessOwner/Hotel.html");
+        App.static_file("/Account/BusinessOwner/Restaurant.html", "templates/pages/Account/BusinessOwner/Restaurant.html");
+        App.static_file("/Account/BusinessOwner/Hostel.html", "templates/pages/Account/BusinessOwner/Hostel.html");
+
+        App.static_file("/Account/Finance/Subscription.html", "templates/pages/Account/Finance/Subscription.html");
+        App.static_file("/Account/Finance/Subscription.js", "templates/static/scripts/Finance/Subscription.js");
+
+        App.static_file("/Account/Inventory/Inventory.html", "templates/pages/Account/Inventory/Inventory.html");
+        App.static_file("/Inventory/Inventory.js", "templates/static/scripts/Inventory/Inventory.js");
+        App.static_file("/Account/Inventory/Stock.html", "templates/pages/Account/Inventory/Stock.html");
+        App.static_file("/Account/Inventory/AddItem.html", "templates/pages/Account/Inventory/AddItem.html");
+        App.static_file("/Inventory/Stock.js", "templates/static/scripts/Inventory/Stock.js");
 
         App.static_file("/Login.js", "templates/static/scripts/Login.js");
         App.static_file("/Admin/ContactEnums.js", "templates/static/scripts/Admin/ContactEnums.js");

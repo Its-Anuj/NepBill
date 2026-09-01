@@ -143,6 +143,7 @@ namespace NepBill
         if (pos == std::string::npos)
         {
             Result["LoggedIn"] = false;
+            Result["Message"] = "No Token Found!";
             // FIX: Set the content type to JSON and dump the JSON object to a string string
             res.add_header("Content-Type", "application/json");
             res.write(Result.dump());
@@ -181,6 +182,15 @@ namespace NepBill
         }
         catch (...)
         {
+            Result["LoggedIn"] = false;
+            Result["Message"] = "Try Failed";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 200;
+
+            return res;
         }
     }
 
@@ -212,7 +222,7 @@ namespace NepBill
             return res;
         }
 
-        auto& Account = Accounts[0];
+        auto &Account = Accounts[0];
 
         std::cout << "Query Account Info AccountId: " << AccountId << "\n";
         Result["Return"] = true;
@@ -230,13 +240,24 @@ namespace NepBill
     {
         crow::response res(200);
 
-        // Set cookie to expire, effectively clearing it from the browser
-        res.add_header("Set-Cookie",
-                       // Cookie format: name=value; HttpOnly; Secure; SameSite=Strict; Max-Age=3600
-                       "auth_token=; HttpOnly; Path=/; Secure; SameSite=Strict; Max-Age=0");
+        // 1. Format clearance header matching the original cookie path and flags
+        // (Omit 'Secure' on local HTTP and use SameSite=Lax)
+        std::string cookie_header = "auth_token=; Path=/; HttpOnly; SameSite=Lax; "
+                                    "Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT";
+
+        res.add_header("Set-Cookie", cookie_header);
+
+        // 2. Add CORS headers for Linux/Brave cross-origin cookie deletion
+        std::string origin = Req.get_header_value("Origin");
+        if (!origin.empty())
+        {
+            res.add_header("Access-Control-Allow-Origin", origin);
+            res.add_header("Access-Control-Allow-Credentials", "true");
+        }
 
         crow::json::wvalue json;
         json["Success"] = true;
+        json["Message"] = "Logged out successfully";
 
         res.set_header("Content-Type", "application/json");
         res.write(json.dump());
@@ -337,9 +358,20 @@ namespace NepBill
 
                     // Set token in HttpOnly Cookie
                     // Cookie format: name=value; HttpOnly; Secure; SameSite=Strict; Max-Age=3600
-                    std::string cookie_header = std::string("auth_token=") + token +
-                                                "; HttpOnly; Path=/; Secure; SameSite=Strict; Max-Age=" + std::to_string(MaxLoginCookieAge);
+
+                    std::string cookie_header = "auth_token=" + token +
+                                                "; Path=/; HttpOnly; SameSite=Lax; Max-Age=" +
+                                                std::to_string(MaxLoginCookieAge);
+
                     res.add_header("Set-Cookie", cookie_header);
+
+                    // Handle CORS credentials explicitly for Linux Brave
+                    std::string origin = Req.get_header_value("Origin");
+                    if (!origin.empty())
+                    {
+                        res.add_header("Access-Control-Allow-Origin", origin);
+                        res.add_header("Access-Control-Allow-Credentials", "true");
+                    }
 
                     Result["State"] = true;
                     Result["Message"] = "Login successful";
@@ -788,6 +820,126 @@ namespace NepBill
 
         Result["Success"] = true;
         Result["Role"] = AccountRolesToStr(NewAccountInfo.Role);
+
+        // FIX: Set the content type to JSON and dump the JSON object to a string string
+        res.add_header("Content-Type", "application/json");
+        res.write(Result.dump());
+        res.code = 200;
+
+        return res;
+    }
+
+    crow::response QuerySuppliersIncomingOrders(NepBill::App &Backend, const crow::request &Req)
+    {
+        auto Json =
+            crow::json::load(Req.body);
+
+        if (!Json)
+        {
+            std::cout << "Invalid Json for AdminContactFormsQuery\n";
+            return crow::response(400);
+        }
+        std::cout << "Valid Json for AdminContactFormEditSave\n";
+
+        crow::json::wvalue Result;
+        crow::response res;
+
+        std::string ContactUUIDStr = Json["UUID"].s();
+        auto UserId = UUID::FromString(std::string_view(ContactUUIDStr.c_str()));
+
+        auto TodayTime = getCurrentTime();
+        auto OneWeekAgoTime = getTimeOneWeekAgo();
+
+        AccountQuery UserAccountQuery;
+        UserAccountQuery.UniqueId = UserId;
+        std::optional<Account> UserAccount = std::nullopt;
+
+        auto Accounts = GetAccounts(Backend.Database, UserAccountQuery);
+        if (Accounts.size() == 1)
+            UserAccount = Accounts[0];
+
+        if (UserAccount == std::nullopt)
+        {
+            Result["State"] = false;
+            Result["Message"] = "Querying Account Info Failed!";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 400;
+
+            return res;
+        }
+
+        PurchaseOrderQuery RecentPurchaseOrderQuery;
+        RecentPurchaseOrderQuery.BusinessID = UserAccount->BusinessID;
+        RecentPurchaseOrderQuery.CreatedBefore = ToUnixTime(TodayTime);
+        RecentPurchaseOrderQuery.CreatedAfter = ToUnixTime(OneWeekAgoTime);
+        auto RecentPurchaseOrders = GetPurchaseOrders(Backend.Database, RecentPurchaseOrderQuery);
+
+        Result["Count"] = RecentPurchaseOrders.size();
+        for (size_t i = 0; i < RecentPurchaseOrders.size(); i++)
+        {
+            PurchaseOrderLineQuery LineQueries;
+            LineQueries.PurchaseOrderID = RecentPurchaseOrders[i].UniqueID;
+
+            auto Queries = GetPurchaseOrderLines(Backend.Database, LineQueries);
+
+            Result["Orders"][i]["Count"] = Queries.size();
+
+            for (int j = 0; j < Queries.size(); j++)
+            {
+                ItemQuery ItemQuery;
+                ItemQuery.UniqueID = Queries[j].ItemID;
+                auto Items = GetItems(Backend.Database, ItemQuery);
+
+                if (Items.size() == 0)
+                {
+                    Result["State"] = false;
+                    Result["Message"] = "Item For Purchase Order Line: " + Queries[i].UniqueID.ToString() + " ,doesnot exist";
+
+                    // FIX: Set the content type to JSON and dump the JSON object to a string string
+                    res.add_header("Content-Type", "application/json");
+                    res.write(Result.dump());
+                    res.code = 400;
+
+                    return res;
+                }
+                auto Item = Items[0];
+
+                Result["Orders"][i]["Lines"][j]["OrderedQuantity"] = Queries[i].OrderedQuantity;
+                Result["Orders"][i]["Lines"][j]["UnitPrice"] = Queries[i].UnitPrice;
+                Result["Orders"][i]["Lines"][j]["Name"] = std::string(Item.Name.data());
+                Result["Orders"][i]["Lines"][j]["ReceivedQuantity"] = Queries[i].ReceivedQuantity;
+            }
+
+            auto TodayIntTime = ToUnixTime(TodayTime);
+            auto CreatedAtIntTime = ToUnixTime(RecentPurchaseOrders[i].CreatedAt);
+
+            auto Diff = TodayIntTime - CreatedAtIntTime;
+
+            SuppliersQuery OrderSuppliersQuery;
+            OrderSuppliersQuery.UnqiueId = RecentPurchaseOrders[i].SupplierID;
+            auto OrderSuppliers = GetSuppliers(Backend.Database, OrderSuppliersQuery);
+
+            if (OrderSuppliers.size() == 0)
+            {
+                Result["State"] = false;
+                Result["Message"] = "Suppliers For Purchase Order: " + RecentPurchaseOrders[i].UniqueID.ToString() + " ,doesnot exist";
+
+                // FIX: Set the content type to JSON and dump the JSON object to a string string
+                res.add_header("Content-Type", "application/json");
+                res.write(Result.dump());
+                res.code = 400;
+
+                return res;
+            }
+            auto OrderSupplier = OrderSuppliers[0];
+
+            Result["Orders"][i]["TimeAgo"] = Diff;
+            Result["Orders"][i]["State"] = PurchaseOrderStateToStr(RecentPurchaseOrders[i].State);
+            Result["Orders"][i]["Name"] = std::string(OrderSupplier.Name.data());
+        }
 
         // FIX: Set the content type to JSON and dump the JSON object to a string string
         res.add_header("Content-Type", "application/json");
