@@ -637,7 +637,7 @@ namespace NepBill
         uint32_t Id = 0;
         UUID BusinessID;
         UUID UniqueID;
-        std::array<char, kNameLength> Name = {0};
+        std::string Name;
 
         static const char *GetCreateQuery();
         static const char *GetInsertQuery();
@@ -646,18 +646,140 @@ namespace NepBill
         static const char *GetName();
     };
 
+    enum class MeasurementUnit : uint32_t
+    {
+        Kg,
+        Gram,
+        Liter,
+        Ml,
+        Piece,
+        Dozen,
+        Bag,
+        Box,
+        Meter,
+        None,
+        Other
+    };
+
+    enum class PurchaseUnit : uint32_t
+    {
+        None,
+        Bag,
+        Box,
+        Crate,
+        Liter,
+        Kg,
+        Piece
+    };
+
+    inline constexpr const char *
+    MeasurementUnitToStr(MeasurementUnit u)
+    {
+        switch (u)
+        {
+        case MeasurementUnit::Kg:
+            return "Kg";
+        case MeasurementUnit::Gram:
+            return "Gram";
+        case MeasurementUnit::Liter:
+            return "Liter";
+        case MeasurementUnit::Ml:
+            return "Ml";
+        case MeasurementUnit::Piece:
+            return "Piece";
+        case MeasurementUnit::Dozen:
+            return "Dozen";
+        case MeasurementUnit::Bag:
+            return "Bag";
+        case MeasurementUnit::Box:
+            return "Box";
+        case MeasurementUnit::Meter:
+            return "Meter";
+        case MeasurementUnit::Other:
+            return "Other";
+        default:
+            return "Unknown";
+        }
+    }
+
+    inline MeasurementUnit StrToMeasurementUnit(const std::string &s)
+    {
+        if (s == "Kg")
+            return MeasurementUnit::Kg;
+        if (s == "Gram")
+            return MeasurementUnit::Gram;
+        if (s == "Liter")
+            return MeasurementUnit::Liter;
+        if (s == "Ml")
+            return MeasurementUnit::Ml;
+        if (s == "Piece")
+            return MeasurementUnit::Piece;
+        if (s == "Dozen")
+            return MeasurementUnit::Dozen;
+        if (s == "Bag")
+            return MeasurementUnit::Bag;
+        if (s == "Box")
+            return MeasurementUnit::Box;
+        if (s == "Meter")
+            return MeasurementUnit::Meter;
+        if (s == "Other")
+            return MeasurementUnit::Other;
+        return MeasurementUnit::None;
+    }
+
+    // --- PurchaseUnit Conversions ---
+
+    inline constexpr const char *PurchaseUnitToStr(PurchaseUnit u)
+    {
+        switch (u)
+        {
+        case PurchaseUnit::Bag:
+            return "Bag";
+        case PurchaseUnit::Box:
+            return "Box";
+        case PurchaseUnit::Crate:
+            return "Crate";
+        case PurchaseUnit::Liter:
+            return "Liter";
+        case PurchaseUnit::Kg:
+            return "Kg";
+        case PurchaseUnit::Piece:
+            return "Piece";
+        default:
+            return "Unknown";
+        }
+    }
+
+    inline PurchaseUnit StrToPurchaseUnit(const std::string &s)
+    {
+        if (s == "Bag")
+            return PurchaseUnit::Bag;
+        if (s == "Box")
+            return PurchaseUnit::Box;
+        if (s == "Crate")
+            return PurchaseUnit::Crate;
+        if (s == "Liter")
+            return PurchaseUnit::Liter;
+        if (s == "Kg")
+            return PurchaseUnit::Kg;
+        if (s == "Piece")
+            return PurchaseUnit::Piece;
+        return PurchaseUnit::None;
+    }
+
     struct Item
     {
         uint32_t Id = 0;
         UUID BusinessID;
         UUID CategoryId;
         UUID UniqueID;
-        std::array<char, ItemNameLength> Name = {0};
+        std::string Name;
         uint32_t LowStockThresold = 0;
-        double CostPrice = 0;
-        double SalesPrice = 0;
-        double DiscountPercent = 0;
-        std::array<char, ItemDescriptionLength> Description = {0};
+        bool TracksStock = true;
+        std::string Description;
+        MeasurementUnit StockUnit;
+        double DefaultPurchaseConversion = 1.0; // last used / most common conversion, just for pre-filling UI
+        MeasurementUnit DefaultPurchaseUnit;    // same — just for pre-filling UI
 
         static const char *GetCreateQuery();
         static const char *GetInsertQuery();
@@ -699,9 +821,9 @@ namespace NepBill
         uint32_t Id = 0;
         UUID BusinessID;
         UUID UnqiueId;
-        std::array<char, kNameLength> Name = {0};
-        std::array<char, kPhoneNumberLength> PhoneNumber = {0};
-        std::array<char, kPanNumberLength> PanNumber = {0};
+        std::string Name;
+        std::string PhoneNumber;
+        std::string PanNumber;
         double OpeningBalance;
 
         static const char *GetCreateQuery();
@@ -775,10 +897,14 @@ namespace NepBill
         UUID UniqueID;
         UUID PurchaseOrderID;
         UUID ItemID;
-        uint32_t OrderedQuantity = 0;
-        uint32_t ReceivedQuantity = 0; // updated as deliveries happen
+        uint32_t OrderedQuantity = 0; // 10
+        uint32_t ReceivedQuantity = 0;
+        MeasurementUnit PurchaseUnit;           // Bag
+        double PurchaseToStockConversion = 1.0; // 25 — typed in by staff
+        MeasurementUnit StockUnit;              // Kg — from Item.StockUnit, pre-filled
         double UnitPrice = 0.0;
         double DiscountPercent = 0.0;
+        std::string Remarks;
 
         static const char *GetCreateQuery();
         static const char *GetInsertQuery();

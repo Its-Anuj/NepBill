@@ -35,6 +35,9 @@
         <!-- SIDEBAR (INSIDE BOX) -->
         <aside id="sidebar-container" class="sidebar"></aside>
         <!-- DASHBOARD CONTENT (INSIDE BOX) -->
+        <a id="create_purchase_order" class="btn-primary"
+          >Create Purchse Order</a
+        >
       </div>
     </main>
 
@@ -54,5 +57,23 @@
     <script src="/index.js" type="module"></script>
     <script src="/SideBar.js" type="module"></script>
     <script src="/Account.js" type="module"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get("id"); // Retrieves the 'id' parameter from the URL
+        console.log(userId);
+
+        const CreatePurchaseElement = document.getElementById(
+          "create_purchase_order",
+        );
+
+        CreatePurchaseElement.addEventListener(
+          "click",
+          (event) =>
+            (window.location.href = `/Account/Inventory/CreatePurchaseOrder.html?id=${userId}`),
+        );
+      });
+    </script>
   </body>
 </html>

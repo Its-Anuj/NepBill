@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hotel Subscription Plans - NepBill</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/Specific/BusinessOwner.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-container">
+        <div class="nav-left">
+          <a href="/" class="brand">Nep<span>Bill</span></a>
+          <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <select class="lang-select">
+            <option value="en">English</option>
+            <option value="np">Nepali</option>
+          </select>
+          <div id="AccountHeaderSection"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- BOXED MAIN CONTAINER -->
+    <main class="dashboard-wrapper">
+      <div class="dashboard-box">
+        <!-- SIDEBAR -->
+        <aside id="sidebar-container" class="sidebar"></aside>
+
+        <!-- DASHBOARD CONTENT -->
+        <section class="dashboard-content">
+          <!-- PAGE HEADER -->
+          <div class="subscription-header">
+            <h2>Hotel Management Subscriptions</h2>
+            <p>
+              Streamline front-desk check-ins, housekeeping statuses, VAT
+              billing, and occupancy reports.
+            </p>
+          </div>
+
+          <!-- PRICING CARDS GRID -->
+          <div class="pricing-grid">
+            <!-- BASIC HOTEL PLAN -->
+            <div class="pricing-card">
+              <div class="card-header">
+                <h3>Basic Hotel Plan</h3>
+                <p class="plan-desc">
+                  Ideal for small lodges and guest houses looking for reliable
+                  front-desk POS billing.
+                </p>
+                <div class="price">
+                  <span class="currency">NPR</span>
+                  <span class="amount">800</span>
+                  <span class="period">/ month</span>
+                </div>
+              </div>
+              <ul class="plan-features-list">
+                <li><strong>20</strong> Rooms Limit</li>
+                <li><strong>1</strong> Business Manager Account</li>
+                <li>
+                  <strong>5</strong> Staff Accounts (Receptionist, Housekeeping,
+                  Cashier)
+                </li>
+                <li>Simple Room Status Toggle (Clean / Dirty / Occupied)</li>
+                <li>VAT & PAN Compliant Invoicing</li>
+                <li>Basic Attendance & Monthly Revenue Summary</li>
+              </ul>
+              <button
+                class="subscribe-btn"
+                data-plan="basic_hotel"
+                data-price="800"
+              >
+                Subscribe Basic
+              </button>
+            </div>
+
+            <!-- MEDIUM HOTEL PLAN -->
+            <div class="pricing-card featured">
+              <div class="badge-featured">Most Popular</div>
+              <div class="card-header">
+                <h3>Medium Hotel Plan</h3>
+                <p class="plan-desc">
+                  Designed for medium-sized hotels needing full housekeeping
+                  workflows & dynamic pricing.
+                </p>
+                <div class="price">
+                  <span class="currency">NPR</span>
+                  <span class="amount">2,000</span>
+                  <span class="period">/ month</span>
+                </div>
+              </div>
+              <ul class="plan-features-list">
+                <li><strong>60</strong> Rooms Limit</li>
+                <li><strong>2</strong> Business Manager Accounts</li>
+                <li>
+                  <strong>20</strong> Staff Accounts (+ Finance & Maintenance
+                  roles)
+                </li>
+                <li>Full Housekeeping Workflow Engine</li>
+                <li>Seasonal & Dynamic Room Pricing</li>
+                <li>Automated Low Stock Alerts & Supplier Purchase Orders</li>
+              </ul>
+              <button
+                class="subscribe-btn primary"
+                data-plan="medium_hotel"
+                data-price="2000"
+              >
+                Subscribe Medium
+              </button>
+            </div>
+          </div>
+
+          <!-- DETAILED COMPARISON TABLE -->
+          <div class="comparison-section">
+            <h3>Detailed Feature Comparison</h3>
+            <div class="table-wrapper">
+              <table class="comparison-table">
+                <thead>
+                  <tr>
+                    <th class="feature-col">Feature / Service</th>
+                    <th>Basic Plan (NPR 800/mo)</th>
+                    <th>Medium Plan (NPR 2,000/mo)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="feature-col">Room Limit</td>
+                    <td>Up to 20 Rooms</td>
+                    <td>Up to 60 Rooms</td>
+                  </tr>
+                  <tr>
+                    <td class="feature-col">Manager Accounts</td>
+                    <td>1 Account</td>
+                    <td>2 Accounts</td>
+                  </tr>
+                  <tr>
+                    <td class="feature-col">Staff Accounts & Roles</td>
+                    <td>5 Accounts (Receptionist, Housekeeping, Cashier)</td>
+                    <td>20 Accounts (+ Finance, Maintenance)</td>
+                  </tr>
+                  <tr>
+                    <td class="feature-col">Room Status Management</td>
+                    <td>Simple Clean/Dirty Toggle</td>
+                    <td>Full Housekeeping Workflow</td>
+                  </tr>
+                  <tr>
+                    <td class="feature-col">VAT / PAN Invoicing</td>
+                    <td>✓ Included</td>
+                    <td>✓ Included</td>
+                  </tr>
+                  <tr>
+                    <td class="feature-col">
+                      Booking & Reservation Management
+                    </td>
+                    <td>✓ Included</td>
+                    <td>✓ Included</td>
+                  </tr>
+                  <tr>
+                    <td class="feature-col">Seasonal / Dynamic Pricing</td>
+                    <td>✗ Not Available</td>
+                    <td>✓ Custom Seasons & Peak Rates</td>
+                  </tr>
+                  <tr>
+                    <td class="feature-col">Staff Attendance & Payroll</td>
+                    <td>Basic Attendance Logs</td>
+                    <td>Full Payroll Reports & Salary Deductions</td>
+                  </tr>
+                  <tr>
+                    <td class="feature-col">Stock & Inventory Management</td>
+                    <td>Basic Inventory Tracking</td>
+                    <td>Low Stock Alerts & Supplier Purchase Orders</td>
+                  </tr>
+                  <tr>
+                    <td class="feature-col">Revenue & Financial Analytics</td>
+                    <td>Monthly Summary Report</td>
+                    <td>Advanced Reports + Occupancy Rate Analysis</td>
+                  </tr>
+                  <tr>
+                    <td class="feature-col">Customer Support</td>
+                    <td>Email Support</td>
+                    <td>Priority Phone & Direct Chat</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <span>&copy; 2026 NepBill</span>
+        <ul class="footer-links">
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="/AccountTypes.js" type="module"></script>
+    <script src="/index.js" type="module"></script>
+    <script src="/Account.js" type="module"></script>
+    <script src="/SideBar.js" type="module"></script>
+
+    <!-- SUBSCRIPTION ROUTING SCRIPT -->
+    <script>
+      document.querySelectorAll(".subscribe-btn").forEach((button) => {
+        button.addEventListener("click", (e) => {
+          const urlParams = new URLSearchParams(window.location.search);
+          const userId = urlParams.get("id"); // Retrieves the 'id' parameter from the URL
+
+          const plan = e.target.getAttribute("data-plan");
+          const price = e.target.getAttribute("data-price");
+          window.location.href = `/Account/Finance/Subscription.html?id=${userId}&plan=${plan}&price=${price}&type=hostel`;
+        });
+      });
+    </script>
+  </body>
+</html>

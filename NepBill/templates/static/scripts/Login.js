@@ -38,7 +38,6 @@ async function SubmitLogin() {
 
   const response = await fetch("/api/login", {
     method: "POST",
-
     headers: {
       "Content-Type": "application/json",
     },
@@ -52,9 +51,4 @@ async function SubmitLogin() {
   const result = await response.json();
   console.log(result);
 
-  if (result.State) {
-    window.location.href = "/";
-  } else {
-    alert(result.message);
-  }
 }

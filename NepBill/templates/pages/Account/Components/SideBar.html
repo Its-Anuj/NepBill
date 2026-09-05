@@ -4,7 +4,7 @@
     <ul class="sidebar-menu">
       <li class="active"><a href="#overview">Overview</a></li>
       <li><a href="#" id="sidebar-admin-dashboard">Dashboard</a></li>
-      <li><a href="#" id="sidebar-admin-contactforms" >ContactForms</a></li>
+      <li><a href="#" id="sidebar-admin-contactforms">ContactForms</a></li>
     </ul>
   </div>
 
@@ -25,17 +25,70 @@
   <div class="sidebar-group">
     <span class="sidebar-label">BusinessOwner Panel</span>
     <ul class="sidebar-menu">
-      <li class="active"><a href="#overview">Overview</a></li>
-      <li><a href="#profile">Profile Settings</a></li>
-      <li><a href="#security">Security & JWT</a></li>
+      <li class="active">
+        <a id="BusinessOwner_Overview">Overview</a>
+      </li>
+      <li>
+        <a id="BusinessOwner_Profile_Settings">Profile Settings</a>
+      </li>
+      <li>
+        <a id="BusinessOwner_Security">Security & JWT</a>
+      </li>
     </ul>
   </div>
 
   <div class="sidebar-group">
-    <span class="sidebar-label">Management</span>
+    <span class="sidebar-label">My Business</span>
     <ul class="sidebar-menu">
-      <li><a href="#businesses">Businesses</a></li>
-      <li><a href="#invoices">Invoices & Billing</a></li>
+      <li><a id="BusinessOwner_Branches_Locations">Branches / Locations</a></li>
+      <li><a id="BusinessOwner_Subscription_Plans">Subscription & Plans</a></li>
+      <li><a id="BusinessOwner_Business_Documents">Business Documents</a></li>
+    </ul>
+  </div>
+  <div class="sidebar-group">
+    <span class="sidebar-label">Inventory</span>
+    <ul class="sidebar-menu">
+      <li><a id="BusinessOwner_Inventory">Inventory</a></li>
+      <li><a id="BusinessOwner_Stock">Stock</a></li>
+      <li><a id="BusinessOwner_PurchaseOrder">PurchaseOrder</a></li>
+    </ul>
+  </div>
+
+  <div class="sidebar-group">
+    <span class="sidebar-label">Supplier</span>
+    <ul class="sidebar-menu">
+      <li><a id="BusinessOwner_Supplier">Suppliers</a></li>
+    </ul>
+  </div>
+  
+  <div class="sidebar-group">
+    <span class="sidebar-label">Staff</span>
+    <ul class="sidebar-menu">
+      <li><a id="BusinessOwner_Accounts_Roles"> Accounts & Roles</a></li>
+      <li><a id="BusinessOwner_Salary_Overview">Salary Overview </a></li>
+    </ul>
+  </div>
+
+  <div class="sidebar-group">
+    <span class="sidebar-label">Financials</span>
+    <ul class="sidebar-menu">
+      <li><a id="BusinessOwner_Revenue_Report">Revenue Report</a></li>
+      <li><a id="BusinessOwner_Expense_Report">Expense Report </a></li>
+      <li>
+        <a id="BusinessOwner_VAT_Summary"
+          >VAT Summary (critical for Nepal — IRD filing)</a
+        >
+      </li>
+      <li><a id="BusinessOwner_Supplier_Payables">Supplier Payables</a></li>
+    </ul>
+  </div>
+
+  <div class="sidebar-group">
+    <span class="sidebar-label">Services</span>
+    <ul class="sidebar-menu">
+      <li><a id="BusinessOwner_Hotel"> Hotel (if subscribed)</a></li>
+      <li><a id="BusinessOwner_Restaurant">Restaurant (if subscribed) </a></li>
+      <li><a id="BusinessOwner_Hostel">Hostel (if subscribed)</a></li>
     </ul>
   </div>
 </div>
@@ -64,5 +117,7 @@
 </div>
 
 <div class="sidebar-footer">
-  <button class="btn-logout" id="LogoutButton" onclick="Logout()">Logout</button>
+  <button class="btn-logout" id="LogoutButton" onclick="Logout()">
+    Logout
+  </button>
 </div>

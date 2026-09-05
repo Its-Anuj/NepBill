@@ -275,7 +275,7 @@ namespace NepBill
         PurchaseOrderLineSortField SortField = PurchaseOrderLineSortField::Id;
         bool SortDescending = false;
     };
-
+    
     // ---- ItemInvoice Query ----
     enum class ItemInvoiceSortField
     {
@@ -341,6 +341,7 @@ namespace NepBill
         std::optional<std::string> Name;
         std::optional<std::string> PhoneNumber;
         std::optional<std::string> PanNumber;
+        bool ExactMatch = false;
 
         struct Pagination Pagination;
         SuppliersSortField SortField = SuppliersSortField::Id;
@@ -359,19 +360,17 @@ namespace NepBill
         std::optional<UUID> BusinessID;
         std::optional<UUID> UniqueID;
         std::optional<std::string> Name;
+        bool ExactMatch = false;
 
         struct Pagination Pagination;
         ItemCategorySortField SortField = ItemCategorySortField::Id;
         bool SortDescending = false;
     };
 
-    // ---- Item Query ----
     enum class ItemSortField
     {
         Id,
         Name,
-        CostPrice,
-        SalesPrice,
         LowStockThresold
     };
 
@@ -382,6 +381,8 @@ namespace NepBill
         std::optional<UUID> CategoryId;
         std::optional<UUID> UniqueID;
         std::optional<std::string> Name;
+        std::optional<bool> TracksStock;
+        bool ExactMatch = false;
 
         struct Pagination Pagination;
         ItemSortField SortField = ItemSortField::Id;

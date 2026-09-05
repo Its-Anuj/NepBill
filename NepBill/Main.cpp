@@ -111,10 +111,18 @@ int main(int argc, char const *argv[])
         App.static_file("/Account/Finance/Subscription.js", "templates/static/scripts/Finance/Subscription.js");
 
         App.static_file("/Account/Inventory/Inventory.html", "templates/pages/Account/Inventory/Inventory.html");
+        App.static_file("/Account/Inventory/PurchaseOrder.html", "templates/pages/Account/Inventory/PurchaseOrder.html");
+        App.static_file("/Account/Inventory/CreatePurchaseOrder.html", "templates/pages/Account/Inventory/CreatePurchaseOrder.html");
         App.static_file("/Inventory/Inventory.js", "templates/static/scripts/Inventory/Inventory.js");
         App.static_file("/Account/Inventory/Stock.html", "templates/pages/Account/Inventory/Stock.html");
         App.static_file("/Account/Inventory/AddItem.html", "templates/pages/Account/Inventory/AddItem.html");
         App.static_file("/Inventory/Stock.js", "templates/static/scripts/Inventory/Stock.js");
+
+        App.static_file("/Account/Supplier/Supplier.html", "templates/pages/Account/Supplier/Supplier.html");
+        App.static_file("/Supplier/Supplier.js", "templates/static/scripts/Supplier/Supplier.js");
+        App.static_file("/Inventory/PurchaseOrder.js", "templates/static/scripts/Inventory/PuirchaseOrder.js");
+        App.static_file("/Inventory/CreatePurchaseOrder.js", "templates/static/scripts/Inventory/CreatePurchaseOrder.js");
+        App.static_file("/Inventory/AddItem.js", "templates/static/scripts/Inventory/AddItem.js");
 
         App.static_file("/Login.js", "templates/static/scripts/Login.js");
         App.static_file("/Admin/ContactEnums.js", "templates/static/scripts/Admin/ContactEnums.js");
@@ -211,6 +219,34 @@ int main(int argc, char const *argv[])
 
         CROW_ROUTE(App, "/api/admin/contactform/registeraction/approve").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
                                                                                                          { return NepBill::AdminContactFormRegisterApprove(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/admin/inventory/itemcateogrybyname/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                                         { return NepBill::QueryItemCategoryName(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/admin/inventory/itemcateogrybyname/add").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                                         { return NepBill::AddItemCategory(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/inventory/itemstockunit/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                                         { return NepBill::QueryItemStockUnit(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/admin/inventory/itembyname/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                                 { return NepBill::QueryItemName(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/admin/inventory/itembyname/add").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                                 { return NepBill::AddItem(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/admin/inventory/item/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                                 { return NepBill::QueryItemStock(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/supplier/add").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                                 { return NepBill::AddSuppliers(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/supplier/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                                 { return NepBill::QuerySuppliers(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/admin/inventorypurchaseorder/suppliersbyname/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                                 { return NepBill::QuerySuppliersByNameFilter(Backend, Req); });
+
 
         App.port(18080).multithreaded().run();
         Backend.Database.close();

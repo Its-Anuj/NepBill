@@ -1175,8 +1175,12 @@ namespace NepBill
             "ItemID, "
             "OrderedQuantity, "
             "ReceivedQuantity, "
+            "PurchaseUnit, "
+            "PurchaseToStockConversion, "
+            "StockUnit, "
             "UnitPrice, "
-            "DiscountPercent "
+            "DiscountPercent, "
+            "Remarks "
             "FROM PurchaseOrderLine "
             "WHERE 1=1";
 
@@ -1240,18 +1244,22 @@ namespace NepBill
 
         for (auto Row : Result)
         {
-            PurchaseOrderLine Line;
+            PurchaseOrderLine LineObj{};
 
-            Line.Id = Row["Id"].as<uint32_t>();
-            Line.UniqueID = UUID::FromString(Row["UniqueID"].c_str());
-            Line.PurchaseOrderID = UUID::FromString(Row["PurchaseOrderID"].c_str());
-            Line.ItemID = UUID::FromString(Row["ItemID"].c_str());
-            Line.OrderedQuantity = Row["OrderedQuantity"].as<uint32_t>();
-            Line.ReceivedQuantity = Row["ReceivedQuantity"].as<uint32_t>();
-            Line.UnitPrice = Row["UnitPrice"].as<double>();
-            Line.DiscountPercent = Row["DiscountPercent"].as<double>();
+            LineObj.Id = Row["Id"].as<uint32_t>();
+            LineObj.UniqueID = UUID::FromString(Row["UniqueID"].c_str());
+            LineObj.PurchaseOrderID = UUID::FromString(Row["PurchaseOrderID"].c_str());
+            LineObj.ItemID = UUID::FromString(Row["ItemID"].c_str());
+            LineObj.OrderedQuantity = Row["OrderedQuantity"].as<uint32_t>();
+            LineObj.ReceivedQuantity = Row["ReceivedQuantity"].as<uint32_t>();
+            LineObj.PurchaseUnit = static_cast<MeasurementUnit>(Row["PurchaseUnit"].as<uint32_t>());
+            LineObj.PurchaseToStockConversion = Row["PurchaseToStockConversion"].as<double>();
+            LineObj.StockUnit = static_cast<MeasurementUnit>(Row["StockUnit"].as<uint32_t>());
+            LineObj.UnitPrice = Row["UnitPrice"].as<double>();
+            LineObj.DiscountPercent = Row["DiscountPercent"].as<double>();
+            LineObj.Remarks = Row["Remarks"].as<std::string>();
 
-            Lines.push_back(Line);
+            Lines.push_back(LineObj);
         }
 
         Tx.commit();
@@ -1566,20 +1574,44 @@ namespace NepBill
 
         if (Query.Name && !Query.Name->empty())
         {
-            Sql += " AND Name ILIKE $" + std::to_string(Params.size() + 1);
-            Params.push_back("%" + *Query.Name + "%");
+            if (Query.ExactMatch)
+            {
+                Sql += " AND Name = $" + std::to_string(Params.size() + 1);
+                Params.push_back(*Query.Name);
+            }
+            else
+            {
+                Sql += " AND Name ILIKE $" + std::to_string(Params.size() + 1);
+                Params.push_back("%" + *Query.Name + "%");
+            }
         }
 
         if (Query.PhoneNumber && !Query.PhoneNumber->empty())
         {
-            Sql += " AND PhoneNumber = $" + std::to_string(Params.size() + 1);
-            Params.push_back(*Query.PhoneNumber);
+            if (Query.ExactMatch)
+            {
+                Sql += " AND PhoneNumber = $" + std::to_string(Params.size() + 1);
+                Params.push_back(*Query.PhoneNumber);
+            }
+            else
+            {
+                Sql += " AND PhoneNumber ILIKE $" + std::to_string(Params.size() + 1);
+                Params.push_back("%" + *Query.PhoneNumber + "%");
+            }
         }
 
         if (Query.PanNumber && !Query.PanNumber->empty())
         {
-            Sql += " AND PanNumber = $" + std::to_string(Params.size() + 1);
-            Params.push_back(*Query.PanNumber);
+            if (Query.ExactMatch)
+            {
+                Sql += " AND PanNumber = $" + std::to_string(Params.size() + 1);
+                Params.push_back(*Query.PanNumber);
+            }
+            else
+            {
+                Sql += " AND PanNumber ILIKE $" + std::to_string(Params.size() + 1);
+                Params.push_back("%" + *Query.PanNumber + "%");
+            }
         }
 
         Sql += " ORDER BY ";
@@ -1616,24 +1648,17 @@ namespace NepBill
 
         for (auto Row : Result)
         {
-            Suppliers Supplier{};
+            Suppliers SupplierObj{};
 
-            Supplier.Id = Row["Id"].as<uint32_t>();
-            Supplier.BusinessID = UUID::FromString(Row["BusinessID"].c_str());
-            Supplier.UnqiueId = UUID::FromString(Row["UnqiueId"].c_str());
+            SupplierObj.Id = Row["Id"].as<uint32_t>();
+            SupplierObj.BusinessID = UUID::FromString(Row["BusinessID"].c_str());
+            SupplierObj.UnqiueId = UUID::FromString(Row["UnqiueId"].c_str());
+            SupplierObj.Name = Row["Name"].as<std::string>();
+            SupplierObj.PhoneNumber = Row["PhoneNumber"].as<std::string>();
+            SupplierObj.PanNumber = Row["PanNumber"].as<std::string>();
+            SupplierObj.OpeningBalance = Row["OpeningBalance"].as<double>();
 
-            std::string NameStr = Row["Name"].as<std::string>();
-            std::copy_n(NameStr.begin(), std::min(static_cast<unsigned int>(NameStr.size()), kNameLength - 1), Supplier.Name.begin());
-
-            std::string PhoneStr = Row["PhoneNumber"].as<std::string>();
-            std::copy_n(PhoneStr.begin(), std::min(static_cast<unsigned int>(PhoneStr.size()), kPhoneNumberLength - 1), Supplier.PhoneNumber.begin());
-
-            std::string PanStr = Row["PanNumber"].as<std::string>();
-            std::copy_n(PanStr.begin(), std::min(static_cast<unsigned int>(PanStr.size()), kPanNumberLength - 1), Supplier.PanNumber.begin());
-
-            Supplier.OpeningBalance = Row["OpeningBalance"].as<double>();
-
-            SupplierList.push_back(Supplier);
+            SupplierList.push_back(SupplierObj);
         }
 
         Tx.commit();
@@ -1676,8 +1701,16 @@ namespace NepBill
 
         if (Query.Name && !Query.Name->empty())
         {
-            Sql += " AND Name ILIKE $" + std::to_string(Params.size() + 1);
-            Params.push_back("%" + *Query.Name + "%");
+            if (Query.ExactMatch)
+            {
+                Sql += " AND Name = $" + std::to_string(Params.size() + 1);
+                Params.push_back(*Query.Name);
+            }
+            else
+            {
+                Sql += " AND Name ILIKE $" + std::to_string(Params.size() + 1);
+                Params.push_back("%" + *Query.Name + "%");
+            }
         }
 
         Sql += " ORDER BY ";
@@ -1716,9 +1749,7 @@ namespace NepBill
             Category.Id = Row["Id"].as<uint32_t>();
             Category.BusinessID = UUID::FromString(Row["BusinessID"].c_str());
             Category.UniqueID = UUID::FromString(Row["UniqueID"].c_str());
-
-            std::string NameStr = Row["Name"].as<std::string>();
-            std::copy_n(NameStr.begin(), std::min(static_cast<unsigned int>(NameStr.size()), kNameLength - 1), Category.Name.begin());
+            Category.Name = Row["Name"].as<std::string>();
 
             Categories.push_back(Category);
         }
@@ -1726,7 +1757,7 @@ namespace NepBill
         Tx.commit();
         return Categories;
     }
-
+    
     std::vector<Item> GetItems(
         pqxx::connection &Connection,
         const ItemQuery &Query)
@@ -1740,10 +1771,11 @@ namespace NepBill
             "UniqueID, "
             "Name, "
             "LowStockThresold, "
-            "CostPrice, "
-            "SalesPrice, "
-            "DiscountPercent, "
-            "Description "
+            "TracksStock, "
+            "Description, "
+            "StockUnit, "
+            "DefaultPurchaseConversion, "
+            "DefaultPurchaseUnit "
             "FROM Item "
             "WHERE 1=1";
 
@@ -1775,8 +1807,22 @@ namespace NepBill
 
         if (Query.Name && !Query.Name->empty())
         {
-            Sql += " AND Name ILIKE $" + std::to_string(Params.size() + 1);
-            Params.push_back("%" + *Query.Name + "%");
+            if (Query.ExactMatch)
+            {
+                Sql += " AND Name = $" + std::to_string(Params.size() + 1);
+                Params.push_back(*Query.Name);
+            }
+            else
+            {
+                Sql += " AND Name ILIKE $" + std::to_string(Params.size() + 1);
+                Params.push_back("%" + *Query.Name + "%");
+            }
+        }
+
+        if (Query.TracksStock)
+        {
+            Sql += " AND TracksStock = $" + std::to_string(Params.size() + 1);
+            Params.push_back(*Query.TracksStock ? "TRUE" : "FALSE");
         }
 
         Sql += " ORDER BY ";
@@ -1788,12 +1834,6 @@ namespace NepBill
             break;
         case ItemSortField::Name:
             Sql += "Name";
-            break;
-        case ItemSortField::CostPrice:
-            Sql += "CostPrice";
-            break;
-        case ItemSortField::SalesPrice:
-            Sql += "SalesPrice";
             break;
         case ItemSortField::LowStockThresold:
             Sql += "LowStockThresold";
@@ -1825,17 +1865,13 @@ namespace NepBill
             ItemObj.BusinessID = UUID::FromString(Row["BusinessID"].c_str());
             ItemObj.CategoryId = UUID::FromString(Row["CategoryId"].c_str());
             ItemObj.UniqueID = UUID::FromString(Row["UniqueID"].c_str());
-
-            std::string NameStr = Row["Name"].as<std::string>();
-            std::copy_n(NameStr.begin(), std::min(static_cast<unsigned int>(NameStr.size()), ItemNameLength - 1), ItemObj.Name.begin());
-
+            ItemObj.Name = Row["Name"].as<std::string>();
             ItemObj.LowStockThresold = Row["LowStockThresold"].as<uint32_t>();
-            ItemObj.CostPrice = Row["CostPrice"].as<double>();
-            ItemObj.SalesPrice = Row["SalesPrice"].as<double>();
-            ItemObj.DiscountPercent = Row["DiscountPercent"].as<double>();
-
-            std::string DescStr = Row["Description"].as<std::string>();
-            std::copy_n(DescStr.begin(), std::min(static_cast<unsigned int>(DescStr.size()), ItemDescriptionLength - 1), ItemObj.Description.begin());
+            ItemObj.TracksStock = Row["TracksStock"].as<bool>();
+            ItemObj.Description = Row["Description"].as<std::string>();
+            ItemObj.StockUnit = static_cast<MeasurementUnit>(Row["StockUnit"].as<uint32_t>());
+            ItemObj.DefaultPurchaseConversion = Row["DefaultPurchaseConversion"].as<double>();
+            ItemObj.DefaultPurchaseUnit = static_cast<MeasurementUnit>(Row["DefaultPurchaseUnit"].as<uint32_t>());
 
             Items.push_back(ItemObj);
         }
@@ -1843,4 +1879,4 @@ namespace NepBill
         Tx.commit();
         return Items;
     }
-} // namespace NepBill
+}

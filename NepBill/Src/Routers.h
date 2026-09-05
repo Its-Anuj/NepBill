@@ -22,7 +22,16 @@ namespace NepBill
     crow::response AdminContactFormRegisterApprove(NepBill::App &Backend, const crow::request &Req);
 
     crow::response QuerySuppliersIncomingOrders(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryItemCategoryName(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryItemName(NepBill::App &Backend, const crow::request &Req);
     crow::response AddItem(NepBill::App &Backend, const crow::request &Req);
+    crow::response AddItemCategory(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryItemStock(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryItemStockUnit(NepBill::App &Backend, const crow::request &Req);
+    
+    crow::response AddSuppliers(NepBill::App &Backend, const crow::request &Req);
+    crow::response QuerySuppliers(NepBill::App &Backend, const crow::request &Req);
+    crow::response QuerySuppliersByNameFilter(NepBill::App &Backend, const crow::request &Req);
 
 
 } // namespace NepBill

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Purchase Order - NepBill</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/Specific/BusinessOwner.css" />
+    <style>
+      .po-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        width: 100%;
+        padding: 1.5rem;
+        box-sizing: border-box;
+      }
+
+      .typeahead-wrapper {
+        position: relative;
+        width: 100%;
+      }
+
+      .typeahead-list {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #ffffff;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        max-height: 180px;
+        overflow-y: auto;
+        z-index: 50;
+        list-style: none;
+        margin: 4px 0 0 0;
+        padding: 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+
+      .typeahead-list li {
+        padding: 0.625rem 0.875rem;
+        cursor: pointer;
+        font-size: 0.875rem;
+        color: #1e293b;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .typeahead-list li:hover {
+        background-color: #f8fafc;
+        color: #2563eb;
+      }
+
+      /* Order Items Table/List */
+      .items-header-row,
+      .item-order-row {
+        display: grid;
+        grid-template-columns: 2.5fr 1fr 1.25fr 1.25fr 48px;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .items-header-row {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #475569;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e2e8f0;
+        margin-bottom: 0.75rem;
+      }
+
+      .item-order-row {
+        margin-bottom: 0.75rem;
+        background-color: #ffffff;
+      }
+
+      .btn-icon-danger {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #ef4444;
+        width: 38px;
+        height: 38px;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+
+      .btn-icon-danger:hover {
+        background: #ef4444;
+        color: #ffffff;
+      }
+
+      .btn-add-line {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background-color: #f1f5f9;
+        color: #2563eb;
+        border: 1px dashed #93c5fd;
+        padding: 0.625rem 1rem;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        cursor: pointer;
+        margin-top: 0.5rem;
+        transition: all 0.15s ease;
+      }
+
+      .btn-add-line:hover {
+        background-color: #eff6ff;
+        border-color: #2563eb;
+      }
+
+      .po-footer-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .error-msg {
+        color: #ef4444;
+        font-size: 0.75rem;
+        display: none;
+        margin-top: 0.25rem;
+      }
+
+      .error-msg.visible {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-container">
+        <div class="nav-left">
+          <a href="/" class="brand">Nep<span>Bill</span></a>
+          <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <select class="lang-select">
+            <option value="en">English</option>
+            <option value="np">Nepali</option>
+          </select>
+          <div id="AccountHeaderSection"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- BOXED MAIN CONTAINER -->
+    <main class="dashboard-wrapper">
+      <div class="dashboard-box">
+        <aside id="sidebar-container" class="sidebar"></aside>
+
+        <div class="po-container">
+          <div class="form-card">
+            <h2>Create Purchase Order</h2>
+
+            <!-- SUPPLIER SELECTION SECTION -->
+            <div class="form-grid" style="margin-bottom: 2rem;">
+              <div class="form-group" style="grid-column: 1 / -1;">
+                <label for="order_supplier_name">Select Supplier *</label>
+                <div class="typeahead-wrapper">
+                  <input
+                    type="text"
+                    id="order_supplier_name"
+                    placeholder="Search supplier by name..."
+                    autocomplete="off"
+                  />
+                  <ul class="typeahead-list" id="suppliers-list"></ul>
+                </div>
+                <span class="error-msg" id="err_order_supplier_name"
+                  >Please select a valid supplier from the list.</span
+                >
+              </div>
+            </div>
+
+            <!-- ORDER LINES SECTION -->
+            <h3 style="font-size: 1rem; margin-bottom: 1rem; color: #1e293b;">Order Items</h3>
+
+            <div class="items-header-row">
+              <div>Item Name *</div>
+              <div>Quantity *</div>
+              <div>Ordering Price (NPR) *</div>
+              <div>Line Total</div>
+              <div></div>
+            </div>
+
+            <div id="order_lines_container">
+              <!-- Dynamic item rows injected here -->
+            </div>
+
+            <button type="button" class="btn-add-line" id="add_line_btn">
+              <span>+</span> Add New Line
+            </button>
+
+            <!-- FOOTER ACTION -->
+            <div class="po-footer-actions">
+              <button type="button" class="btn-primary" id="create_po_btn">
+                Create Purchase Order
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <span>&copy; 2026 NepBill</span>
+        <ul class="footer-links">
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="/AccountTypes.js" type="module"></script>
+    <script src="/index.js" type="module"></script>
+    <script src="/SideBar.js" type="module"></script>
+    <script src="/Account.js" type="module"></script>
+    <script src="/Inventory/CreatePurchaseOrder.js" type="module"></script>
+  </body>
+</html>

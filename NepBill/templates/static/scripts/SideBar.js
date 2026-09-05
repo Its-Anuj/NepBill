@@ -25,6 +25,86 @@ const ROLE_NAVIGATION_MAP = {
   [AccountTypes.AccountRoles.BusinessOwner]: [
     { elementId: "sidebar-owner-profile", path: "/Owner/Profile.html" },
     { elementId: "sidebar-owner-billing", path: "/Owner/Billing.html" },
+    {
+      elementId: "BusinessOwner_Overview",
+      path: "/Account/BusinessOwner/Overview.html",
+    },
+    {
+      elementId: "BusinessOwner_Profile_Settings",
+      path: "/Account/BusinessOwner/Profile_Settings.html",
+    },
+    {
+      elementId: "BusinessOwner_Inventory",
+      path: "/Account/Inventory/Inventory.html",
+    },
+    {
+      elementId: "BusinessOwner_Stock",
+      path: "/Account/Inventory/Stock.html",
+    },
+    {
+      elementId: "BusinessOwner_Security",
+      path: "/Account/BusinessOwner/Security.html",
+    },
+
+    {
+      elementId: "BusinessOwner_Branches_Locations",
+      path: "/Account/BusinessOwner/Branches_Locations.html",
+    },
+    {
+      elementId: "BusinessOwner_Business_Documents",
+      path: "/Account/BusinessOwner/Business_Documents.html",
+    },
+    {
+      elementId: "BusinessOwner_PurchaseOrder",
+      path: "/Account/Inventory/PurchaseOrder.html",
+    },
+    {
+      elementId: "BusinessOwner_Supplier",
+      path: "/Account/Supplier/Supplier.html",
+    },
+    {
+      elementId: "BusinessOwner_Subscription_Plans",
+      path: "/Account/BusinessOwner/Subscription_Plans.html",
+    },
+    {
+      elementId: "BusinessOwner_Accounts_Roles",
+      path: "/Account/BusinessOwner/Accounts_Roles.html",
+    },
+    {
+      elementId: "BusinessOwner_Salary_Overview",
+      path: "/Account/BusinessOwner/Salary_Overview.html",
+    },
+    {
+      elementId: "BusinessOwner_Revenue_Report",
+      path: "/Account/BusinessOwner/Revenue_Report.html",
+    },
+
+    {
+      elementId: "BusinessOwner_Expense_Report",
+      path: "/Account/BusinessOwner/Expense_Report.html",
+    },
+
+    {
+      elementId: "BusinessOwner_VAT_Summary",
+      path: "/Account/BusinessOwner/VAT_Summary.html",
+    },
+
+    {
+      elementId: "BusinessOwner_Supplier_Payables",
+      path: "/Account/BusinessOwner/Supplier_Payables.html",
+    },
+    {
+      elementId: "BusinessOwner_Hotel",
+      path: "/Account/BusinessOwner/Hotel.html",
+    },
+    {
+      elementId: "BusinessOwner_Restaurant",
+      path: "/Account/BusinessOwner/Restaurant.html",
+    },
+    {
+      elementId: "BusinessOwner_Hostel",
+      path: "/Account/BusinessOwner/Hostel.html",
+    },
   ],
   [AccountTypes.AccountRoles.BusinessManager]: [
     { elementId: "sidebar-manager-tasks", path: "/Manager/Tasks.html" },
@@ -33,7 +113,9 @@ const ROLE_NAVIGATION_MAP = {
 
 const Role_SideBar_Map = {
   [AccountTypes.AccountRoles.Admin]: [{ UsageId: "sidebar-view-Admin" }],
-  [AccountTypes.AccountRoles.BusinessOwner]: [{ UsageId: "sidebar-view-BusinessOwner" }],
+  [AccountTypes.AccountRoles.BusinessOwner]: [
+    { UsageId: "sidebar-view-BusinessOwner" },
+  ],
 };
 
 /**
@@ -57,11 +139,8 @@ export function HandleSideBarPerRole(AccountId, Role, sidebarEl) {
   HandleConnectionsPerRole(AccountId, Role);
 
   let LogoutElement = document.getElementById("LogoutButton");
-  if(LogoutElement)
-  {
-    LogoutElement.addEventListener("click", (event) =>
-        Logout(),
-      );
+  if (LogoutElement) {
+    LogoutElement.addEventListener("click", (event) => Logout());
   }
 }
 

@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Business Overview - NepBill</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/Specific/BusinessOwner.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-container">
+        <div class="nav-left">
+          <a href="/" class="brand">Nep<span>Bill</span></a>
+          <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <select class="lang-select">
+            <option value="en">English</option>
+            <option value="np">Nepali</option>
+          </select>
+          <div id="AccountHeaderSection"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- BOXED MAIN CONTAINER -->
+    <main class="dashboard-wrapper">
+      <div class="dashboard-box">
+        <!-- SIDEBAR -->
+        <aside id="sidebar-container" class="sidebar"></aside>
+
+        <!-- DASHBOARD CONTENT -->
+        <section class="dashboard-content">
+          <!-- OVERVIEW HEADER & SERVICE SELECTION BAR -->
+          <div class="overview-header">
+            <div class="overview-title">
+              <h2>Business Overview</h2>
+              <p>Manage performance and active modules for your business.</p>
+            </div>
+
+            <!-- SERVICE SELECTOR DROPDOWN/TABS -->
+            <div class="service-selector-wrapper">
+              <label for="serviceTypeSelect">Active Module:</label>
+              <select id="serviceTypeSelect" class="service-select-input">
+                <option value="hotel" selected>🏨 Hotel Management</option>
+                <option value="hostel">🏢 Hostel Management</option>
+                <option value="restaurant">🍽️ Restaurant & POS</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- COMMON METRICS DASHBOARD CARDS -->
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <span class="metric-label">Today's Revenue</span>
+              <h3 class="metric-value">NPR 45,200</h3>
+              <span class="metric-trend positive">+12.5% vs yesterday</span>
+            </div>
+            <div class="metric-card">
+              <span class="metric-label">Pending Invoices</span>
+              <h3 class="metric-value">5 Invoices</h3>
+              <span class="metric-trend negative">NPR 12,400 unpaid</span>
+            </div>
+          </div>
+
+          <!-- SERVICE SPECIFIC CONTAINER (DYNAMICTALLY SWITCHED) -->
+          <div class="service-detail-box">
+            <!-- 1. HOTEL MANAGEMENT SPECIFIC MOCK -->
+            <div id="hotelView" class="service-view active">
+              <div class="service-view-header">
+                <h3>Hotel Room & Guest Matrix</h3>
+                <button class="action-btn">+ Book New Room</button>
+              </div>
+              <div class="room-grid">
+                <div class="room-card occupied">
+                  <span class="room-number">Room 101</span>
+                  <span class="room-status">Occupied</span>
+                  <p class="guest-name">John Doe</p>
+                  <small>Checkout: Tomorrow</small>
+                </div>
+                <div class="room-card available">
+                  <span class="room-number">Room 102</span>
+                  <span class="room-status">Available</span>
+                  <p class="room-type">Deluxe Suite</p>
+                  <small>NPR 3,500 / night</small>
+                </div>
+                <div class="room-card maintenance">
+                  <span class="room-number">Room 103</span>
+                  <span class="room-status">Cleaning</span>
+                  <p class="room-type">Standard Double</p>
+                  <small>Blocked</small>
+                </div>
+                <div class="room-card occupied">
+                  <span class="room-number">Room 104</span>
+                  <span class="room-status">Occupied</span>
+                  <p class="guest-name">Aayush Sharma</p>
+                  <small>Checkout: Today</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. HOSTEL MANAGEMENT SPECIFIC MOCK -->
+            <div id="hostelView" class="service-view hidden">
+              <div class="service-view-header">
+                <h3>Hostel Bed Allocation & Rent Dues</h3>
+                <button class="action-btn">+ Register Student</button>
+              </div>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Bed / Room</th>
+                    <th>Resident Name</th>
+                    <th>Monthly Fee</th>
+                    <th>Payment Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Bed A-101 (Block A)</td>
+                    <td>Rohan Shrestha</td>
+                    <td>NPR 11,000</td>
+                    <td><span class="badge paid">Paid</span></td>
+                    <td><button class="btn-sm">Receipt</button></td>
+                  </tr>
+                  <tr>
+                    <td>Bed B-204 (Block B)</td>
+                    <td>Suman Kumar</td>
+                    <td>NPR 9,500</td>
+                    <td><span class="badge unpaid">Pending (3 Days)</span></td>
+                    <td><button class="btn-sm warning">Remind</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- 3. RESTAURANT & POS SPECIFIC MOCK -->
+            <div id="restaurantView" class="service-view hidden">
+              <div class="service-view-header">
+                <h3>Live Restaurant Table Orders (KOT)</h3>
+                <button class="action-btn">+ New Order</button>
+              </div>
+              <div class="table-pos-grid">
+                <div class="pos-table-card occupied">
+                  <h4>Table 01 (4 Seats)</h4>
+                  <p>Items: 2x Momo, 1x Coke</p>
+                  <span class="kot-status">Preparing (10m)</span>
+                  <button class="btn-sm">Print Bill</button>
+                </div>
+                <div class="pos-table-card empty">
+                  <h4>Table 02 (2 Seats)</h4>
+                  <p>Status: Vacant</p>
+                  <button class="btn-sm">+ Occupy</button>
+                </div>
+                <div class="pos-table-card billed">
+                  <h4>Table 03 (6 Seats)</h4>
+                  <p>Bill Generated: NPR 2,450</p>
+                  <span class="kot-status">Awaiting Cash</span>
+                  <button class="btn-sm success">Settle Payment</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <span>&copy; 2026 NepBill</span>
+        <ul class="footer-links">
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="/AccountTypes.js" type="module"></script>
+    <script src="/index.js" type="module"></script>
+    <script src="/Account.js" type="module"></script>
+    <script src="/SideBar.js" type="module"></script>
+
+    <!-- SERVICE SWITCHING SCRIPT -->
+    <script>
+      const serviceSelect = document.getElementById("serviceTypeSelect");
+      const serviceViews = document.querySelectorAll(".service-view");
+
+      serviceSelect.addEventListener("change", (e) => {
+        const selectedValue = e.target.value;
+        serviceViews.forEach((view) => {
+          if (view.id === `${selectedValue}View`) {
+            view.classList.remove("hidden");
+            view.classList.add("active");
+          } else {
+            view.classList.remove("active");
+            view.classList.add("hidden");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

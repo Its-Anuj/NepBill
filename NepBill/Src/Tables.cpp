@@ -283,8 +283,12 @@ namespace NepBill
              {"ItemID", "UUID"},
              {"OrderedQuantity", "INTEGER"},
              {"ReceivedQuantity", "INTEGER"},
+             {"PurchaseUnit", "INTEGER"},
+             {"PurchaseToStockConversion", "DOUBLE PRECISION"},
+             {"StockUnit", "INTEGER"},
              {"UnitPrice", "DOUBLE PRECISION"},
-             {"DiscountPercent", "DOUBLE PRECISION"}});
+             {"DiscountPercent", "DOUBLE PRECISION"},
+             {"Remarks", "TEXT"}});
         return Query.c_str();
     }
 
@@ -292,7 +296,17 @@ namespace NepBill
     {
         static std::string Query = BuildInsertQuery(
             "PurchaseOrderLine",
-            {"UniqueID", "PurchaseOrderID", "ItemID", "OrderedQuantity", "ReceivedQuantity", "UnitPrice", "DiscountPercent"});
+            {"UniqueID",
+             "PurchaseOrderID",
+             "ItemID",
+             "OrderedQuantity",
+             "ReceivedQuantity",
+             "PurchaseUnit",
+             "PurchaseToStockConversion",
+             "StockUnit",
+             "UnitPrice",
+             "DiscountPercent",
+             "Remarks"});
         return Query.c_str();
     }
 
@@ -306,7 +320,18 @@ namespace NepBill
     {
         static std::string Query = BuildByIdQuery(
             "PurchaseOrderLine",
-            {"Id", "UniqueID", "PurchaseOrderID", "ItemID", "OrderedQuantity", "ReceivedQuantity", "UnitPrice", "DiscountPercent"});
+            {"Id",
+             "UniqueID",
+             "PurchaseOrderID",
+             "ItemID",
+             "OrderedQuantity",
+             "ReceivedQuantity",
+             "PurchaseUnit",
+             "PurchaseToStockConversion",
+             "StockUnit",
+             "UnitPrice",
+             "DiscountPercent",
+             "Remarks"});
         return Query.c_str();
     }
 
@@ -1115,6 +1140,72 @@ namespace NepBill
 
 #pragma endregion
 
+#pragma region Item
+    const char *Item::GetCreateQuery()
+    {
+        static std::string Query = BuildCreateQuery(
+            "Item",
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"BusinessID", "UUID"},
+             {"CategoryId", "UUID"},
+             {"UniqueID", "UUID"},
+             {"Name", "TEXT"},
+             {"LowStockThresold", "INTEGER"},
+             {"TracksStock", "BOOLEAN"},
+             {"Description", "TEXT"},
+             {"StockUnit", "INTEGER"},
+             {"DefaultPurchaseConversion", "DOUBLE PRECISION"},
+             {"DefaultPurchaseUnit", "INTEGER"}});
+        return Query.c_str();
+    }
+
+    const char *Item::GetInsertQuery()
+    {
+        static std::string Query = BuildInsertQuery(
+            "Item",
+            {"BusinessID",
+             "CategoryId",
+             "UniqueID",
+             "Name",
+             "LowStockThresold",
+             "TracksStock",
+             "Description",
+             "StockUnit",
+             "DefaultPurchaseConversion",
+             "DefaultPurchaseUnit"});
+        return Query.c_str();
+    }
+
+    const char *Item::GetCountQuery()
+    {
+        static std::string Query = BuildCountQuery("Item");
+        return Query.c_str();
+    }
+
+    const char *Item::GetByIdQuery()
+    {
+        static std::string Query = BuildByIdQuery(
+            "Item",
+            {"Id",
+             "BusinessID",
+             "CategoryId",
+             "UniqueID",
+             "Name",
+             "LowStockThresold",
+             "TracksStock",
+             "Description",
+             "StockUnit",
+             "DefaultPurchaseConversion",
+             "DefaultPurchaseUnit"});
+        return Query.c_str();
+    }
+
+    const char *Item::GetName()
+    {
+        return "Item";
+    }
+#pragma endregion
+
 #pragma region ItemCategory
 
     const char *ItemCategory::GetCreateQuery()
@@ -1125,7 +1216,7 @@ namespace NepBill
                 {"Id", "SERIAL PRIMARY KEY"},
                 {"BusinessID", "UUID"},
                 {"UniqueID", "UUID"},
-                {"Name", MakeVarchar(kNameLength)},
+                {"Name", "TEXT"},
             });
         return Query.c_str();
     }
@@ -1159,71 +1250,19 @@ namespace NepBill
 
 #pragma endregion
 
-#pragma region Item
-
-    const char *Item::GetCreateQuery()
-    {
-        static std::string Query = BuildCreateQuery(
-            "Item",
-            {
-                {"Id", "SERIAL PRIMARY KEY"},
-                {"BusinessID", "UUID"},
-                {"CategoryId", "UUID"},
-                {"UniqueID", "UUID"},
-                {"Name", MakeVarchar(ItemNameLength)},
-                {"LowStockThresold", "INTEGER"},
-                {"CostPrice", "DOUBLE PRECISION"},
-                {"SalesPrice", "DOUBLE PRECISION"},
-                {"DiscountPercent", "DOUBLE PRECISION"},
-                {"Description", MakeVarchar(ItemDescriptionLength)},
-            });
-        return Query.c_str();
-    }
-
-    const char *Item::GetInsertQuery()
-    {
-        static std::string Query = BuildInsertQuery(
-            "Item",
-            {"BusinessID", "CategoryId", "UniqueID", "Name", "LowStockThresold", "CostPrice", "SalesPrice", "DiscountPercent", "Description"});
-        return Query.c_str();
-    }
-
-    const char *Item::GetCountQuery()
-    {
-        static std::string Query = BuildCountQuery("Item");
-        return Query.c_str();
-    }
-
-    const char *Item::GetByIdQuery()
-    {
-        static std::string Query = BuildByIdQuery(
-            "Item",
-            {"Id", "BusinessID", "CategoryId", "UniqueID", "Name", "LowStockThresold", "CostPrice", "SalesPrice", "DiscountPercent", "Description"});
-        return Query.c_str();
-    }
-
-    const char *Item::GetName()
-    {
-        return "Item";
-    }
-
-#pragma endregion
-
 #pragma region Suppliers
 
     const char *Suppliers::GetCreateQuery()
     {
         static std::string Query = BuildCreateQuery(
             "Suppliers",
-            {
-                {"Id", "SERIAL PRIMARY KEY"},
-                {"BusinessID", "UUID"},
-                {"UnqiueId", "UUID"},
-                {"Name", MakeVarchar(kNameLength)},
-                {"PhoneNumber", MakeVarchar(kPhoneNumberLength)},
-                {"PanNumber", MakeVarchar(kPanNumberLength)},
-                {"OpeningBalance", "DOUBLE PRECISION"},
-            });
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"BusinessID", "UUID"},
+             {"UnqiueId", "UUID"},
+             {"Name", "TEXT"},
+             {"PhoneNumber", "TEXT"},
+             {"PanNumber", "TEXT"},
+             {"OpeningBalance", "DOUBLE PRECISION"}});
         return Query.c_str();
     }
 
@@ -1231,7 +1270,12 @@ namespace NepBill
     {
         static std::string Query = BuildInsertQuery(
             "Suppliers",
-            {"BusinessID", "UnqiueId", "Name", "PhoneNumber", "PanNumber", "OpeningBalance"});
+            {"BusinessID",
+             "UnqiueId",
+             "Name",
+             "PhoneNumber",
+             "PanNumber",
+             "OpeningBalance"});
         return Query.c_str();
     }
 
@@ -1245,7 +1289,13 @@ namespace NepBill
     {
         static std::string Query = BuildByIdQuery(
             "Suppliers",
-            {"Id", "BusinessID", "UnqiueId", "Name", "PhoneNumber", "PanNumber", "OpeningBalance"});
+            {"Id",
+             "BusinessID",
+             "UnqiueId",
+             "Name",
+             "PhoneNumber",
+             "PanNumber",
+             "OpeningBalance"});
         return Query.c_str();
     }
 

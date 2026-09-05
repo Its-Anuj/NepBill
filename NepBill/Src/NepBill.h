@@ -226,19 +226,23 @@ namespace NepBill
         Tx.commit();
     }
 
-    inline void Insert(pqxx::connection &Db, const PurchaseOrderLine &Line)
+    inline void Insert(pqxx::connection &Db, const PurchaseOrderLine &LineObj)
     {
         pqxx::work Tx(Db);
         Tx.exec(
-            Line.GetInsertQuery(),
+            LineObj.GetInsertQuery(),
             pqxx::params{
-                Line.UniqueID.ToString(),
-                Line.PurchaseOrderID.ToString(),
-                Line.ItemID.ToString(),
-                Line.OrderedQuantity,
-                Line.ReceivedQuantity,
-                Line.UnitPrice,
-                Line.DiscountPercent});
+                LineObj.UniqueID.ToString(),
+                LineObj.PurchaseOrderID.ToString(),
+                LineObj.ItemID.ToString(),
+                LineObj.OrderedQuantity,
+                LineObj.ReceivedQuantity,
+                static_cast<uint32_t>(LineObj.PurchaseUnit),
+                LineObj.PurchaseToStockConversion,
+                static_cast<uint32_t>(LineObj.StockUnit),
+                LineObj.UnitPrice,
+                LineObj.DiscountPercent,
+                LineObj.Remarks});
         Tx.commit();
     }
 
@@ -282,18 +286,18 @@ namespace NepBill
         Tx.commit();
     }
 
-    inline void Insert(pqxx::connection &Db, const Suppliers &Supplier)
+    inline void Insert(pqxx::connection &Db, const Suppliers &SupplierObj)
     {
         pqxx::work Tx(Db);
         Tx.exec(
-            Supplier.GetInsertQuery(),
+            SupplierObj.GetInsertQuery(),
             pqxx::params{
-                Supplier.BusinessID.ToString(),
-                Supplier.UnqiueId.ToString(),
-                Supplier.Name.data(),
-                Supplier.PhoneNumber.data(),
-                Supplier.PanNumber.data(),
-                Supplier.OpeningBalance});
+                SupplierObj.BusinessID.ToString(),
+                SupplierObj.UnqiueId.ToString(),
+                SupplierObj.Name,
+                SupplierObj.PhoneNumber,
+                SupplierObj.PanNumber,
+                SupplierObj.OpeningBalance});
         Tx.commit();
     }
 
@@ -305,7 +309,7 @@ namespace NepBill
             pqxx::params{
                 Category.BusinessID.ToString(),
                 Category.UniqueID.ToString(),
-                Category.Name.data()});
+                Category.Name});
         Tx.commit();
     }
 
@@ -318,12 +322,13 @@ namespace NepBill
                 ItemObj.BusinessID.ToString(),
                 ItemObj.CategoryId.ToString(),
                 ItemObj.UniqueID.ToString(),
-                ItemObj.Name.data(),
+                ItemObj.Name,
                 ItemObj.LowStockThresold,
-                ItemObj.CostPrice,
-                ItemObj.SalesPrice,
-                ItemObj.DiscountPercent,
-                ItemObj.Description.data()});
+                ItemObj.TracksStock,
+                ItemObj.Description,
+                static_cast<uint32_t>(ItemObj.StockUnit),
+                ItemObj.DefaultPurchaseConversion,
+                static_cast<uint32_t>(ItemObj.DefaultPurchaseUnit)});
         Tx.commit();
     }
 

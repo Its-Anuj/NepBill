@@ -1,20 +1,29 @@
 <!doctype html>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Account - NepBill</title>
+
     <link rel="stylesheet" href="/styles.css" />
   </head>
+
   <body>
     <!-- HEADER -->
+
     <header>
       <div class="header-container">
         <div class="nav-left">
           <a href="/" class="brand">Nep<span>Bill</span></a>
+
           <ul class="nav-links">
             <li><a href="#products">Products</a></li>
+
             <li><a href="#partners">Partners</a></li>
+
             <li><a href="#resources">Resources</a></li>
           </ul>
         </div>
@@ -22,29 +31,38 @@
         <div class="nav-right">
           <select class="lang-select">
             <option value="en">English</option>
+
             <option value="np">Nepali</option>
           </select>
+
           <div id="AccountHeaderSection"></div>
         </div>
       </div>
     </header>
 
     <!-- BOXED MAIN CONTAINER -->
+
     <main class="dashboard-wrapper">
       <div class="dashboard-box">
-        <!-- SIDEBAR (INSIDE BOX) -->
         <aside id="sidebar-container" class="sidebar"></aside>
+
         <!-- DASHBOARD CONTENT (INSIDE BOX) -->
+
+        <section class="dashboard-content">DASHBOARD</section>
       </div>
     </main>
 
     <!-- FOOTER -->
+
     <footer>
       <div class="footer-container">
         <span>&copy; 2026 NepBill</span>
+
         <ul class="footer-links">
           <li><a href="#privacy">Privacy</a></li>
+
           <li><a href="#terms">Terms</a></li>
+
           <li><a href="#support">Support</a></li>
         </ul>
       </div>
@@ -52,7 +70,8 @@
 
     <script src="/AccountTypes.js" type="module"></script>
     <script src="/index.js" type="module"></script>
-    <script src="/SideBar.js" type="module"></script>
     <script src="/Account.js" type="module"></script>
+    <script src="/Account/Finance/Subscription.js" type="module"></script>
+    <script src="/SideBar.js" type="module"></script>
   </body>
 </html>
