@@ -207,7 +207,7 @@ namespace NepBill
                 Ledger.StockDelta,
                 Ledger.AccountID.ToString(),
                 static_cast<int>(Ledger.Reason),
-                getPostgresTimestamp(ToUnixTime(Ledger.CreatedAt))});
+                getPostgresTimestamp(ToUnixTime(getCurrentTime()))});
         Tx.commit();
     }
 
@@ -257,32 +257,14 @@ namespace NepBill
                 Invoice.UniqueID.ToString(),
                 static_cast<int>(Invoice.State),
                 Invoice.VatPercent,
-                Invoice.LineTotal,
+                Invoice.Total,
                 static_cast<int>(Invoice.SenderType.Type),
                 static_cast<uint32_t>(Invoice.SenderType.ServiceType),
                 static_cast<int>(Invoice.RecieverType.Type),
                 static_cast<uint32_t>(Invoice.RecieverType.ServiceType),
-                getPostgresTimestamp(ToUnixTime(Invoice.CreatedAt)),
+                getPostgresTimestamp(ToUnixTime(getCurrentTime())),
                 getPostgresTimestamp(ToUnixTime(Invoice.LastPaymentTicketDate)),
                 getPostgresTimestamp(ToUnixTime(Invoice.ClosedAt))});
-        Tx.commit();
-    }
-
-    inline void Insert(pqxx::connection &Db, const ItemInvoiceLine &Line)
-    {
-        pqxx::work Tx(Db);
-        Tx.exec(
-            Line.GetInsertQuery(),
-            pqxx::params{
-                Line.InvoiceId.ToString(),
-                Line.ItemId.ToString(),
-                Line.UnqiueId.ToString(),
-                Line.OrderedQuantity,
-                Line.DeliveredQuantity,
-                Line.ItemWeight,
-                Line.UnitPrice,
-                Line.UnitDiscountPercet,
-                Line.LineTotal});
         Tx.commit();
     }
 
@@ -331,6 +313,26 @@ namespace NepBill
                 static_cast<uint32_t>(ItemObj.DefaultPurchaseUnit)});
         Tx.commit();
     }
+
+    inline void Insert(pqxx::connection &Db, const RoomInfo &RoomObj)
+    {
+        pqxx::work Tx(Db);
+        Tx.exec(
+            RoomObj.GetInsertQuery(),
+            pqxx::params{
+                RoomObj.UniqueID.ToString(),
+                RoomObj.BusinessID.ToString(),
+                RoomObj.Name,
+                RoomObj.BasePrice,
+                RoomObj.Description,
+                static_cast<uint32_t>(RoomObj.State),
+                RoomObj.BedCount});
+        Tx.commit();
+    }
+
+    std::vector<RoomInfo> GetRooms(
+        pqxx::connection &Connection,
+        const RoomInfoQuery &Query);
 
     std::vector<ContactFormInfo> GetContactForms(
         pqxx::connection &Connection,
@@ -384,10 +386,6 @@ namespace NepBill
         pqxx::connection &Connection,
         const PurchaseOrderLineQuery &Query);
 
-    std::vector<ItemInvoiceLine> GetItemInvoiceLines(
-        pqxx::connection &Connection,
-        const ItemInvoiceLineQuery &Query);
-
     std::vector<ItemInvoice> GetItemInvoices(
         pqxx::connection &Connection,
         const ItemInvoiceQuery &Query);
@@ -403,6 +401,19 @@ namespace NepBill
     std::vector<ItemCategory> GetItemCategories(
         pqxx::connection &Connection,
         const ItemCategoryQuery &Query);
+
+    bool UpdatePurchaseOrderLine(
+        pqxx::connection &Connection,
+        const UUID &UniqueID,
+        const PurchaseOrderLineUpdate &Update);
+
+    bool UpdatePurchaseOrder(
+        pqxx::connection &Connection,
+        const UUID &UniqueID,
+        const PurchaseOrderUpdate &Update);
+    std::vector<RoomInfo> GetRooms(
+        pqxx::connection &Connection,
+        const RoomInfoQuery &Query);
 } // namespace NepBill
 
 #endif

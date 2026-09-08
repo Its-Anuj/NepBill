@@ -484,6 +484,35 @@ namespace NepBill
         Dropped,
     };
 
+    inline const char *InvoiceStatesToStr(InvoiceStates state)
+    {
+        switch (state)
+        {
+        case InvoiceStates::Paying:
+            return "Paying";
+        case InvoiceStates::PartiallyPaid:
+            return "PartiallyPaid";
+        case InvoiceStates::FullyPaid:
+            return "FullyPaid";
+        case InvoiceStates::Dropped:
+            return "Dropped";
+        default:
+            return "";
+        }
+    }
+
+    inline InvoiceStates StrToInvoiceStates(const std::string &State)
+    {
+        if (State == "Paying")
+            return InvoiceStates::Paying;
+        if (State == "PartiallyPaid")
+            return InvoiceStates::PartiallyPaid;
+        if (State == "FullyPaid")
+            return InvoiceStates::FullyPaid;
+        if (State == "Dropped")
+            return InvoiceStates::Dropped;
+    }
+
     enum FinancialPaymentReceipientType : uint32_t
     {
         // Amount paid to the customer maybe return who knows
@@ -517,36 +546,15 @@ namespace NepBill
         UUID UniqueID;
         InvoiceStates State;
         double VatPercent = 0;
-        double LineTotal = 0;
+        double Total = 0;
         FinancialPaymentReceiptientInfo SenderType;
         FinancialPaymentReceiptientInfo RecieverType;
 
-        struct tm CreatedAt;
+        struct tm CreatedAt = {};
         // Date specifing the last time a payment ticket was opened for this invoice
-        struct tm LastPaymentTicketDate;
+        struct tm LastPaymentTicketDate = {};
         // Closed date on either dropped or fully paid condition
-        struct tm ClosedAt;
-
-        static const char *GetCreateQuery();
-        static const char *GetInsertQuery();
-        static const char *GetCountQuery();
-        static const char *GetByIdQuery();
-        static const char *GetName();
-    };
-
-    // One invoie can be related to multiple item purchases
-    struct ItemInvoiceLine
-    {
-        uint32_t Id = 0;
-        UUID InvoiceId;
-        UUID ItemId;
-        UUID UnqiueId;
-        uint32_t OrderedQuantity;
-        uint32_t DeliveredQuantity;
-        double ItemWeight;
-        double UnitPrice;
-        double UnitDiscountPercet;
-        double LineTotal;
+        struct tm ClosedAt = {};
 
         static const char *GetCreateQuery();
         static const char *GetInsertQuery();
@@ -779,7 +787,7 @@ namespace NepBill
         std::string Description;
         MeasurementUnit StockUnit;
         double DefaultPurchaseConversion = 1.0; // last used / most common conversion, just for pre-filling UI
-        MeasurementUnit DefaultPurchaseUnit;    // same — just for pre-filling UI
+        PurchaseUnit DefaultPurchaseUnit;       // same — just for pre-filling UI
 
         static const char *GetCreateQuery();
         static const char *GetInsertQuery();
@@ -838,7 +846,8 @@ namespace NepBill
         Draft,
         Sent,
         PartiallyReceived,
-        Completed
+        Completed,
+        Cancelled,
     };
 
     // Enum → string
@@ -854,6 +863,8 @@ namespace NepBill
             return "PartiallyReceived";
         case PurchaseOrderState::Completed:
             return "Completed";
+        case PurchaseOrderState::Cancelled:
+            return "Cancelled";
         }
         return "Unknown";
     }
@@ -866,6 +877,7 @@ namespace NepBill
             {"Sent", PurchaseOrderState::Sent},
             {"PartiallyReceived", PurchaseOrderState::PartiallyReceived},
             {"Completed", PurchaseOrderState::Completed},
+            {"Cancelled", PurchaseOrderState::Cancelled},
         };
 
         auto it = map.find(str);
@@ -899,7 +911,7 @@ namespace NepBill
         UUID ItemID;
         uint32_t OrderedQuantity = 0; // 10
         uint32_t ReceivedQuantity = 0;
-        MeasurementUnit PurchaseUnit;           // Bag
+        NepBill::PurchaseUnit PurchaseUnit;     // Bag
         double PurchaseToStockConversion = 1.0; // 25 — typed in by staff
         MeasurementUnit StockUnit;              // Kg — from Item.StockUnit, pre-filled
         double UnitPrice = 0.0;
@@ -950,13 +962,13 @@ namespace NepBill
     struct RoomInfo
     {
         uint32_t Id = 0;
-        std::array<char, kNameLength> Name = {0};
-        double BasePrice = 0.0f;
-        uint32_t BedCount = 0;
-        std::array<char, RoomDescriptionLength> Description = {0};
         UUID UniqueID;
-        RoomStates State;
         UUID BusinessID;
+        std::string Name = {0};
+        double BasePrice = 0.0f;
+        std::string Description = {0};
+        RoomStates State;
+        uint32_t BedCount = 0;
 
         static const char *GetCreateQuery();
         static const char *GetInsertQuery();

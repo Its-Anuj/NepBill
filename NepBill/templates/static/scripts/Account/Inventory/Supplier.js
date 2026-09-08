@@ -71,6 +71,7 @@ async function QuerySuppliers(UserId) {
   });
 
   const result = await response.json();
+  console.log(result);
   const tableContainer = document.getElementById("SupplierTable");
 
   if (result.State && result.Count > 0) {

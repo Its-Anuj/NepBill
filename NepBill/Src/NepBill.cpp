@@ -1252,7 +1252,7 @@ namespace NepBill
             LineObj.ItemID = UUID::FromString(Row["ItemID"].c_str());
             LineObj.OrderedQuantity = Row["OrderedQuantity"].as<uint32_t>();
             LineObj.ReceivedQuantity = Row["ReceivedQuantity"].as<uint32_t>();
-            LineObj.PurchaseUnit = static_cast<MeasurementUnit>(Row["PurchaseUnit"].as<uint32_t>());
+            LineObj.PurchaseUnit = static_cast<PurchaseUnit>(Row["PurchaseUnit"].as<uint32_t>());
             LineObj.PurchaseToStockConversion = Row["PurchaseToStockConversion"].as<double>();
             LineObj.StockUnit = static_cast<MeasurementUnit>(Row["StockUnit"].as<uint32_t>());
             LineObj.UnitPrice = Row["UnitPrice"].as<double>();
@@ -1279,14 +1279,14 @@ namespace NepBill
             "UniqueID, "
             "State, "
             "VatPercent, "
-            "LineTotal, "
+            "Total, "
             "SenderType, "
             "SenderServiceType, "
             "RecieverType, "
             "RecieverServiceType, "
-            "EXTRACT(EPOCH FROM CreatedAt)::BIGINT AS CreatedAt, "
-            "EXTRACT(EPOCH FROM LastPaymentTicketDate)::BIGINT AS LastPaymentTicketDate, "
-            "EXTRACT(EPOCH FROM ClosedAt)::BIGINT AS ClosedAt "
+            "CreatedAt, "
+            "LastPaymentTicketDate, "
+            "ClosedAt "
             "FROM ItemInvoice "
             "WHERE 1=1";
 
@@ -1296,6 +1296,12 @@ namespace NepBill
         {
             Sql += " AND Id = $" + std::to_string(Params.size() + 1);
             Params.push_back(std::to_string(*Query.Id));
+        }
+
+        if (Query.UniqueID)
+        {
+            Sql += " AND UniqueID = $" + std::to_string(Params.size() + 1);
+            Params.push_back(Query.UniqueID->ToString());
         }
 
         if (Query.SenderId)
@@ -1310,52 +1316,40 @@ namespace NepBill
             Params.push_back(Query.RecieverId->ToString());
         }
 
-        if (Query.UniqueID)
-        {
-            Sql += " AND UniqueID = $" + std::to_string(Params.size() + 1);
-            Params.push_back(Query.UniqueID->ToString());
-        }
-
         if (Query.State)
         {
             Sql += " AND State = $" + std::to_string(Params.size() + 1);
-            Params.push_back(std::to_string(static_cast<int>(*Query.State)));
+            Params.push_back(std::to_string(static_cast<uint32_t>(*Query.State)));
+        }
+
+        if (Query.VatPercent)
+        {
+            Sql += " AND VatPercent = $" + std::to_string(Params.size() + 1);
+            Params.push_back(std::to_string(*Query.VatPercent));
+        }
+
+        if (Query.Total)
+        {
+            Sql += " AND Total = $" + std::to_string(Params.size() + 1);
+            Params.push_back(std::to_string(*Query.Total));
         }
 
         if (Query.SenderType)
         {
             Sql += " AND SenderType = $" + std::to_string(Params.size() + 1);
-            Params.push_back(std::to_string(static_cast<int>(*Query.SenderType)));
-        }
+            Params.push_back(std::to_string(static_cast<int>(Query.SenderType->Type)));
 
-        if (Query.SenderServiceType)
-        {
             Sql += " AND SenderServiceType = $" + std::to_string(Params.size() + 1);
-            Params.push_back(std::to_string(static_cast<uint32_t>(*Query.SenderServiceType)));
+            Params.push_back(std::to_string(static_cast<uint32_t>(Query.SenderType->ServiceType)));
         }
 
         if (Query.RecieverType)
         {
             Sql += " AND RecieverType = $" + std::to_string(Params.size() + 1);
-            Params.push_back(std::to_string(static_cast<int>(*Query.RecieverType)));
-        }
+            Params.push_back(std::to_string(static_cast<int>(Query.RecieverType->Type)));
 
-        if (Query.RecieverServiceType)
-        {
             Sql += " AND RecieverServiceType = $" + std::to_string(Params.size() + 1);
-            Params.push_back(std::to_string(static_cast<uint32_t>(*Query.RecieverServiceType)));
-        }
-
-        if (Query.CreatedAfter)
-        {
-            Sql += " AND CreatedAt >= to_timestamp($" + std::to_string(Params.size() + 1) + ")";
-            Params.push_back(std::to_string(*Query.CreatedAfter));
-        }
-
-        if (Query.CreatedBefore)
-        {
-            Sql += " AND CreatedAt <= to_timestamp($" + std::to_string(Params.size() + 1) + ")";
-            Params.push_back(std::to_string(*Query.CreatedBefore));
+            Params.push_back(std::to_string(static_cast<uint32_t>(Query.RecieverType->ServiceType)));
         }
 
         Sql += " ORDER BY ";
@@ -1365,11 +1359,13 @@ namespace NepBill
         case ItemInvoiceSortField::Id:
             Sql += "Id";
             break;
+
         case ItemInvoiceSortField::CreatedAt:
             Sql += "CreatedAt";
             break;
-        case ItemInvoiceSortField::LineTotal:
-            Sql += "LineTotal";
+
+        case ItemInvoiceSortField::Total:
+            Sql += "Total";
             break;
         }
 
@@ -1398,31 +1394,32 @@ namespace NepBill
             Invoice.SenderId = UUID::FromString(Row["SenderId"].c_str());
             Invoice.RecieverId = UUID::FromString(Row["RecieverId"].c_str());
             Invoice.UniqueID = UUID::FromString(Row["UniqueID"].c_str());
-            Invoice.State = static_cast<InvoiceStates>(Row["State"].as<int>());
+            Invoice.State = static_cast<InvoiceStates>(Row["State"].as<uint32_t>());
             Invoice.VatPercent = Row["VatPercent"].as<double>();
-            Invoice.LineTotal = Row["LineTotal"].as<double>();
-            Invoice.SenderType.Type = static_cast<FinancialPaymentReceipientType>(Row["SenderType"].as<int>());
-            Invoice.SenderType.ServiceType = static_cast<ServiceType>(Row["SenderServiceType"].as<uint32_t>());
+            Invoice.Total = Row["Total"].as<double>();
 
-            Invoice.RecieverType.Type = static_cast<FinancialPaymentReceipientType>(Row["RecieverType"].as<int>());
-            Invoice.RecieverType.ServiceType = static_cast<ServiceType>(Row["RecieverServiceType"].as<uint32_t>());
+            Invoice.SenderType.Type = static_cast<decltype(Invoice.SenderType.Type)>(Row["SenderType"].as<int>());
+            Invoice.SenderType.ServiceType = static_cast<decltype(Invoice.SenderType.ServiceType)>(Row["SenderServiceType"].as<uint32_t>());
+
+            Invoice.RecieverType.Type = static_cast<decltype(Invoice.RecieverType.Type)>(Row["RecieverType"].as<int>());
+            Invoice.RecieverType.ServiceType = static_cast<decltype(Invoice.RecieverType.ServiceType)>(Row["RecieverServiceType"].as<uint32_t>());
 
             if (!Row["CreatedAt"].is_null())
             {
-                std::time_t T = Row["CreatedAt"].as<std::time_t>();
-                Invoice.CreatedAt = *std::localtime(&T);
+                std::string CreatedAtStr = Row["CreatedAt"].c_str();
+                strptime(CreatedAtStr.c_str(), "%Y-%m-%d %H:%M:%S", &Invoice.CreatedAt);
             }
 
             if (!Row["LastPaymentTicketDate"].is_null())
             {
-                std::time_t T = Row["LastPaymentTicketDate"].as<std::time_t>();
-                Invoice.LastPaymentTicketDate = *std::localtime(&T);
+                std::string LastTicketStr = Row["LastPaymentTicketDate"].c_str();
+                strptime(LastTicketStr.c_str(), "%Y-%m-%d %H:%M:%S", &Invoice.LastPaymentTicketDate);
             }
 
             if (!Row["ClosedAt"].is_null())
             {
-                std::time_t T = Row["ClosedAt"].as<std::time_t>();
-                Invoice.ClosedAt = *std::localtime(&T);
+                std::string ClosedAtStr = Row["ClosedAt"].c_str();
+                strptime(ClosedAtStr.c_str(), "%Y-%m-%d %H:%M:%S", &Invoice.ClosedAt);
             }
 
             Invoices.push_back(Invoice);
@@ -1430,109 +1427,6 @@ namespace NepBill
 
         Tx.commit();
         return Invoices;
-    }
-
-    std::vector<ItemInvoiceLine> GetItemInvoiceLines(
-        pqxx::connection &Connection,
-        const ItemInvoiceLineQuery &Query)
-    {
-        pqxx::work Tx(Connection);
-        std::string Sql =
-            "SELECT "
-            "Id, "
-            "InvoiceId, "
-            "ItemId, "
-            "UnqiueId, "
-            "OrderedQuantity, "
-            "DeliveredQuantity, "
-            "ItemWeight, "
-            "UnitPrice, "
-            "UnitDiscountPercet, "
-            "LineTotal "
-            "FROM ItemInvoiceLine "
-            "WHERE 1=1";
-
-        std::vector<std::string> Params;
-
-        if (Query.Id)
-        {
-            Sql += " AND Id = $" + std::to_string(Params.size() + 1);
-            Params.push_back(std::to_string(*Query.Id));
-        }
-
-        if (Query.InvoiceId)
-        {
-            Sql += " AND InvoiceId = $" + std::to_string(Params.size() + 1);
-            Params.push_back(Query.InvoiceId->ToString());
-        }
-
-        if (Query.ItemId)
-        {
-            Sql += " AND ItemId = $" + std::to_string(Params.size() + 1);
-            Params.push_back(Query.ItemId->ToString());
-        }
-
-        if (Query.UnqiueId)
-        {
-            Sql += " AND UnqiueId = $" + std::to_string(Params.size() + 1);
-            Params.push_back(Query.UnqiueId->ToString());
-        }
-
-        Sql += " ORDER BY ";
-
-        switch (Query.SortField)
-        {
-        case ItemInvoiceLineSortField::Id:
-            Sql += "Id";
-            break;
-        case ItemInvoiceLineSortField::OrderedQuantity:
-            Sql += "OrderedQuantity";
-            break;
-        case ItemInvoiceLineSortField::UnitPrice:
-            Sql += "UnitPrice";
-            break;
-        case ItemInvoiceLineSortField::LineTotal:
-            Sql += "LineTotal";
-            break;
-        }
-
-        Sql += Query.SortDescending ? " DESC" : " ASC";
-
-        if (Query.Pagination.Limit)
-        {
-            Sql += " LIMIT " + std::to_string(*Query.Pagination.Limit);
-        }
-
-        Sql += " OFFSET " + std::to_string(Query.Pagination.Offset);
-
-        pqxx::params P;
-        for (const auto &Value : Params)
-            P.append(Value);
-
-        auto Result = Tx.exec(Sql, P);
-
-        std::vector<ItemInvoiceLine> Lines;
-
-        for (auto Row : Result)
-        {
-            ItemInvoiceLine Line;
-
-            Line.Id = Row["Id"].as<uint32_t>();
-            Line.InvoiceId = UUID::FromString(Row["InvoiceId"].c_str());
-            Line.ItemId = UUID::FromString(Row["ItemId"].c_str());
-            Line.UnqiueId = UUID::FromString(Row["UnqiueId"].c_str());
-            Line.OrderedQuantity = Row["OrderedQuantity"].as<uint32_t>();
-            Line.DeliveredQuantity = Row["DeliveredQuantity"].as<uint32_t>();
-            Line.ItemWeight = Row["ItemWeight"].as<double>();
-            Line.UnitPrice = Row["UnitPrice"].as<double>();
-            Line.UnitDiscountPercet = Row["UnitDiscountPercet"].as<double>();
-            Line.LineTotal = Row["LineTotal"].as<double>();
-
-            Lines.push_back(Line);
-        }
-
-        Tx.commit();
-        return Lines;
     }
 
     std::vector<Suppliers> GetSuppliers(
@@ -1757,7 +1651,7 @@ namespace NepBill
         Tx.commit();
         return Categories;
     }
-    
+
     std::vector<Item> GetItems(
         pqxx::connection &Connection,
         const ItemQuery &Query)
@@ -1871,12 +1765,278 @@ namespace NepBill
             ItemObj.Description = Row["Description"].as<std::string>();
             ItemObj.StockUnit = static_cast<MeasurementUnit>(Row["StockUnit"].as<uint32_t>());
             ItemObj.DefaultPurchaseConversion = Row["DefaultPurchaseConversion"].as<double>();
-            ItemObj.DefaultPurchaseUnit = static_cast<MeasurementUnit>(Row["DefaultPurchaseUnit"].as<uint32_t>());
+            ItemObj.DefaultPurchaseUnit = static_cast<PurchaseUnit>(Row["DefaultPurchaseUnit"].as<uint32_t>());
 
             Items.push_back(ItemObj);
         }
 
         Tx.commit();
         return Items;
+    }
+
+    // Update PurchaseOrder by UniqueID
+    bool UpdatePurchaseOrder(
+        pqxx::connection &Connection,
+        const UUID &UniqueID,
+        const PurchaseOrderUpdate &Update)
+    {
+        std::vector<std::string> Assignments;
+        std::vector<std::string> Params;
+
+        if (Update.BusinessID)
+        {
+            Assignments.push_back("BusinessID = $" + std::to_string(Params.size() + 1));
+            Params.push_back(Update.BusinessID->ToString());
+        }
+
+        if (Update.SupplierID)
+        {
+            Assignments.push_back("SupplierID = $" + std::to_string(Params.size() + 1));
+            Params.push_back(Update.SupplierID->ToString());
+        }
+
+        if (Update.ItemInvoiceId)
+        {
+            Assignments.push_back("ItemInvoiceId = $" + std::to_string(Params.size() + 1));
+            Params.push_back(Update.ItemInvoiceId->ToString());
+        }
+
+        if (Update.State)
+        {
+            Assignments.push_back("State = $" + std::to_string(Params.size() + 1));
+            Params.push_back(std::to_string(static_cast<int>(*Update.State)));
+        }
+
+        // Nothing to update
+        if (Assignments.empty())
+            return false;
+
+        std::string Sql = "UPDATE PurchaseOrder SET ";
+        for (size_t i = 0; i < Assignments.size(); ++i)
+        {
+            Sql += Assignments[i];
+            if (i + 1 < Assignments.size())
+                Sql += ", ";
+        }
+
+        Sql += " WHERE UniqueID = $" + std::to_string(Params.size() + 1);
+        Params.push_back(UniqueID.ToString());
+
+        pqxx::work Tx(Connection);
+        pqxx::params P;
+        for (const auto &Value : Params)
+            P.append(Value);
+
+        auto Result = Tx.exec(Sql, P);
+        Tx.commit();
+
+        return Result.affected_rows() > 0;
+    }
+
+    // Update PurchaseOrderLine by UniqueID
+    bool UpdatePurchaseOrderLine(
+        pqxx::connection &Connection,
+        const UUID &UniqueID,
+        const PurchaseOrderLineUpdate &Update)
+    {
+        std::vector<std::string> Assignments;
+        std::vector<std::string> Params;
+
+        if (Update.PurchaseOrderID)
+        {
+            Assignments.push_back("PurchaseOrderID = $" + std::to_string(Params.size() + 1));
+            Params.push_back(Update.PurchaseOrderID->ToString());
+        }
+
+        if (Update.ItemID)
+        {
+            Assignments.push_back("ItemID = $" + std::to_string(Params.size() + 1));
+            Params.push_back(Update.ItemID->ToString());
+        }
+
+        if (Update.OrderedQuantity)
+        {
+            Assignments.push_back("OrderedQuantity = $" + std::to_string(Params.size() + 1));
+            Params.push_back(std::to_string(*Update.OrderedQuantity));
+        }
+
+        if (Update.ReceivedQuantity)
+        {
+            Assignments.push_back("ReceivedQuantity = $" + std::to_string(Params.size() + 1));
+            Params.push_back(std::to_string(*Update.ReceivedQuantity));
+        }
+
+        if (Update.PurchaseUnit)
+        {
+            Assignments.push_back("PurchaseUnit = $" + std::to_string(Params.size() + 1));
+            Params.push_back(std::to_string(static_cast<int>(*Update.PurchaseUnit)));
+        }
+
+        if (Update.PurchaseToStockConversion)
+        {
+            Assignments.push_back("PurchaseToStockConversion = $" + std::to_string(Params.size() + 1));
+            Params.push_back(std::to_string(*Update.PurchaseToStockConversion));
+        }
+
+        if (Update.StockUnit)
+        {
+            Assignments.push_back("StockUnit = $" + std::to_string(Params.size() + 1));
+            Params.push_back(std::to_string(static_cast<int>(*Update.StockUnit)));
+        }
+
+        if (Update.UnitPrice)
+        {
+            Assignments.push_back("UnitPrice = $" + std::to_string(Params.size() + 1));
+            Params.push_back(std::to_string(*Update.UnitPrice));
+        }
+
+        if (Update.DiscountPercent)
+        {
+            Assignments.push_back("DiscountPercent = $" + std::to_string(Params.size() + 1));
+            Params.push_back(std::to_string(*Update.DiscountPercent));
+        }
+
+        if (Update.Remarks)
+        {
+            Assignments.push_back("Remarks = $" + std::to_string(Params.size() + 1));
+            Params.push_back(*Update.Remarks);
+        }
+
+        // Nothing to update
+        if (Assignments.empty())
+            return false;
+
+        std::string Sql = "UPDATE PurchaseOrderLine SET ";
+        for (size_t i = 0; i < Assignments.size(); ++i)
+        {
+            Sql += Assignments[i];
+            if (i + 1 < Assignments.size())
+                Sql += ", ";
+        }
+
+        Sql += " WHERE UniqueID = $" + std::to_string(Params.size() + 1);
+        Params.push_back(UniqueID.ToString());
+
+        pqxx::work Tx(Connection);
+        pqxx::params P;
+        for (const auto &Value : Params)
+            P.append(Value);
+
+        auto Result = Tx.exec(Sql, P);
+        Tx.commit();
+
+        return Result.affected_rows() > 0;
+    }
+
+    std::vector<RoomInfo> GetRooms(
+        pqxx::connection &Connection,
+        const RoomInfoQuery &Query)
+    {
+        pqxx::work Tx(Connection);
+        std::string Sql =
+            "SELECT "
+            "Id, "
+            "UniqueID, "
+            "BusinessID, "
+            "Name, "
+            "BasePrice, "
+            "Description, "
+            "State, "
+            "BedCount "
+            "FROM RoomInfo "
+            "WHERE 1=1";
+
+        std::vector<std::string> Params;
+
+        if (Query.Id)
+        {
+            Sql += " AND Id = $" + std::to_string(Params.size() + 1);
+            Params.push_back(std::to_string(*Query.Id));
+        }
+
+        if (Query.UniqueId)
+        {
+            Sql += " AND UniqueID = $" + std::to_string(Params.size() + 1);
+            Params.push_back(Query.UniqueId->ToString());
+        }
+
+        if (Query.BusinessId)
+        {
+            Sql += " AND BusinessID = $" + std::to_string(Params.size() + 1);
+            Params.push_back(Query.BusinessId->ToString());
+        }
+
+        if (Query.Name)
+        {
+            Sql += " AND Name = $" + std::to_string(Params.size() + 1);
+            Params.push_back(*Query.Name);
+        }
+
+        if (Query.State)
+        {
+            Sql += " AND State = $" + std::to_string(Params.size() + 1);
+            Params.push_back(std::to_string(*Query.State));
+        }
+
+        if (Query.BedCount)
+        {
+            Sql += " AND BedCount = $" + std::to_string(Params.size() + 1);
+            Params.push_back(std::to_string(*Query.BedCount));
+        }
+
+        if (Query.BasePrice)
+        {
+            Sql += " AND BasePrice = $" + std::to_string(Params.size() + 1);
+            Params.push_back(std::to_string(*Query.BasePrice));
+        }
+
+        Sql += " ORDER BY ";
+
+        switch (Query.SortField)
+        {
+        case RoomSortField::Id:
+            Sql += "Id";
+            break;
+
+        case RoomSortField::Name:
+            Sql += "Name";
+            break;
+        }
+
+        Sql += Query.SortDescending ? " DESC" : " ASC";
+
+        if (Query.Pagination.Limit)
+        {
+            Sql += " LIMIT " + std::to_string(*Query.Pagination.Limit);
+        }
+
+        Sql += " OFFSET " + std::to_string(Query.Pagination.Offset);
+
+        pqxx::params P;
+        for (const auto &Value : Params)
+            P.append(Value);
+
+        auto Result = Tx.exec(Sql, P);
+
+        std::vector<RoomInfo> Rooms;
+
+        for (auto Row : Result)
+        {
+            RoomInfo Room;
+
+            Room.Id = Row["Id"].as<uint32_t>();
+            Room.UniqueID = UUID::FromString(Row["UniqueID"].c_str());
+            Room.BusinessID = UUID::FromString(Row["BusinessID"].c_str());
+            Room.Name = Row["Name"].c_str();
+            Room.BasePrice = Row["BasePrice"].as<double>();
+            Room.Description = Row["Description"].c_str();
+            Room.State = static_cast<RoomStates>(Row["State"].as<uint32_t>());
+            Room.BedCount = Row["BedCount"].as<uint32_t>();
+
+            Rooms.push_back(Room);
+        }
+
+        Tx.commit();
+        return Rooms;
     }
 }

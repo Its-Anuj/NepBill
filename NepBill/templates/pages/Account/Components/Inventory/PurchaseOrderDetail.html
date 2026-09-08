@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Purchase Order Details - NepBill</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-container">
+        <div class="nav-left">
+          <a href="/" class="brand">Nep<span>Bill</span></a>
+          <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <select class="lang-select">
+            <option value="en">English</option>
+            <option value="np">Nepali</option>
+          </select>
+          <div id="AccountHeaderSection"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- BOXED MAIN CONTAINER -->
+    <main class="dashboard-wrapper">
+      <div class="dashboard-box">
+        <!-- SIDEBAR (INSIDE BOX) -->
+        <aside id="sidebar-container" class="sidebar"></aside>
+
+        <!-- DASHBOARD CONTENT -->
+        <div class="dashboard-content">
+          <div class="content-header">
+            <h1 class="content-title">Purchase Order Details</h1>
+            <a id="btn_back_to_orders" class="btn-secondary">&larr; Back to Orders</a>
+          </div>
+
+          <div id="po_loading" style="padding: 20px; text-align: center;">Loading order details...</div>
+
+          <div id="po_detail_container" class="detail-grid" style="display: none;">
+            <!-- LEFT PANEL: Purchase Order Info & Actions -->
+            <div class="detail-card">
+              <h3 style="margin-bottom: 16px; font-size: 1.1rem;">Order Overview</h3>
+
+              <div class="meta-group">
+                <div class="meta-label">Supplier</div>
+                <div class="meta-value">
+                  <a id="po_supplier_link" class="entity-link" href="#">--</a>
+                </div>
+              </div>
+
+              <div class="meta-group">
+                <div class="meta-label">Status</div>
+                <div class="meta-value" id="po_state_badge">--</div>
+              </div>
+
+              <div class="meta-group">
+                <div class="meta-label">Created At</div>
+                <div class="meta-value" id="po_created_at">--</div>
+              </div>
+
+              <div class="meta-group">
+                <div class="meta-label">Total Lines</div>
+                <div class="meta-value" id="po_lines_count">--</div>
+              </div>
+
+              <div class="meta-group">
+                <div class="meta-label">Grand Total Amount</div>
+                <div class="meta-value" id="po_grand_total" style="font-size: 1.2rem; font-weight: 700; color: var(--primary);">NPR 0.00</div>
+              </div>
+
+              <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 20px 0;" />
+
+              <!-- ACTION BUTTONS -->
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button id="btn_edit_order" class="btn-secondary">Edit Order</button>
+                <button id="btn_change_state" class="btn-warning">Change Order State</button>
+                <button id="btn_save_order" class="btn-primary">Save Changes</button>
+              </div>
+
+              <!-- DISCLAIMER -->
+              <div class="disclaimer-box">
+                <strong>Important Notice:</strong> Once the purchase order state is changed to completed or cancelled, further edits or state reversals will be disabled.
+              </div>
+            </div>
+
+            <!-- RIGHT PANEL: Item Lines -->
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-size: 1.1rem;">Order Item Lines</h3>
+                <button id="btn_toggle_all_lines" class="btn-secondary" style="padding: 4px 10px; font-size: 0.8rem;">Collapse All</button>
+              </div>
+
+              <div id="po_lines_wrapper" class="lines-container">
+                <!-- Dynamically populated line items -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <span>&copy; 2026 NepBill</span>
+        <ul class="footer-links">
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="/AccountTypes.js" type="module"></script>
+    <script src="/index.js" type="module"></script>
+    <script src="/SideBar.js" type="module"></script>
+    <script src="/Account.js" type="module"></script>
+    <script src="/Account/Inventory/PurchaseOrderDetail.js" type="module"></script>
+    <script src="/Account/Inventory/PurchaseOrderEnum.js" type="module"></script>
+
+  </body>
+</html>

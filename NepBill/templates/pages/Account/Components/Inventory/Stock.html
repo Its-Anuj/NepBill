@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Account - NepBill</title>
     <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/Specific/BusinessOwner.css" />
   </head>
   <body>
     <!-- HEADER -->
@@ -32,12 +33,42 @@
     <!-- BOXED MAIN CONTAINER -->
     <main class="dashboard-wrapper">
       <div class="dashboard-box">
-        <!-- SIDEBAR (INSIDE BOX) -->
         <aside id="sidebar-container" class="sidebar"></aside>
+
         <!-- DASHBOARD CONTENT (INSIDE BOX) -->
-        <a id="create_purchase_order" class="btn-primary"
-          >Create Purchse Order</a
-        >
+        <section class="dashboard-content">
+          <div class="inventory-toolbar">
+            <h2>Inventory Items</h2>
+            <a id="add_item_and_category" class="btn-primary"
+              >Add Item & Category</a
+            >
+          </div>
+
+          <div class="service-detail-box">
+            <div class="table-wrapper">
+              <table class="comparison-table inventory-table">
+                <thead>
+                  <tr>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Low Stock Threshold</th>
+                    <th>Current Stock</th>
+                    <th>Track Stock</th>
+                    <th>Description</th>
+                    <th style="text-align: right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="inventory-table-body">
+                  <tr>
+                    <td colspan="7" class="table-placeholder">
+                      Loading inventory data...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
 
@@ -55,25 +86,8 @@
 
     <script src="/AccountTypes.js" type="module"></script>
     <script src="/index.js" type="module"></script>
-    <script src="/SideBar.js" type="module"></script>
     <script src="/Account.js" type="module"></script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get("id"); // Retrieves the 'id' parameter from the URL
-        console.log(userId);
-
-        const CreatePurchaseElement = document.getElementById(
-          "create_purchase_order",
-        );
-
-        CreatePurchaseElement.addEventListener(
-          "click",
-          (event) =>
-            (window.location.href = `/Account/Inventory/CreatePurchaseOrder.html?id=${userId}`),
-        );
-      });
-    </script>
+    <script src="/SideBar.js" type="module"></script>
+    <script src="/Account/Inventory/Stock.js" type="module"></script>
   </body>
 </html>

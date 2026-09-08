@@ -162,6 +162,108 @@
     <script src="/index.js" type="module"></script>
     <script src="/Account.js" type="module"></script>
     <script src="/SideBar.js" type="module"></script>
-    <script src="/Inventory/AddItem.js" type="module"></script>
+    <script src="/Account/Inventory/AddItem.js" type="module"></script>
+    <script type="module">
+      import {
+        AddItem,
+        MeasurementUnits,
+        AddItemCategory,
+        GetDesiredCategories,
+      } from "/Account/Inventory/AddItem.js";
+      import { ShowFieldError, ClearFieldError } from "/ErrorHandler.js";
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get("id"); // Retrieves the 'id' parameter from the URL
+
+        // Clear error states on user typing
+        const fieldsToTrack = [
+          "category_input_name",
+          "item_input_category",
+          "item_input_name",
+          "item_input_low_stock_threshold",
+          "item_input_description",
+          "item_input_measurement_unit",
+        ];
+
+        fieldsToTrack.forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.addEventListener("input", () =>
+              ClearFieldError(id, "err_" + id, "input-error"),
+            );
+          }
+        });
+
+        // Future check roles etc
+        let AddItemElement = document.getElementById("add_item");
+
+        AddItemElement.addEventListener("click", (event) => AddItem(userId));
+
+        let AddCategoryElement = document.getElementById("add_item_category");
+
+        AddCategoryElement.addEventListener("click", (event) =>
+          AddItemCategory(userId),
+        );
+
+        const unitSelect = document.getElementById(
+          "item_input_measurement_unit",
+        );
+
+        Object.entries(MeasurementUnits).forEach(([value, label]) => {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = label;
+          unitSelect.appendChild(option);
+        });
+
+        const input = document.getElementById("item_input_category");
+        const list = document.getElementById("category-list");
+
+        function render(matches) {
+          console.log(matches);
+          list.innerHTML = matches
+            .map((c) => `<li data-value="${c["Name"]}">${c["Name"]}</li>`)
+            .join("");
+          list.style.display = matches.length ? "block" : "none";
+        }
+
+        input.addEventListener("input", async () => {
+          console.log(input.value.toLowerCase());
+          const q = input.value.toLowerCase();
+          let DesiredCategories = await GetDesiredCategories(
+            userId,
+            input.value.toLowerCase(),
+          );
+          console.log(DesiredCategories);
+
+          if (DesiredCategories["Count"] > 0) {
+            render(
+              DesiredCategories["Categories"].filter((c) =>
+                c["Name"].toLowerCase().includes(q),
+              ),
+            );
+          }
+        });
+
+        list.addEventListener("click", (e) => {
+          if (e.target.tagName === "LI") {
+            input.value = e.target.dataset.value;
+            list.style.display = "none";
+            ClearFieldError(
+              "item_input_category",
+              "err_item_input_category",
+              "input-error",
+            );
+          }
+        });
+
+        // Close on outside click
+        document.addEventListener("click", (e) => {
+          if (!e.target.closest(".typeahead-wrapper"))
+            list.style.display = "none";
+        });
+      });
+    </script>
   </body>
 </html>

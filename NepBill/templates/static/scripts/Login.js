@@ -51,4 +51,9 @@ async function SubmitLogin() {
   const result = await response.json();
   console.log(result);
 
+  if(result["State"] == true){
+    window.location.href = "/";
+  }else{
+    alert("Invalid Info given!");
+  }
 }

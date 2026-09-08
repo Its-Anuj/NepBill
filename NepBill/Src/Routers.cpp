@@ -952,7 +952,7 @@ namespace NepBill
         return res;
     }
 
-    crow::response QueryItemCategoryName(NepBill::App &Backend, const crow::request &Req)
+    crow::response QueryItemCategoryByName(NepBill::App &Backend, const crow::request &Req)
     {
         auto Json =
             crow::json::load(Req.body);
@@ -1019,7 +1019,7 @@ namespace NepBill
         return res;
     }
 
-    crow::response QueryItemName(NepBill::App &Backend, const crow::request &Req)
+    crow::response QueryItemByName(NepBill::App &Backend, const crow::request &Req)
     {
         auto Json =
             crow::json::load(Req.body);
@@ -1251,7 +1251,7 @@ namespace NepBill
         if (QueryCategories.size() > 0)
         {
             Result["State"] = false;
-            Result["Message"] = "Category For This Name Already Exists!";
+            Result["Message"] = "Category For " + CategoryName + " Already Exists!";
 
             // FIX: Set the content type to JSON and dump the JSON object to a string string
             res.add_header("Content-Type", "application/json");
@@ -1267,7 +1267,7 @@ namespace NepBill
         Insert(Backend.Database, NewItemCategory);
 
         Result["State"] = true;
-        Result["Message"] = "Succesful!";
+        Result["Message"] = "Succesfuly Added Category: " + CategoryName;
 
         // FIX: Set the content type to JSON and dump the JSON object to a string string
         res.add_header("Content-Type", "application/json");
@@ -1348,12 +1348,118 @@ namespace NepBill
             }
             Category = &QueryCategories[0];
 
+            ItemStockLedgerQuery CurrentItemStockLedgerQuery;
+            CurrentItemStockLedgerQuery.ItemId = ItemStock[i].UniqueID;
+
+            auto ItemStockLedgers = GetItemStockLedgers(Backend.Database, CurrentItemStockLedgerQuery);
+
+            uint32_t CurrentStock = 0;
+            for (auto &StockLedger : ItemStockLedgers)
+                CurrentStock += StockLedger.StockDelta;
+
             Result["Item"][i]["Name"] = ItemStock[i].Name;
+            Result["Item"][i]["ItemUUID"] = ItemStock[i].UniqueID.ToString();
             Result["Item"][i]["LowStockThresold"] = ItemStock[i].LowStockThresold;
             Result["Item"][i]["TracksStock"] = (ItemStock[i].TracksStock) ? "true" : "false";
             Result["Item"][i]["CategoryName"] = Category.value()->Name;
             Result["Item"][i]["Description"] = ItemStock[i].Description;
+            Result["Item"][i]["CurrentStock"] = CurrentStock;
         }
+
+        Result["State"] = true;
+        Result["Message"] = "Succesful!";
+
+        // FIX: Set the content type to JSON and dump the JSON object to a string string
+        res.add_header("Content-Type", "application/json");
+        res.write(Result.dump());
+        res.code = 200;
+
+        return res;
+    }
+
+    crow::response QueryItemDetail(NepBill::App &Backend, const crow::request &Req)
+    {
+        auto Json =
+            crow::json::load(Req.body);
+
+        if (!Json)
+        {
+            std::cout << "Invalid Json for AdminContactFormsQuery\n";
+            return crow::response(400);
+        }
+        std::cout << "Valid Json for AdminContactFormEditSave\n";
+
+        crow::json::wvalue Result;
+        crow::response res;
+
+        std::string ContactUUIDStr = Json["AccountId"].s();
+        auto UserId = UUID::FromString(std::string_view(ContactUUIDStr.c_str()));
+
+        std::string ItemUUIDStr = Json["ItemId"].s();
+        auto ItemId = UUID::FromString(std::string_view(ItemUUIDStr.c_str()));
+
+        auto TodayTime = getCurrentTime();
+        auto OneWeekAgoTime = getTimeOneWeekAgo();
+
+        AccountQuery UserAccountQuery;
+        UserAccountQuery.UniqueId = UserId;
+        std::optional<Account> UserAccount = std::nullopt;
+
+        auto Accounts = GetAccounts(Backend.Database, UserAccountQuery);
+        if (Accounts.size() == 1)
+            UserAccount = Accounts[0];
+
+        if (UserAccount == std::nullopt)
+        {
+            Result["State"] = false;
+            Result["Message"] = "Querying Account Info Failed!";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 400;
+
+            return res;
+        }
+
+        ItemQuery ItemQuery;
+        ItemQuery.BusinessID = UserAccount->BusinessID;
+        ItemQuery.UniqueID = ItemId;
+
+        auto ItemQuerieis = GetItems(Backend.Database, ItemQuery);
+
+        if (ItemQuerieis.size() == 0)
+        {
+            Result["State"] = false;
+            Result["Message"] = "Item Query Info Failed!";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 400;
+
+            return res;
+        }
+
+        auto Item = &ItemQuerieis[0];
+
+        ItemCategoryQuery ItemCategoryQuery;
+        ItemCategoryQuery.BusinessID = UserAccount->BusinessID;
+        ItemCategoryQuery.UniqueID = Item->CategoryId;
+
+        auto ItemCategories = GetItemCategories(Backend.Database, ItemCategoryQuery)[0];
+
+        Result["Name"] = Item->Name;
+        Result["CategoryName"] = ItemCategories.Name;
+        Result["LowStockThresold"] = Item->LowStockThresold;
+        Result["TracksStock"] = Item->TracksStock;
+        Result["StockUnit"] = MeasurementUnitToStr(Item->StockUnit);
+        Result["DefaultPurchaseUnit"] = PurchaseUnitToStr(Item->DefaultPurchaseUnit);
+        Result["DefaultPurchaseConversion"] = Item->DefaultPurchaseConversion;
+        Result["Description"] = Item->Description;
+
+        // In Future add a section where we show like what what purchase oders, stock changes happened here, and
+        // orders related to this item make a placeholder for that
 
         Result["State"] = true;
         Result["Message"] = "Succesful!";
@@ -1658,5 +1764,551 @@ namespace NepBill
         res.code = 200;
 
         return res;
+    }
+
+    crow::response AddPurchaseOrder(NepBill::App &Backend, const crow::request &Req)
+    {
+        auto Json =
+            crow::json::load(Req.body);
+
+        if (!Json)
+        {
+            std::cout << "Invalid Json for AdminContactFormsQuery\n";
+            return crow::response(400);
+        }
+        std::cout << "Valid Json for AdminContactFormEditSave\n";
+
+        crow::json::wvalue Result;
+        crow::response res;
+
+        std::string ContactUUIDStr = Json["AccountId"].s();
+        auto UserId = UUID::FromString(std::string_view(ContactUUIDStr.c_str()));
+
+        std::string SupplierUUIDStr = Json["SupplierUUID"].s();
+        auto SupplierId = UUID::FromString(std::string_view(SupplierUUIDStr.c_str()));
+
+        auto TodayTime = getCurrentTime();
+        auto OneWeekAgoTime = getTimeOneWeekAgo();
+
+        AccountQuery UserAccountQuery;
+        UserAccountQuery.UniqueId = UserId;
+        std::optional<Account> UserAccount = std::nullopt;
+
+        auto Accounts = GetAccounts(Backend.Database, UserAccountQuery);
+        if (Accounts.size() == 1)
+            UserAccount = Accounts[0];
+
+        if (UserAccount == std::nullopt)
+        {
+            Result["State"] = false;
+            Result["Message"] = "Querying Account Info Failed!";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 400;
+
+            return res;
+        }
+
+        PurchaseOrder PurchaseOrder;
+        PurchaseOrder.BusinessID = UserAccount->BusinessID;
+        PurchaseOrder.SupplierID = SupplierId;
+
+        std::vector<PurchaseOrderLine> OrderLines;
+
+        for (auto &Line : Json["Lines"])
+        {
+            PurchaseOrderLine NewOrderLine;
+            std::string ItemUUIDStr = Line["ItemUUID"].s();
+
+            ItemQuery ValidateItemQuery;
+            ValidateItemQuery.BusinessID = UserAccount->BusinessID;
+            ValidateItemQuery.UniqueID = UUID::FromString(std::string_view(ItemUUIDStr.c_str()));
+
+            auto ItemQueries = GetItems(Backend.Database, ValidateItemQuery);
+
+            if (ItemQueries.size() == 0)
+            {
+                Result["State"] = false;
+                Result["Message"] = "Line Count: " +
+                                    std::to_string(OrderLines.size()) + " Has a non existent item";
+
+                // FIX: Set the content type to JSON and dump the JSON object to a string string
+                res.add_header("Content-Type", "application/json");
+                res.write(Result.dump());
+                res.code = 400;
+
+                return res;
+            }
+
+            NewOrderLine.ItemID = ValidateItemQuery.UniqueID.value();
+            NewOrderLine.OrderedQuantity = Line["OrderedQuantity"].i();
+            NewOrderLine.PurchaseOrderID = PurchaseOrder.UniqueID;
+            NewOrderLine.PurchaseToStockConversion = Line["PurchaseToStockConversion"].i();
+            NewOrderLine.PurchaseUnit = (PurchaseUnit)Line["PurchaseUnit"].i();
+            NewOrderLine.StockUnit = ItemQueries[0].StockUnit;
+            NewOrderLine.Remarks = Line["Remarks"].s();
+            NewOrderLine.UnitPrice = Line["UnitPrice"].i();
+            NewOrderLine.DiscountPercent = Line["DiscountPercent"].i();
+
+            OrderLines.push_back(NewOrderLine);
+        }
+
+        Insert(Backend.Database, PurchaseOrder);
+
+        for (auto &Line : OrderLines)
+            Insert(Backend.Database, Line);
+
+        Result["State"] = true;
+        Result["Message"] = "Succesful!";
+
+        // FIX: Set the content type to JSON and dump the JSON object to a string string
+        res.add_header("Content-Type", "application/json");
+        res.write(Result.dump());
+        res.code = 200;
+
+        return res;
+    }
+
+    crow::response QueryPurchaseOrderList(NepBill::App &Backend, const crow::request &Req)
+    {
+        auto Json =
+            crow::json::load(Req.body);
+
+        if (!Json)
+        {
+            std::cout << "Invalid Json for AdminContactFormsQuery\n";
+            return crow::response(400);
+        }
+        std::cout << "Valid Json for AdminContactFormEditSave\n";
+
+        crow::json::wvalue Result;
+        crow::response res;
+
+        std::string ContactUUIDStr = Json["AccountId"].s();
+        auto UserId = UUID::FromString(std::string_view(ContactUUIDStr.c_str()));
+
+        auto TodayTime = getCurrentTime();
+        auto OneWeekAgoTime = getTimeOneWeekAgo();
+
+        AccountQuery UserAccountQuery;
+        UserAccountQuery.UniqueId = UserId;
+        std::optional<Account> UserAccount = std::nullopt;
+
+        auto Accounts = GetAccounts(Backend.Database, UserAccountQuery);
+        if (Accounts.size() == 1)
+            UserAccount = Accounts[0];
+
+        if (UserAccount == std::nullopt)
+        {
+            Result["State"] = false;
+            Result["Message"] = "Querying Account Info Failed!";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 400;
+
+            return res;
+        }
+
+        PurchaseOrderQuery PurchaseOrderQuery;
+        PurchaseOrderQuery.BusinessID = UserAccount->BusinessID;
+
+        auto PurchaseOrderQueries = GetPurchaseOrders(Backend.Database, PurchaseOrderQuery);
+
+        Result["Count"] = PurchaseOrderQueries.size();
+
+        for (int i = 0; i < PurchaseOrderQueries.size(); i++)
+        {
+            auto Order = &PurchaseOrderQueries[i];
+
+            SuppliersQuery OrderSuppliersQuery;
+            OrderSuppliersQuery.BusinessID = UserAccount->BusinessID;
+            OrderSuppliersQuery.UnqiueId = Order->SupplierID;
+
+            auto OrderSupplierQueries = GetSuppliers(Backend.Database, OrderSuppliersQuery);
+            auto &OrderSupplier = OrderSupplierQueries[0];
+
+            PurchaseOrderLineQuery OrderLineQueries;
+            OrderLineQueries.PurchaseOrderID = Order->UniqueID;
+
+            auto OrderLineItemQueries = GetPurchaseOrderLines(Backend.Database, OrderLineQueries);
+
+            Result["Orders"][i]["SupplierName"] = OrderSupplier.Name;
+            Result["Orders"][i]["SupplierUUID"] = OrderSupplier.UnqiueId.ToString();
+            Result["Orders"][i]["OrderUUID"] = Order->UniqueID.ToString();
+            Result["Orders"][i]["LinesCount"] = OrderLineItemQueries.size();
+            Result["Orders"][i]["State"] = PurchaseOrderStateToStr(Order->State);
+            Result["Orders"][i]["CreatedAt"] = FormatDateForHtml(Order->CreatedAt);
+        }
+
+        Result["State"] = true;
+        Result["Message"] = "Succesful!";
+
+        // FIX: Set the content type to JSON and dump the JSON object to a string string
+        res.add_header("Content-Type", "application/json");
+        res.write(Result.dump());
+        res.code = 200;
+
+        return res;
+    }
+
+    crow::response QueryPurchaseOrderDetail(NepBill::App &Backend, const crow::request &Req)
+    {
+        auto Json =
+            crow::json::load(Req.body);
+
+        if (!Json)
+        {
+            std::cout << "Invalid Json for AdminContactFormsQuery\n";
+            return crow::response(400);
+        }
+        std::cout << "Valid Json for AdminContactFormEditSave\n";
+
+        crow::json::wvalue Result;
+        crow::response res;
+
+        std::string ContactUUIDStr = Json["AccountId"].s();
+        auto UserId = UUID::FromString(std::string_view(ContactUUIDStr.c_str()));
+
+        std::string OrderUUIDStr = Json["OrderId"].s();
+        auto OrderId = UUID::FromString(std::string_view(OrderUUIDStr.c_str()));
+
+        auto TodayTime = getCurrentTime();
+        auto OneWeekAgoTime = getTimeOneWeekAgo();
+
+        AccountQuery UserAccountQuery;
+        UserAccountQuery.UniqueId = UserId;
+        std::optional<Account> UserAccount = std::nullopt;
+
+        auto Accounts = GetAccounts(Backend.Database, UserAccountQuery);
+        if (Accounts.size() == 1)
+            UserAccount = Accounts[0];
+
+        if (UserAccount == std::nullopt)
+        {
+            Result["State"] = false;
+            Result["Message"] = "Querying Account Info Failed!";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 400;
+
+            return res;
+        }
+
+        PurchaseOrderQuery PurchaseOrderQuery;
+        PurchaseOrderQuery.BusinessID = UserAccount->BusinessID;
+        PurchaseOrderQuery.UniqueID = OrderId;
+
+        auto PurchaseOrderQueries = GetPurchaseOrders(Backend.Database, PurchaseOrderQuery);
+
+        if (PurchaseOrderQueries.size() == 0)
+        {
+            Result["State"] = false;
+            Result["Message"] = "Given OrderId Has no PurchaseOrder!";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 400;
+
+            return res;
+        }
+
+        auto Order = &PurchaseOrderQueries[0];
+
+        SuppliersQuery OrderSuppliersQuery;
+        OrderSuppliersQuery.BusinessID = UserAccount->BusinessID;
+        OrderSuppliersQuery.UnqiueId = Order->SupplierID;
+
+        auto OrderSupplierQueries = GetSuppliers(Backend.Database, OrderSuppliersQuery);
+        auto &OrderSupplier = OrderSupplierQueries[0];
+
+        PurchaseOrderLineQuery OrderLineQueries;
+        OrderLineQueries.PurchaseOrderID = Order->UniqueID;
+
+        auto OrderLineItemQueries = GetPurchaseOrderLines(Backend.Database, OrderLineQueries);
+
+        Result["LinesCount"] = OrderLineItemQueries.size();
+        Result["SupplierName"] = OrderSupplier.Name;
+        Result["SupplierUUID"] = OrderSupplier.UnqiueId.ToString();
+        Result["PurchaseOrderState"] = PurchaseOrderStateToStr(Order->State);
+        Result["CreatedAt"] = FormatDateForHtml(Order->CreatedAt);
+
+        for (int i = 0; i < OrderLineItemQueries.size(); i++)
+        {
+            auto Line = &OrderLineItemQueries[i];
+
+            ItemQuery LineItemQuery;
+            LineItemQuery.UniqueID = Line->ItemID;
+
+            auto ItemQueries = GetItems(Backend.Database, LineItemQuery);
+
+            Result["Lines"][i]["LineUUID"] = Line->UniqueID.ToString();
+            Result["Lines"][i]["ItemUUID"] = ItemQueries[0].UniqueID.ToString();
+            Result["Lines"][i]["ItemName"] = ItemQueries[0].Name;
+            Result["Lines"][i]["OrderedQuantity"] = Line->OrderedQuantity;
+            Result["Lines"][i]["ReceivedQuantity"] = Line->ReceivedQuantity;
+            Result["Lines"][i]["PurchaseToStockConversion"] = Line->PurchaseToStockConversion;
+            Result["Lines"][i]["UnitPrice"] = Line->UnitPrice;
+            Result["Lines"][i]["DiscountPercent"] = Line->DiscountPercent;
+            Result["Lines"][i]["Remarks"] = Line->Remarks;
+            Result["Lines"][i]["PurchaseUnit"] = PurchaseUnitToStr(Line->PurchaseUnit);
+            Result["Lines"][i]["StockUnit"] = MeasurementUnitToStr(Line->StockUnit);
+        }
+
+        if (Order->State != PurchaseOrderState::Draft)
+        {
+            ItemInvoiceQuery ItemInvoiceQuery;
+            ItemInvoiceQuery.UniqueID = Order->ItemInvoiceId;
+
+            auto ItemInvoiceQueries = GetItemInvoices(Backend.Database, ItemInvoiceQuery);
+
+            if (ItemInvoiceQueries.size() > 0)
+                auto &Invoice = ItemInvoiceQueries[0];
+
+            Result["ItemInvoiceId"] = ItemInvoiceQueries[0].UniqueID.ToString();
+            Result["InvoiceState"] = InvoiceStatesToStr(ItemInvoiceQueries[0].State);
+            Result["VatPercent"] = ItemInvoiceQueries[0].VatPercent;
+        }
+
+        Result["State"] = true;
+        Result["Message"] = "Succesful!";
+
+        // FIX: Set the content type to JSON and dump the JSON object to a string string
+        res.add_header("Content-Type", "application/json");
+        res.write(Result.dump());
+        res.code = 200;
+
+        return res;
+    }
+
+    crow::response QueryPurchaseOrderLineDetail(NepBill::App &Backend, const crow::request &Req)
+    {
+        return crow::response();
+    }
+
+    crow::response ChangeOrderState(NepBill::App &Backend, const crow::request &Req)
+    {
+        auto Json =
+            crow::json::load(Req.body);
+
+        if (!Json)
+        {
+            std::cout << "Invalid Json for AdminContactFormsQuery\n";
+            return crow::response(400);
+        }
+        std::cout << "Valid Json for AdminContactFormEditSave\n";
+
+        crow::json::wvalue Result;
+        crow::response res;
+
+        std::string ContactUUIDStr = Json["AccountId"].s();
+        auto UserId = UUID::FromString(std::string_view(ContactUUIDStr.c_str()));
+
+        std::string OrderUUIDStr = Json["OrderId"].s();
+        auto OrderId = UUID::FromString(std::string_view(OrderUUIDStr.c_str()));
+
+        auto TodayTime = getCurrentTime();
+        auto OneWeekAgoTime = getTimeOneWeekAgo();
+
+        AccountQuery UserAccountQuery;
+        UserAccountQuery.UniqueId = UserId;
+        std::optional<Account> UserAccount = std::nullopt;
+
+        auto Accounts = GetAccounts(Backend.Database, UserAccountQuery);
+        if (Accounts.size() == 1)
+            UserAccount = Accounts[0];
+
+        if (UserAccount == std::nullopt)
+        {
+            Result["State"] = false;
+            Result["Message"] = "Querying Account Info Failed!";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 400;
+
+            return res;
+        }
+
+        PurchaseOrderQuery PurchaseOrderQuery;
+        PurchaseOrderQuery.BusinessID = UserAccount->BusinessID;
+        PurchaseOrderQuery.UniqueID = OrderId;
+
+        auto PurchaseOrderQueries = GetPurchaseOrders(Backend.Database, PurchaseOrderQuery);
+
+        if (PurchaseOrderQueries.size() == 0)
+        {
+            Result["State"] = false;
+            Result["Message"] = "Given OrderId Has no PurchaseOrder!";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 400;
+
+            return res;
+        }
+
+        auto Order = &PurchaseOrderQueries[0];
+
+        SuppliersQuery OrderSuppliersQuery;
+        OrderSuppliersQuery.BusinessID = UserAccount->BusinessID;
+        OrderSuppliersQuery.UnqiueId = Order->SupplierID;
+
+        auto OrderSupplierQueries = GetSuppliers(Backend.Database, OrderSuppliersQuery);
+        auto &OrderSupplier = OrderSupplierQueries[0];
+
+        PurchaseOrderLineQuery OrderLineQueries;
+        OrderLineQueries.PurchaseOrderID = Order->UniqueID;
+
+        auto OrderLineItemQueries = GetPurchaseOrderLines(Backend.Database, OrderLineQueries);
+
+        for (int i = 0; i < OrderLineItemQueries.size(); i++)
+        {
+            ItemStockLedger UpdatedLedger;
+            UpdatedLedger.AccountID = UserAccount->UniqueId;
+            UpdatedLedger.BusinessID = UserAccount->BusinessID;
+            UpdatedLedger.ItemId = OrderLineItemQueries[i].ItemID;
+            UpdatedLedger.PurchaseOrderID = Order->UniqueID;
+            UpdatedLedger.Reason = StockMovementReason::PurchaseDelivery;
+            UpdatedLedger.StockDelta = OrderLineItemQueries[i].ReceivedQuantity;
+            // Set CreatedAt to current system time
+            Insert(Backend.Database, UpdatedLedger);
+
+            PurchaseOrderLineUpdate Update;
+            Update.ReceivedQuantity = Json["LineReceivedQuantity"][i].i();
+            UpdatePurchaseOrderLine(Backend.Database, OrderLineItemQueries[i].UniqueID, Update);
+        }
+
+        ItemInvoice Invoice;
+        Invoice.SenderId = UserAccount->BusinessID;
+        Invoice.RecieverId = OrderSupplier.UnqiueId;
+        Invoice.State = StrToInvoiceStates(Json["InvoiceInfo"]["paymentState"].s());
+        Invoice.VatPercent = Json["InvoiceInfo"]["vatPercent"].i();
+        Invoice.Total = Json["InvoiceInfo"]["grandTotal"].i();
+        Invoice.SenderType.Type = FinancialPaymentReceipientType::OurBusiness;
+        Invoice.SenderType.ServiceType = ServiceType::Hotel;
+        Invoice.RecieverType.Type = FinancialPaymentReceipientType::Supplier;
+        Invoice.RecieverType.ServiceType = ServiceType::Hotel;
+
+        Insert(Backend.Database, Invoice);
+
+        PurchaseOrderUpdate OrderUpdate;
+        OrderUpdate.State = (PurchaseOrderState)Json["ChangeStateId"].i();
+        OrderUpdate.ItemInvoiceId = Invoice.UniqueID;
+
+        UpdatePurchaseOrder(Backend.Database, Order->UniqueID, OrderUpdate);
+
+        Result["State"] = true;
+        Result["Message"] = "Succesful!";
+
+        // FIX: Set the content type to JSON and dump the JSON object to a string string
+        res.add_header("Content-Type", "application/json");
+        res.write(Result.dump());
+        res.code = 200;
+
+        return res;
+    }
+
+    crow::response AddRoomInfo(NepBill::App &Backend, const crow::request &Req)
+    {
+        auto Json =
+            crow::json::load(Req.body);
+
+        if (!Json)
+        {
+            std::cout << "Invalid Json for AdminContactFormsQuery\n";
+            return crow::response(400);
+        }
+        std::cout << "Valid Json for AdminContactFormEditSave\n";
+
+        crow::json::wvalue Result;
+        crow::response res;
+
+        std::string ContactUUIDStr = Json["AccountId"].s();
+        auto UserId = UUID::FromString(std::string_view(ContactUUIDStr.c_str()));
+
+        auto TodayTime = getCurrentTime();
+        auto OneWeekAgoTime = getTimeOneWeekAgo();
+
+        AccountQuery UserAccountQuery;
+        UserAccountQuery.UniqueId = UserId;
+        std::optional<Account> UserAccount = std::nullopt;
+
+        auto Accounts = GetAccounts(Backend.Database, UserAccountQuery);
+        if (Accounts.size() == 1)
+            UserAccount = Accounts[0];
+
+        if (UserAccount == std::nullopt)
+        {
+            Result["State"] = false;
+            Result["Message"] = "Querying Account Info Failed!";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 400;
+
+            return res;
+        }
+
+        std::string RoomName = Json["Name"].s();
+
+        // Check if same room name exists or no inside same business
+
+        RoomInfoQuery ValidateRoomInfo;
+        ValidateRoomInfo.BusinessId = UserAccount->BusinessID;
+        ValidateRoomInfo.Name = RoomName;
+
+        auto ValidateRooms = GetRooms(Backend.Database, ValidateRoomInfo);
+        if (ValidateRooms.size() > 0)
+        {
+            Result["State"] = false;
+            Result["Message"] = "Room with same name exists!";
+
+            // FIX: Set the content type to JSON and dump the JSON object to a string string
+            res.add_header("Content-Type", "application/json");
+            res.write(Result.dump());
+            res.code = 400;
+
+            return res;
+        }
+
+        RoomInfo NewRoom;
+        NewRoom.Name = RoomName;
+        NewRoom.BusinessID = UserAccount->BusinessID;
+        NewRoom.Description = Json["Description"].s();
+        NewRoom.BasePrice = Json["BasePrice"].i();
+        NewRoom.BedCount = Json["BedCount"].i();
+        NewRoom.State = RoomStates::Available;
+
+        Insert(Backend.Database, NewRoom);
+
+        Result["State"] = true;
+        Result["Message"] = "Succesful!";
+
+        // FIX: Set the content type to JSON and dump the JSON object to a string string
+        res.add_header("Content-Type", "application/json");
+        res.write(Result.dump());
+        res.code = 200;
+
+        return res;
+    }
+
+    crow::response QueryRoomInfoDetail(NepBill::App &Backend, const crow::request &Req)
+    {
+        return crow::response();
+    }
+
+    crow::response QueryRoomList(NepBill::App &Backend, const crow::request &Req)
+    {
+        return crow::response();
     }
 }

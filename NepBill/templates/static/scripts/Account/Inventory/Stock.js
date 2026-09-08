@@ -6,7 +6,7 @@ async function TableStock(UserId) {
   const tableBody = document.getElementById("inventory-table-body");
 
   try {
-    const response = await fetch("/api/admin/inventory/item/query", {
+    const response = await fetch("/api/business/inventory/item/query", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,17 +28,24 @@ async function TableStock(UserId) {
     }
 
     tableBody.innerHTML = result.Item.map((item) => {
-      const isTracking = item.TracksStock === "true" || item.TracksStock === true;
+      const isTracking =
+        item.TracksStock === "true" || item.TracksStock === true;
       const trackingBadge = isTracking
         ? `<span class="badge paid">Yes</span>`
         : `<span class="badge unpaid">No</span>`;
 
       return `
         <tr>
-          <td class="feature-col">${item.Name}</td>
+          <td>
+          <a href="/Account/Inventory/ItemDetail.html?id=${UserId}&item_uuid=${
+            item.ItemUUID
+          }" class="supplier-link">
+            ${escapeHtml(item.Name)}
+          </a>
+        </td>
           <td>${item.CategoryName || "Uncategorized"}</td>
-          <td>${item.LowStockThresold}</td>
-          <td><span class="stock-value-empty">—</span></td>
+                  <td>${item.LowStockThresold}</td>
+          <td><span class="stock-value-empty">${item.CurrentStock}—</span></td>
           <td>${trackingBadge}</td>
           <td class="description-cell">${item.Description || "—"}</td>
           <td style="text-align: right;">
@@ -48,7 +55,6 @@ async function TableStock(UserId) {
         </tr>
       `;
     }).join("");
-
   } catch (error) {
     console.error("Error fetching inventory stock:", error);
     tableBody.innerHTML = `
@@ -71,3 +77,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   TableStock(userId);
 });
+
+
+// Helper to escape HTML characters to prevent XSS
+function escapeHtml(str) {
+  if (!str) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}

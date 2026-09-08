@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Change Order State - NepBill</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="header-container">
+        <div class="nav-left">
+          <a href="/" class="brand">Nep<span>Bill</span></a>
+          <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <select class="lang-select">
+            <option value="en">English</option>
+            <option value="np">Nepali</option>
+          </select>
+          <div id="AccountHeaderSection"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- BOXED MAIN CONTAINER -->
+    <main class="dashboard-wrapper">
+      <div class="dashboard-box">
+        <!-- SIDEBAR -->
+        <aside id="sidebar-container" class="sidebar"></aside>
+
+        <!-- DASHBOARD CONTENT -->
+        <section class="dashboard-content">
+          <div class="order-state-header">
+            <h2>Process Purchase Order Lines</h2>
+            <p id="state_info_banner" class="state-banner"></p>
+          </div>
+
+          <!-- DYNAMIC LINE ITEMS WRAPPER -->
+          <div id="show_changeable_lines" class="lines-container"></div>
+
+          <!-- HIDDEN CLONABLE TEMPLATE -->
+          <div id="template_order_line_show" class="order-line-card" style="display: none;">
+            <div class="line-header">
+              <h3 class="line-item-title">Item Ordered: <span class="lbl-item-name"></span></h3>
+              <span class="badge line-status-badge">Pending</span>
+            </div>
+
+            <div class="line-grid">
+              <div class="form-group">
+                <label>Received / Ordered Qty (<span class="lbl-purchase-unit">Unit</span>)</label>
+                <div class="input-pair">
+                  <input type="number" class="input-received-qty" min="0" step="any" />
+                  <span class="slash">/</span>
+                  <input type="number" class="input-ordered-qty" readonly />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Converted Stock Qty (<span class="lbl-stock-unit">Unit</span>)</label>
+                <div class="input-pair">
+                  <input type="number" class="input-received-stock-qty" readonly />
+                  <span class="slash">/</span>
+                  <input type="number" class="input-ordered-stock-qty" readonly />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Conversion Rate</label>
+                <input type="number" class="input-conversion-rate" readonly />
+              </div>
+
+              <div class="form-group">
+                <label>Actual Total / Assumed Total (NPR)</label>
+                <div class="input-pair">
+                  <input type="number" class="input-actual-price" readonly />
+                  <span class="slash">/</span>
+                  <input type="number" class="input-assumed-price" readonly />
+                </div>
+              </div>
+
+              <div class="form-group full-width">
+                <label>Item Remarks</label>
+                <div class="lbl-remarks-box"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- INVOICE SUMMARY SECTION -->
+          <div id="invoice_summary_card" class="invoice-summary-card">
+            <h3>Purchase Invoice Summary</h3>
+            <div class="invoice-grid">
+              <div class="summary-group">
+                <span class="summary-label">Supplier Name</span>
+                <span id="inv_supplier_name" class="summary-value">-</span>
+              </div>
+
+              <div class="summary-group">
+                <span class="summary-label">Invoice Payment State</span>
+                <select id="inv_payment_state" class="inv-select">
+                  <option value="FullyPaid">Fully Paid</option>
+                  <option value="Paying">Paying</option>
+                  <option value="Dropped">Dropped</option>
+                </select>
+              </div>
+
+              <div class="summary-group">
+                <span class="summary-label">VAT (%)</span>
+                <input type="number" id="inv_vat_percent" value="0" min="0" max="100" class="inv-input" />
+              </div>
+
+              <div class="summary-group">
+                <span class="summary-label">Subtotal</span>
+                <span id="inv_subtotal" class="summary-value">NPR 0.00</span>
+              </div>
+
+              <div class="summary-group">
+                <span class="summary-label">Grand Total (Incl. VAT)</span>
+                <span id="inv_grand_total" class="summary-value highlight">NPR 0.00</span>
+              </div>
+            </div>
+
+            <div class="action-footer">
+              <button id="btn_submit_state_change" class="btn-primary">
+                Confirm & Update Inventory Stock
+              </button>
+              <p class="footer-note">
+                * Note: Confirming this action will update physical stock quantities for all items and register this transaction under supplier invoices.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-container">
+        <span>&copy; 2026 NepBill</span>
+        <ul class="footer-links">
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="/AccountTypes.js" type="module"></script>
+    <script src="/index.js" type="module"></script>
+    <script src="/SideBar.js" type="module"></script>
+    <script src="/Account.js" type="module"></script>
+    <script src="/Account/Inventory/ChangePurchaseOrderState.js" type="module"></script>
+    <script src="/Account/Inventory/PurchaseOrderEnum.js" type="module"></script>
+    
+    <!-- inline script updated in Step 3 -->
+    <script type="module" src="/Account/Inventory/ProcessOrderLines.js"></script>
+  </body>
+</html>

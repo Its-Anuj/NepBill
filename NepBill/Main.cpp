@@ -27,9 +27,10 @@ void CreateTables(pqxx::connection &Db)
     tx.exec(NepBill::Suppliers::GetCreateQuery());
     // Inventory Finance Related
     tx.exec(NepBill::ItemInvoice::GetCreateQuery());
-    tx.exec(NepBill::ItemInvoiceLine::GetCreateQuery());
     tx.exec(NepBill::PurchaseOrder::GetCreateQuery());
     tx.exec(NepBill::PurchaseOrderLine::GetCreateQuery());
+    
+    tx.exec(NepBill::RoomInfo::GetCreateQuery());
 
     tx.commit();
     std::cout << "Created Tables\n";
@@ -76,6 +77,7 @@ int main(int argc, char const *argv[])
         tx.commit();
         std::cout << "2" << "\n";
 
+        App.static_file("/NewStyles.css", "templates/static/Styles/NewStyles.css");
         App.static_file("/styles.css", "templates/static/Styles/styles.css");
         App.static_file("/login.css", "templates/static/Styles/login.css");
         App.static_file("/ContactForms.css", "templates/static/Styles/Admin/ContactForms.css");
@@ -85,55 +87,54 @@ int main(int argc, char const *argv[])
         App.static_file("/Account/Account.html", "templates/pages/Account/Account.html");
         App.static_file("/Login.html", "templates/pages/Common/Login.html");
         App.static_file("/Admin/ContactForms.html", "templates/pages/Account/Admin/ContactForms.html");
+        App.static_file("/Admin/ContactForms.js", "templates/static/scripts/Account/Admin/ContactForms.js");
+
         App.static_file("/Admin/Dashboard.html", "templates/pages/Account/Admin/Dashboard.html");
+        App.static_file("/Admin/Dashboard.js", "templates/static/scripts/Account/Admin/Dashboard.js");
+
         App.static_file("/Admin/ContactFormDetail.html", "templates/pages/Account/Admin/ContactFormDetail.html");
+        App.static_file("/Admin/ContactFormDetail.js", "templates/static/scripts/Account/Admin/ContactFormDetail.js");
+
         App.static_file("/Account/Components/SideBar.html", "templates/pages/Account/Components/SideBar.html");
         App.static_file("/Account/Components/Admin/ContactFormTypeFunctions.html", "templates/pages/Account/Components/Admin/ContactFormTypeFunctions.html");
 
-        App.static_file("/Account/BusinessOwner/Overview.html", "templates/pages/Account/BusinessOwner/Overview.html");
-        App.static_file("/Account/BusinessOwner/Profile_Settings.html", "templates/pages/Account/BusinessOwner/Profile_Settings.html");
-        App.static_file("/Account/BusinessOwner/Security.html", "templates/pages/Account/BusinessOwner/Security.html");
-        App.static_file("/Account/BusinessOwner/Business.html", "templates/pages/Account/BusinessOwner/Business.html");
-        App.static_file("/Account/BusinessOwner/Branches_Locations.html", "templates/pages/Account/BusinessOwner/Branches_Locations.html");
-        App.static_file("/Account/BusinessOwner/Subscription_Plans.html", "templates/pages/Account/BusinessOwner/Subscription_Plans.html");
-        App.static_file("/Account/BusinessOwner/Business_Documents.html", "templates/pages/Account/BusinessOwner/Business_Documents.html");
-        App.static_file("/Account/BusinessOwner/Accounts_Roles.html", "templates/pages/Account/BusinessOwner/Accounts_Roles.html");
-        App.static_file("/Account/BusinessOwner/Salary_Overview.html", "templates/pages/Account/BusinessOwner/Salary_Overview.html ");
-        App.static_file("/Account/BusinessOwner/Revenue_Report.html", "templates/pages/Account/BusinessOwner/Revenue_Report.html");
-        App.static_file("/Account/BusinessOwner/Expense_Report.html", "templates/pages/Account/BusinessOwner/Expense_Report.html");
-        App.static_file("/Account/BusinessOwner/VAT_Summary.html", "templates/pages/Account/BusinessOwner/VAT_Summary.html");
-        App.static_file("/Account/BusinessOwner/Supplier_Payables.html", "templates/pages/Account/BusinessOwner/Supplier_Payables.html");
-        App.static_file("/Account/BusinessOwner/Hotel.html", "templates/pages/Account/BusinessOwner/Hotel.html");
-        App.static_file("/Account/BusinessOwner/Restaurant.html", "templates/pages/Account/BusinessOwner/Restaurant.html");
-        App.static_file("/Account/BusinessOwner/Hostel.html", "templates/pages/Account/BusinessOwner/Hostel.html");
+        App.static_file("/Account/Inventory/AddItem.html", "templates/pages/Account/Components/Inventory/AddItem.html");
+        App.static_file("/Account/Inventory/ItemDetail.html", "templates/pages/Account/Components/Inventory/ItemDetail.html");
+        App.static_file("/Account/Inventory/Inventory.html", "templates/pages/Account/Components/Inventory/Inventory.html");
+        App.static_file("/Account/Inventory/PurchaseOrder.html", "templates/pages/Account/Components/Inventory/PurchaseOrder.html");
+        App.static_file("/Account/Inventory/PurchaseOrderDetail.html", "templates/pages/Account/Components/Inventory/PurchaseOrderDetail.html");
+        App.static_file("/Account/Inventory/CreatePurchaseOrder.html", "templates/pages/Account/Components/Inventory/CreatePurchaseOrder.html");
+        App.static_file("/Account/Inventory/Stock.html", "templates/pages/Account/Components/Inventory/Stock.html");
+        App.static_file("/Account/Inventory/Supplier.html", "templates/pages/Account/Components/Inventory/Supplier.html");
+        App.static_file("/Account/Inventory/SupplierDetail.html", "templates/pages/Account/Components/Inventory/SupplierDetail.html");
+        App.static_file("/Account/Inventory/ChangePurchaseOrderState.html", "templates/pages/Account/Components/Inventory/ChangePurchaseOrderState.html");
 
-        App.static_file("/Account/Finance/Subscription.html", "templates/pages/Account/Finance/Subscription.html");
-        App.static_file("/Account/Finance/Subscription.js", "templates/static/scripts/Finance/Subscription.js");
+        App.static_file("/Account/Rooms/Rooms.html", "templates/pages/Account/Components/Rooms/Rooms.html");
+        App.static_file("/Account/Rooms/Rooms.js", "templates/static/scripts/Account/Rooms/Rooms.js");
+        App.static_file("/Account/Rooms/AddRoom.html", "templates/pages/Account/Components/Rooms/AddRoom.html");
+        App.static_file("/Account/Rooms/AddRoom.js", "templates/static/scripts/Account/Rooms/AddRoom.js");
 
-        App.static_file("/Account/Inventory/Inventory.html", "templates/pages/Account/Inventory/Inventory.html");
-        App.static_file("/Account/Inventory/PurchaseOrder.html", "templates/pages/Account/Inventory/PurchaseOrder.html");
-        App.static_file("/Account/Inventory/CreatePurchaseOrder.html", "templates/pages/Account/Inventory/CreatePurchaseOrder.html");
-        App.static_file("/Inventory/Inventory.js", "templates/static/scripts/Inventory/Inventory.js");
-        App.static_file("/Account/Inventory/Stock.html", "templates/pages/Account/Inventory/Stock.html");
-        App.static_file("/Account/Inventory/AddItem.html", "templates/pages/Account/Inventory/AddItem.html");
-        App.static_file("/Inventory/Stock.js", "templates/static/scripts/Inventory/Stock.js");
-
-        App.static_file("/Account/Supplier/Supplier.html", "templates/pages/Account/Supplier/Supplier.html");
-        App.static_file("/Supplier/Supplier.js", "templates/static/scripts/Supplier/Supplier.js");
-        App.static_file("/Inventory/PurchaseOrder.js", "templates/static/scripts/Inventory/PuirchaseOrder.js");
-        App.static_file("/Inventory/CreatePurchaseOrder.js", "templates/static/scripts/Inventory/CreatePurchaseOrder.js");
-        App.static_file("/Inventory/AddItem.js", "templates/static/scripts/Inventory/AddItem.js");
+        App.static_file("/Account/Inventory/AddItem.js", "templates/static/scripts/Account/Inventory/AddItem.js");
+        App.static_file("/Account/Inventory/Supplier.js", "templates/static/scripts/Account/Inventory/Supplier.js");
+        App.static_file("/Account/Inventory/SupplierDetail.js", "templates/static/scripts/Account/Inventory/SupplierDetail.js");
+        App.static_file("/Account/Inventory/ItemDetail.js", "templates/static/scripts/Account/Inventory/ItemDetail.js");
+        App.static_file("/Account/Inventory/Inventory.js", "templates/static/scripts/Account/Inventory/Inventory.js");
+        App.static_file("/Account/Inventory/PurchaseOrder.js", "templates/static/scripts/Account/Inventory/PurchaseOrder.js");
+        App.static_file("/Account/Inventory/PurchaseOrderDetail.js", "templates/static/scripts/Account/Inventory/PurchaseOrderDetail.js");
+        App.static_file("/Account/Inventory/CreatePurchaseOrder.js", "templates/static/scripts/Account/Inventory/CreatePurchaseOrder.js");
+        App.static_file("/Account/Inventory/Stock.js", "templates/static/scripts/Account/Inventory/Stock.js");
+        App.static_file("/Account/Inventory/ChangePurchaseOrderState.js", "templates/static/scripts/Account/Inventory/ChangePurchaseOrderState.js");
+        App.static_file("/Account/Inventory/PurchaseOrderEnum.js", "templates/static/scripts/Account/Inventory/PurchaseOrderEnum.js");
+        App.static_file("/Account/Inventory/BasicQueries.js", "templates/static/scripts/Account/Inventory/BasicQueries.js");
 
         App.static_file("/Login.js", "templates/static/scripts/Login.js");
-        App.static_file("/Admin/ContactEnums.js", "templates/static/scripts/Admin/ContactEnums.js");
-        App.static_file("/AccountTypes.js", "templates/static/scripts/AccountTypes.js");
-        App.static_file("/SideBar.js", "templates/static/scripts/SideBar.js");
+        App.static_file("/ErrorHandler.js", "templates/static/scripts/ErrorHandler.js");
+        App.static_file("/Admin/ContactEnums.js", "templates/static/scripts/Account/Admin/ContactEnums.js");
+        App.static_file("/AccountTypes.js", "templates/static/scripts/Account/AccountTypes.js");
+        App.static_file("/SideBar.js", "templates/static/scripts/Account/SideBar.js");
         App.static_file("/index.js", "templates/static/scripts/index.js");
         App.static_file("/ContactUs.js", "templates/static/scripts/ContactUs.js");
-        App.static_file("/Account.js", "templates/static/scripts/Account.js");
-        App.static_file("/Admin/Dashboard.js", "templates/static/scripts/Admin/Dashboard.js");
-        App.static_file("/Admin/ContactForms.js", "templates/static/scripts/Admin/ContactForms.js");
-        App.static_file("/Admin/ContactFormDetails.js", "templates/static/scripts/Admin/ContactFormDetails.js");
+        App.static_file("/Account.js", "templates/static/scripts/Account/Account.js");
 
         NepBill::ContactFormQuery AdminFromQuery;
         AdminFromQuery.PhoneNumber = "9705216410";
@@ -220,33 +221,56 @@ int main(int argc, char const *argv[])
         CROW_ROUTE(App, "/api/admin/contactform/registeraction/approve").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
                                                                                                          { return NepBill::AdminContactFormRegisterApprove(Backend, Req); });
 
-        CROW_ROUTE(App, "/api/admin/inventory/itemcateogrybyname/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
-                                                                                                         { return NepBill::QueryItemCategoryName(Backend, Req); });
+        CROW_ROUTE(App, "/api/business/inventory/itemcategory/add").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                                    { return NepBill::AddItemCategory(Backend, Req); });
 
-        CROW_ROUTE(App, "/api/admin/inventory/itemcateogrybyname/add").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
-                                                                                                         { return NepBill::AddItemCategory(Backend, Req); });
+        CROW_ROUTE(App, "/api/business/inventory/itemcategory/query/byname").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                                             { return NepBill::QueryItemCategoryByName(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/inventory/item/add").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                            { return NepBill::AddItem(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/inventory/item/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                        { return NepBill::QueryItemStock(Backend, Req); });
 
         CROW_ROUTE(App, "/api/business/inventory/itemstockunit/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
-                                                                                                         { return NepBill::QueryItemStockUnit(Backend, Req); });
+                                                                                        { return NepBill::QueryItemStockUnit(Backend, Req); });
 
-        CROW_ROUTE(App, "/api/admin/inventory/itembyname/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
-                                                                                                 { return NepBill::QueryItemName(Backend, Req); });
-
-        CROW_ROUTE(App, "/api/admin/inventory/itembyname/add").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
-                                                                                                 { return NepBill::AddItem(Backend, Req); });
-
-        CROW_ROUTE(App, "/api/admin/inventory/item/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
-                                                                                                 { return NepBill::QueryItemStock(Backend, Req); });
+        CROW_ROUTE(App, "/api/business/inventory/suppliers/query/byname").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                        { return NepBill::QuerySuppliersByNameFilter(Backend, Req); });
 
         CROW_ROUTE(App, "/api/business/supplier/add").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
-                                                                                                 { return NepBill::AddSuppliers(Backend, Req); });
-
+                                                                                        { return NepBill::AddSuppliers(Backend, Req); });
+                                                                                        
         CROW_ROUTE(App, "/api/business/supplier/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
-                                                                                                 { return NepBill::QuerySuppliers(Backend, Req); });
+                                                                                        { return NepBill::QuerySuppliers(Backend, Req); });
 
-        CROW_ROUTE(App, "/api/admin/inventorypurchaseorder/suppliersbyname/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
-                                                                                                 { return NepBill::QuerySuppliersByNameFilter(Backend, Req); });
+        CROW_ROUTE(App, "/api/business/inventory/item/query/byname").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                        { return NepBill::QueryItemByName(Backend, Req); });
 
+        CROW_ROUTE(App, "/api/business/inventory/itemdetail/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                        { return NepBill::QueryItemDetail(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/inventory/purchaseorder/add").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                        { return NepBill::AddPurchaseOrder(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/inventory/purchaseorderlist/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                        { return NepBill::QueryPurchaseOrderList(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/inventory/purchaseorderdetail/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                        { return NepBill::QueryPurchaseOrderDetail(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/inventory/purchaseorder/changeorderstate").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                        { return NepBill::ChangeOrderState(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/room/room/add").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                        { return NepBill::AddRoomInfo(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/room/roomlist/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                        { return NepBill::QueryRoomList(Backend, Req); });
+
+        CROW_ROUTE(App, "/api/business/room/roomdetail/query").methods(crow::HTTPMethod::POST)([&Backend](const crow::request &Req)
+                                                                                        { return NepBill::QueryRoomInfoDetail(Backend, Req); });
 
         App.port(18080).multithreaded().run();
         Backend.Database.close();

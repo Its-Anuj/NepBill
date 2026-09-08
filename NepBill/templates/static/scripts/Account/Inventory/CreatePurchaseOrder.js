@@ -1,4 +1,4 @@
-import {MeasurementUnits} from "/Inventory/AddItem.js";
+import { MeasurementUnits } from "/Account/Inventory/AddItem.js";
 // Global State Tracking
 
 const PurchaseOrderState = {
@@ -22,7 +22,7 @@ let lineIdCounter = 0;
 // API Fetchers
 async function GetDesiredSuppliers(userId, filterName) {
   const response = await fetch(
-    "/api/admin/inventorypurchaseorder/suppliersbyname/query",
+    "/api/business/inventory/suppliers/query/byname",
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -42,7 +42,7 @@ async function GetItemStockUnit(userId, filterName) {
 }
 
 async function GetDesiredItemName(userId, filterName) {
-  const response = await fetch("/api/admin/inventory/itembyname/query", {
+  const response = await fetch("/api/business/inventory/item/query/byname", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ AccountId: userId, Name: filterName }),
@@ -255,7 +255,6 @@ function SetupRowListeners(userId, lineId) {
       rowState.stockUnit = e.target.dataset.stockunit || "Pcs";
 
       searchInput.value = rowState.itemName;
-      stockUnitInput.value = rowState.stockUnit;
 
       // Auto-fill defaults if present from item configuration
       if (e.target.dataset.defunit) {
@@ -266,10 +265,11 @@ function SetupRowListeners(userId, lineId) {
       }
 
       const StockUnitRes = await GetItemStockUnit(userId, searchInput.value);
+      stockUnitInput.value = "Invalid Item";
       console.log(StockUnitRes);
-      if(StockUnitRes["State"] == true)
-      {
-        console.log(MeasurementUnits[StockUnitRes["StockUnit"]]);
+      if (StockUnitRes["State"] == true) {
+        console.log(MeasurementUnits[StockUnitRes["Stock Unit"]]);
+        stockUnitInput.value = MeasurementUnits[StockUnitRes["Stock Unit"]];
       }
 
       list.style.display = "none";
@@ -328,7 +328,7 @@ function SetupRowListeners(userId, lineId) {
 }
 
 // Complete Order Validation & Submission
-function ValidateAndSubmitPO(userId) {
+async function ValidateAndSubmitPO(userId) {
   let isValid = true;
 
   // Validate Supplier
@@ -391,6 +391,30 @@ function ValidateAndSubmitPO(userId) {
   };
 
   console.log("Submitting Purchase Order Payload:", payload);
+
+  const response = await fetch("/api/business/inventory/purchaseorder/add", {
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify({
+      AccountId: userId,
+      SupplierUUID: PurchaseOrderState.Supplier.UUID,
+      Lines: payload["Lines"],
+    }),
+  });
+
+  const result = await response.json();
+  console.log(result);
+
+  if (result["State"] == true) {
+    alert(result["Message"]);
+    categoryNameInput.value = "";
+  } else {
+    alert(result["Message"]);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", async () => {

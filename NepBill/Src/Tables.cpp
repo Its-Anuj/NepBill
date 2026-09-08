@@ -868,26 +868,25 @@ namespace NepBill
 #pragma endregion
 
 #pragma region ItemInvoice
+
     const char *ItemInvoice::GetCreateQuery()
     {
         static std::string Query = BuildCreateQuery(
             "ItemInvoice",
-            {
-                {"Id", "SERIAL PRIMARY KEY"},
-                {"SenderId", "UUID"},
-                {"RecieverId", "UUID"},
-                {"UniqueID", "UUID"},
-                {"State", "INTEGER"},
-                {"VatPercent", "DOUBLE PRECISION"},
-                {"LineTotal", "DOUBLE PRECISION"},
-                {"SenderType", "INTEGER"},
-                {"SenderServiceType", "INTEGER"},
-                {"RecieverType", "INTEGER"},
-                {"RecieverServiceType", "INTEGER"},
-                {"CreatedAt", "TIMESTAMP"},
-                {"LastPaymentTicketDate", "TIMESTAMP"},
-                {"ClosedAt", "TIMESTAMP"},
-            });
+            {{"Id", "SERIAL PRIMARY KEY"},
+             {"SenderId", "UUID"},
+             {"RecieverId", "UUID"},
+             {"UniqueID", "UUID"},
+             {"State", "INTEGER"},
+             {"VatPercent", "DOUBLE PRECISION"},
+             {"Total", "DOUBLE PRECISION"},
+             {"SenderType", "INTEGER"},
+             {"SenderServiceType", "INTEGER"},
+             {"RecieverType", "INTEGER"},
+             {"RecieverServiceType", "INTEGER"},
+             {"CreatedAt", "TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP"},
+             {"LastPaymentTicketDate", "TIMESTAMP WITH TIME ZONE"},
+             {"ClosedAt", "TIMESTAMP WITH TIME ZONE"}});
         return Query.c_str();
     }
 
@@ -900,7 +899,7 @@ namespace NepBill
              "UniqueID",
              "State",
              "VatPercent",
-             "LineTotal",
+             "Total",
              "SenderType",
              "SenderServiceType",
              "RecieverType",
@@ -921,7 +920,7 @@ namespace NepBill
              "UniqueID",
              "State",
              "VatPercent",
-             "LineTotal",
+             "Total",
              "SenderType",
              "SenderServiceType",
              "RecieverType",
@@ -941,56 +940,6 @@ namespace NepBill
     const char *ItemInvoice::GetName()
     {
         return "ItemInvoice";
-    }
-
-#pragma endregion
-
-#pragma region ItemInvoiceLine
-
-    const char *ItemInvoiceLine::GetCreateQuery()
-    {
-        static std::string Query = BuildCreateQuery(
-            "ItemInvoiceLine",
-            {
-                {"Id", "SERIAL PRIMARY KEY"},
-                {"InvoiceId", "UUID"},
-                {"ItemId", "UUID"},
-                {"UnqiueId", "UUID"},
-                {"OrderedQuantity", "INTEGER"},
-                {"DeliveredQuantity", "INTEGER"},
-                {"ItemWeight", "DOUBLE PRECISION"},
-                {"UnitPrice", "DOUBLE PRECISION"},
-                {"UnitDiscountPercet", "DOUBLE PRECISION"},
-                {"LineTotal", "DOUBLE PRECISION"},
-            });
-        return Query.c_str();
-    }
-
-    const char *ItemInvoiceLine::GetInsertQuery()
-    {
-        static std::string Query = BuildInsertQuery(
-            "ItemInvoiceLine",
-            {"InvoiceId", "ItemId", "UnqiueId", "OrderedQuantity", "DeliveredQuantity", "ItemWeight", "UnitPrice", "UnitDiscountPercet", "LineTotal"});
-        return Query.c_str();
-    }
-
-    const char *ItemInvoiceLine::GetCountQuery()
-    {
-        static std::string Query = BuildCountQuery("ItemInvoiceLine");
-        return Query.c_str();
-    }
-
-    const char *ItemInvoiceLine::GetByIdQuery()
-    {
-        static std::string Query = BuildByIdQuery(
-            "ItemInvoiceLine",
-            {"Id", "InvoiceId", "ItemId", "UnqiueId", "OrderedQuantity", "DeliveredQuantity", "ItemWeight", "UnitPrice", "UnitDiscountPercet", "LineTotal"});
-        return Query.c_str();
-    }
-
-    const char *ItemInvoiceLine::GetName()
-    {
-        return "ItemInvoiceLine";
     }
 
 #pragma endregion
@@ -1358,13 +1307,13 @@ namespace NepBill
             "RoomInfo",
             {
                 {"Id", "SERIAL PRIMARY KEY"},
-                {"Name", MakeVarchar(kNameLength)},
-                {"BasePrice", "DOUBLE PRECISION"},
-                {"BedCount", "INTEGER"},
-                {"Description", MakeVarchar(RoomDescriptionLength)},
                 {"UniqueID", "UUID"},
-                {"State", "INTEGER"},
                 {"BusinessID", "UUID"},
+                {"Name", "TEXT"},
+                {"BasePrice", "DOUBLE PRECISION"},
+                {"Description", "TEXT"},
+                {"State", "INTEGER"},
+                {"BedCount", "INTEGER"}
             });
         return Query.c_str();
     }
@@ -1373,13 +1322,15 @@ namespace NepBill
     {
         static std::string Query = BuildInsertQuery(
             "RoomInfo",
-            {"Name", "BasePrice", "BedCount", "Description", "UniqueID", "State", "BusinessID"});
-        return Query.c_str();
-    }
-
-    const char *RoomInfo::GetCountQuery()
-    {
-        static std::string Query = BuildCountQuery("RoomInfo");
+            {
+                "UniqueID",
+                "BusinessID",
+                "Name",
+                "BasePrice",
+                "Description",
+                "State",
+                "BedCount"
+            });
         return Query.c_str();
     }
 
@@ -1387,7 +1338,22 @@ namespace NepBill
     {
         static std::string Query = BuildByIdQuery(
             "RoomInfo",
-            {"Id", "Name", "BasePrice", "BedCount", "Description", "UniqueID", "State", "BusinessID"});
+            {
+                "Id",
+                "UniqueID",
+                "BusinessID",
+                "Name",
+                "BasePrice",
+                "Description",
+                "State",
+                "BedCount"
+            });
+        return Query.c_str();
+    }
+
+    const char *RoomInfo::GetCountQuery()
+    {
+        static std::string Query = BuildCountQuery("RoomInfo");
         return Query.c_str();
     }
 

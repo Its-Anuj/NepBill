@@ -22,16 +22,25 @@ namespace NepBill
     crow::response AdminContactFormRegisterApprove(NepBill::App &Backend, const crow::request &Req);
 
     crow::response QuerySuppliersIncomingOrders(NepBill::App &Backend, const crow::request &Req);
-    crow::response QueryItemCategoryName(NepBill::App &Backend, const crow::request &Req);
-    crow::response QueryItemName(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryItemCategoryByName(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryItemByName(NepBill::App &Backend, const crow::request &Req);
     crow::response AddItem(NepBill::App &Backend, const crow::request &Req);
     crow::response AddItemCategory(NepBill::App &Backend, const crow::request &Req);
     crow::response QueryItemStock(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryItemDetail(NepBill::App &Backend, const crow::request &Req);
     crow::response QueryItemStockUnit(NepBill::App &Backend, const crow::request &Req);
-    
+
     crow::response AddSuppliers(NepBill::App &Backend, const crow::request &Req);
     crow::response QuerySuppliers(NepBill::App &Backend, const crow::request &Req);
     crow::response QuerySuppliersByNameFilter(NepBill::App &Backend, const crow::request &Req);
 
+    crow::response AddPurchaseOrder(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryPurchaseOrderList(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryPurchaseOrderDetail(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryPurchaseOrderLineDetail(NepBill::App &Backend, const crow::request &Req);
+    crow::response ChangeOrderState(NepBill::App &Backend, const crow::request &Req);
 
+    crow::response AddRoomInfo(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryRoomInfoDetail(NepBill::App &Backend, const crow::request &Req);
+    crow::response QueryRoomList(NepBill::App &Backend, const crow::request &Req);
 } // namespace NepBill

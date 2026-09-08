@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Room - NepBill</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="header-container">
+        <div class="nav-left">
+          <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Toggle Navigation">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+          </button>
+          <a href="/" class="brand">Nep<span>Bill</span></a>
+          <ul class="nav-links">
+            <li><a href="#products">Products</a></li>
+            <li><a href="#partners">Partners</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-right">
+          <select class="lang-select">
+            <option value="en">English</option>
+            <option value="np">Nepali</option>
+          </select>
+          <div id="AccountHeaderSection"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN DASHBOARD -->
+    <main class="dashboard-wrapper">
+      <!-- SIDEBAR BACKDROP FOR MOBILE -->
+      <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+      <div class="dashboard-box">
+        <!-- SIDEBAR CONTAINER -->
+        <aside id="sidebar-container" class="sidebar"></aside>
+
+        <!-- MAIN FORM CONTENT -->
+        <section class="dashboard-content">
+          <div class="card-container">
+            <div class="card-header">
+              <h2>Add New Room</h2>
+              <p>Fill out the details below to list a new room in your inventory.</p>
+            </div>
+
+            <form id="add_room_form" class="room-form" onsubmit="return false;">
+              <div class="form-group">
+                <label for="room_name">Room Name</label>
+                <input id="room_name" type="text" placeholder="e.g. Deluxe Ocean View Suite 301" required />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="room_bed_count">Bed Count</label>
+                  <input id="room_bed_count" type="number" min="1" placeholder="e.g. 2" required />
+                </div>
+
+                <div class="form-group">
+                  <label for="room_base_price">Base Price (NPR)</label>
+                  <input id="room_base_price" type="number" step="0.01" min="0" placeholder="e.g. 2500" required />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="room_description">Description</label>
+                <textarea id="room_description" rows="4" placeholder="Mention features like AC, private balcony, attached bath..."></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button id="add_room_button" type="button" class="btn-primary">
+                  <span>Create Room</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <div class="footer-container">
+        <span>&copy; 2026 NepBill. All rights reserved.</span>
+        <ul class="footer-links">
+          <li><a href="#privacy">Privacy</a></li>
+          <li><a href="#terms">Terms</a></li>
+          <li><a href="#support">Support</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="/AccountTypes.js" type="module"></script>
+    <script src="/index.js" type="module"></script>
+    <script src="/SideBar.js" type="module"></script>
+    <script src="/Account.js" type="module"></script>
+    <script src="/Account/Rooms/AddRoom.js" type="module"></script>
+  </body>
+</html>

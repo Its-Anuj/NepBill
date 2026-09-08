@@ -275,55 +275,54 @@ namespace NepBill
         PurchaseOrderLineSortField SortField = PurchaseOrderLineSortField::Id;
         bool SortDescending = false;
     };
-    
-    // ---- ItemInvoice Query ----
+
+    // ---- PurchaseOrder Update Struct ----
+    struct PurchaseOrderUpdate
+    {
+        std::optional<UUID> BusinessID;
+        std::optional<UUID> SupplierID;
+        std::optional<UUID> ItemInvoiceId;
+        std::optional<PurchaseOrderState> State;
+    };
+
+    // ---- PurchaseOrderLine Update Struct ----
+    struct PurchaseOrderLineUpdate
+    {
+        std::optional<UUID> PurchaseOrderID;
+        std::optional<UUID> ItemID;
+        std::optional<uint32_t> OrderedQuantity;
+        std::optional<uint32_t> ReceivedQuantity;
+        std::optional<NepBill::PurchaseUnit> PurchaseUnit;
+        std::optional<double> PurchaseToStockConversion;
+        std::optional<MeasurementUnit> StockUnit;
+        std::optional<double> UnitPrice;
+        std::optional<double> DiscountPercent;
+        std::optional<std::string> Remarks;
+    };
+
+
     enum class ItemInvoiceSortField
     {
         Id,
         CreatedAt,
-        LineTotal
+        Total
     };
 
-    // Add service type filters to ItemInvoiceQuery struct
     struct ItemInvoiceQuery
     {
         std::optional<uint32_t> Id;
+        std::optional<UUID> UniqueID;
         std::optional<UUID> SenderId;
         std::optional<UUID> RecieverId;
-        std::optional<UUID> UniqueID;
         std::optional<InvoiceStates> State;
-        std::optional<FinancialPaymentReceipientType> SenderType;
-        std::optional<ServiceType> SenderServiceType;
-        std::optional<FinancialPaymentReceipientType> RecieverType;
-        std::optional<ServiceType> RecieverServiceType;
-
-        std::optional<time_t> CreatedAfter;
-        std::optional<time_t> CreatedBefore;
+        std::optional<double> VatPercent;
+        std::optional<double> Total;
+        std::optional<FinancialPaymentReceiptientInfo> SenderType;
+        std::optional<FinancialPaymentReceiptientInfo> RecieverType;
 
         struct Pagination Pagination;
-        ItemInvoiceSortField SortField = ItemInvoiceSortField::CreatedAt;
+        ItemInvoiceSortField SortField = ItemInvoiceSortField::Id;
         bool SortDescending = true;
-    };
-
-    // ---- ItemInvoiceLine Query ----
-    enum class ItemInvoiceLineSortField
-    {
-        Id,
-        OrderedQuantity,
-        UnitPrice,
-        LineTotal
-    };
-
-    struct ItemInvoiceLineQuery
-    {
-        std::optional<uint32_t> Id;
-        std::optional<UUID> InvoiceId;
-        std::optional<UUID> ItemId;
-        std::optional<UUID> UnqiueId;
-
-        struct Pagination Pagination;
-        ItemInvoiceLineSortField SortField = ItemInvoiceLineSortField::Id;
-        bool SortDescending = false;
     };
 
     enum class SuppliersSortField
@@ -387,6 +386,28 @@ namespace NepBill
         struct Pagination Pagination;
         ItemSortField SortField = ItemSortField::Id;
         bool SortDescending = false;
+    };
+
+    // ---- ContactFormInfo ----
+    enum class RoomSortField
+    {
+        Id,
+        Name
+    };
+
+    struct RoomInfoQuery
+    {
+        std::optional<uint32_t> Id;
+        std::optional<UUID> UniqueId;
+        std::optional<UUID> BusinessId;
+        std::optional<std::string> Name;
+        std::optional<uint32_t> State;
+        std::optional<uint32_t> BedCount;
+        std::optional<uint32_t> BasePrice;
+
+        struct Pagination Pagination;
+        RoomSortField SortField = RoomSortField::Id;
+        bool SortDescending = true;
     };
 }
 #endif
